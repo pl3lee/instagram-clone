@@ -3,10 +3,22 @@
 @tailwind utilities;
 
 
-body {
+/* body {
   color: white;
   box-sizing: border-box;
   padding: 0;
   background-color: black;
   width: 100vw;
+} */
+@layer base {
+  body {
+    @apply w-screen p-0 box-border bg-white text-black dark:bg-black dark:text-white
+  }
+}
+
+@layer components {
+  .svg-icons {
+    @apply fill-black dark:fill-white
+  }
+  
 }
