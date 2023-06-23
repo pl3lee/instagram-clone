@@ -10,15 +10,21 @@ import {
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
+import { setAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
   const router = useRouter();
+  // const userAuth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, loading } = useAuth();
   if (!loading && user) {
     router.push("/");
   }
+  // if (userAuth) {
+  //   router.push("/");
+  // }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -27,7 +33,8 @@ const Login = () => {
         email,
         password
       );
-      console.log(loggedInUser);
+      // console.log(loggedInUser);
+      setAuth(loggedInUser);
       router.push("/");
     } catch (error) {
       console.log(error.message);

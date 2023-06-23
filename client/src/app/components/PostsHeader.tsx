@@ -2,7 +2,7 @@
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
 
-const HomeHeader = () => {
+const PostsHeader = () => {
   const { user } = useAuth();
   if (!user) return null;
   return (
@@ -41,4 +41,4 @@ const HomeHeader = () => {
     </ul>
   );
 };
-export default HomeHeader;
+export default PostsHeader;
