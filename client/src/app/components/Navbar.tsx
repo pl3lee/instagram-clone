@@ -1,6 +1,10 @@
+"use client";
 import Link from "next/link";
+import useAuth from "@/hooks/useAuth";
 
 const Navbar = () => {
+  const { user } = useAuth();
+  if (!user) return null;
   return (
     <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full">
       <li>
