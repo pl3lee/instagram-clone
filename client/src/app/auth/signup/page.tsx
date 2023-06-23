@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
-const SignUp = async () => {
+const SignUp = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
