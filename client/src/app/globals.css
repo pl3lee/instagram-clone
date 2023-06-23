@@ -18,7 +18,7 @@
 
 @layer components {
   .svg-icons {
-    @apply fill-black dark:fill-white
+    @apply fill-black dark:fill-white w-8 h-8
   }
   .auth-input {
     @apply border border-gray-300 p-2 rounded focus:border-gray-600 focus:outline-none caret-blue-500

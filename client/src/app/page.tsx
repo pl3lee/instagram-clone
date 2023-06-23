@@ -1,10 +1,10 @@
-import Header from "./components/Header";
+import HomeHeader from "./components/HomeHeader";
 import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
     <div>
-      <Header />
+      <HomeHeader />
       <div className="text-3xl">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste dicta
         placeat quia, ullam debitis facere quis fugiat provident ea ad, non
