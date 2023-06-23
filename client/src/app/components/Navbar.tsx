@@ -6,8 +6,8 @@ const Navbar = () => {
   const { user } = useAuth();
   if (!user) return null;
   return (
-    <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full">
-      <li>
+    <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full bg-white border-slate-200 border-solid border-t">
+      <li className="nav-icon-container">
         <Link href="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@ const Navbar = () => {
           </svg>
         </Link>
       </li>
-      <li>
+      <li className="nav-icon-container">
         <Link href="/search">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ const Navbar = () => {
           </svg>
         </Link>
       </li>
-      <li>
+      <li className="nav-icon-container">
         <Link href="/chat">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ const Navbar = () => {
           </svg>
         </Link>
       </li>
-      <li>
+      <li className="nav-icon-container">
         <Link href="/profile">
           <svg
             xmlns="http://www.w3.org/2000/svg"
