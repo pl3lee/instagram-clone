@@ -9,11 +9,16 @@ import {
   signOut,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 
 const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, loading } = useAuth();
+  if (!loading && user) {
+    router.push("/");
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
