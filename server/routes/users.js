@@ -27,6 +27,9 @@ router.post("/register", async (req, res) => {
 // follows another user
 router.patch("/follow", async (req, res) => {
   const { uid, followId } = req.body;
+  if (uid == followId) {
+    res.status(500).json({ message: "User cannot follow themselves" });
+  }
   UserModel.findById(uid)
     .then((user) => {
       if (user.follows.includes(followId)) {
@@ -46,6 +49,9 @@ router.patch("/follow", async (req, res) => {
 // unfollows another user
 router.patch("/unfollow", async (req, res) => {
   const { uid, followId } = req.body;
+  if (uid == followId) {
+    res.status(500).json({ message: "User cannot follow themselves" });
+  }
   UserModel.findById(uid)
     .then((user) => {
       if (user.follows.includes(followId)) {
@@ -71,6 +77,12 @@ router.get("/following/:uid/id", async (req, res) => {
 });
 
 // gets the ids of all the accounts that follow the user
+router.get("/followers/:uid/id", async (req, res) => {
+  const { uid } = req.params;
+  UserModel.find({ follows: uid }).then((users) => {
+    res.json(users.map((user) => user._id));
+  });
+});
 
 // remember to export the router
 export { router as userRouter };
