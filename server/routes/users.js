@@ -84,5 +84,27 @@ router.get("/followers/:uid/id", async (req, res) => {
   });
 });
 
+// get the user's information by mongodb id
+router.get("/:uid", async (req, res) => {
+  const { uid } = req.params;
+  UserModel.findById(uid)
+    .then((user) => res.json(user))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "User retrieval failed" });
+    });
+});
+
+// get the user's information by firebase id
+router.get("/fb/:firebaseId", async (req, res) => {
+  const { firebaseId } = req.params;
+  UserModel.find({ firebaseId: firebaseId })
+    .then((user) => res.json(user))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "User retrieval failed" });
+    });
+});
+
 // remember to export the router
 export { router as userRouter };

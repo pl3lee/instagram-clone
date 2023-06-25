@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
-import useAuth from "@/hooks/useAuth";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const PostsHeader = () => {
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
   if (!user) return null;
   return (
-    <ul className="py-2 flex gap-3 justify-between sticky top-0 left-0 w-full px-1 list-none m-0 bg-white border-slate-200 border-solid border-b-[0.5px] dark:bg-black">
+    <ul className="sticky-header">
       <li className="flex-grow-[7]">
         <div className="text-3xl p-2 font-bold">Instagram</div>
       </li>

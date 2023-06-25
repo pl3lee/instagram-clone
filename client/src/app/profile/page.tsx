@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import ProfileHeader from "../components/ProfileHeader";
 
 const Profile = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const Profile = () => {
   };
   return (
     <div>
-      <h1>Profile</h1>
+      <ProfileHeader />
       <button className="border-solid border" onClick={logout}>
         Logout
       </button>
