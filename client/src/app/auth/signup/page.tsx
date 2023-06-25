@@ -35,7 +35,6 @@ const SignUp = () => {
         firebaseId: loggedInUser.user.uid,
       });
       console.log(loggedInUser);
-      setUser(loggedInUser);
     } catch (error) {
       console.log(error.message);
     }

@@ -33,7 +33,7 @@ const Login = () => {
         password
       );
       console.log(loggedInUser);
-      setUser(loggedInUser);
+      console.log(loggedInUser.user.uid);
     } catch (error) {
       console.log(error.message);
     }
