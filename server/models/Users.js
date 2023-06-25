@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = new Mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   firebaseId: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   profilePicture: { type: String, default: "" },

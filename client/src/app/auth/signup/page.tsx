@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import axios from "axios";
 
 const SignUp = () => {
   const router = useRouter();
@@ -30,6 +31,9 @@ const SignUp = () => {
         email,
         password
       );
+      axios.post("http://localhost:3001/auth/register", {
+        firebaseId: loggedInUser.user.uid,
+      });
       console.log(loggedInUser);
       setUser(loggedInUser);
     } catch (error) {

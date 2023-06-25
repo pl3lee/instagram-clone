@@ -5,7 +5,8 @@ const CommentSchema = new mongoose.Schema({
   comment: { type: String, required: true },
 });
 
-const PostSchema = new Mongoose.Schema({
+const PostSchema = new mongoose.Schema({
+  uid: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
   img: { type: String, required: true },
   caption: { type: String, required: true },
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],

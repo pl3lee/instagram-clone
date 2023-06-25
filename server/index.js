@@ -5,7 +5,7 @@ import cors from "cors";
 // database management system
 import mongoose from "mongoose";
 import { userRouter } from "./routes/users.js";
-import { recipesRouter } from "./routes/recipes.js";
+import { postsRouter } from "./routes/posts.js";
 
 dotenv.config();
 // generate version of our API
@@ -17,13 +17,13 @@ app.use(express.json());
 app.use(cors());
 
 // now whatever endpoints we create in userRouter will automatically start with /auth
-// app.use("/auth", userRouter);
-// app.use("/recipes", recipesRouter);
+app.use("/auth", userRouter);
+app.use("/posts", postsRouter);
 
 // put this after middlewares are applied and before listen
 // process.env is a available globally
 mongoose.connect(
-  "mongodb+srv://billy:oDPNQInPBEE9oNDb@instagram.gza37jc.mongodb.net/?retryWrites=true&w=majority"
+  "mongodb+srv://billy:oDPNQInPBEE9oNDb@instagram.gza37jc.mongodb.net/instagram?retryWrites=true&w=majority"
 );
 
 // for heroku

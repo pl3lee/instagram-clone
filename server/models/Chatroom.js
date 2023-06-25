@@ -6,7 +6,7 @@ const MessageSchema = new mongoose.Schema({
   messageDateTime: { type: Date, default: Date.now },
 });
 
-const ChatroomSchema = new Mongoose.Schema({
+const ChatroomSchema = new mongoose.Schema({
   roomId: { type: String, required: true, unique: true },
   messages: [{ type: MessageSchema }],
 });
