@@ -17,24 +17,17 @@ router.get("/", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   const { firebaseId, img, caption } = req.body;
-  UserModel.find({ firebaseId: firebaseId }, async (err, docs) => {
-    if (err) {
-      res.status(500).json({ message: "User not found" });
-    } else {
+  UserModel.findOne({ firebaseId: firebaseId })
+    .then((user) => {
       const newPost = new PostModel({
-        uid: docs[0]._id,
         img: img,
         caption: caption,
+        uid: user._id,
       });
-      try {
-        await newPost.save();
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Post creation failed" });
-      }
-      res.json({ message: "Post creation successful" });
-    }
-  });
+      newPost.save();
+      res.json(newPost);
+    })
+    .catch((err) => console.log(err));
 });
 
 // remember to export the router
