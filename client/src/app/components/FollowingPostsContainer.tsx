@@ -2,7 +2,8 @@ import axios from "axios";
 const getFollowingPosts = async (uid: any) => {
   return axios
     .get(`http://localhost:3001/posts/following/${uid}`)
-    .then((response) => response.data);
+    .then((response) => response.data)
+    .catch((err) => console.log(err));
 };
 
 const FollowingPostsContainer = async ({ uid }: any) => {
