@@ -22,13 +22,23 @@ router.post("/create", async (req, res) => {
         uid: user._id,
       });
       newPost.save();
+      user.posts.push(newPost._id);
+      user.save();
       res.json(newPost);
     })
     .catch((err) => console.log(err));
 });
 
-router.get("/user", async (req, res) => {
-  return res.json({ message: "user" });
+// gets all posts from following users, including the user himself
+router.get("/following/:uid", async (req, res) => {
+  const { uid } = req.params;
+  UserModel.findById(uid).then((user) => {
+    const followingUsers = [...user.follows, user._id];
+    PostModel.find({ uid: { $in: followingUsers } }).then((posts) =>
+      res.json(posts)
+    );
+  });
 });
+
 // remember to export the router
 export { router as postsRouter };
