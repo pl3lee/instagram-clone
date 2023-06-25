@@ -32,8 +32,6 @@ const Login = () => {
         email,
         password
       );
-      console.log(loggedInUser);
-      console.log(loggedInUser.user.uid);
     } catch (error) {
       console.log(error.message);
     }

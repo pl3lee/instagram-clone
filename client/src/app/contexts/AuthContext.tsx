@@ -15,18 +15,17 @@ const AuthProvider = ({ children }: any) => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         axios
-          .get(`http://localhost:3001/users/fb`, {
-            params: { firebaseId: currentUser.uid },
+          .get(`http://localhost:3001/users/fb/${currentUser.uid}`)
+          .then((response) => {
+            console.log("AuthContext changed", response.data[0]);
+            setUser(response.data[0]);
           })
-          .then((response) => console.log(response.data))
           .catch((err) => console.log(err));
-        console.log(currentUser.uid);
-        setUser(currentUser);
       } else {
         setUser(null);
       }
     });
-  }, [user]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>

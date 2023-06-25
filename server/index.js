@@ -14,7 +14,11 @@ const app = express();
 // whenever we get data from frontend, it will convert it to json
 // these are called middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+  })
+);
 
 app.use("/users", userRouter);
 app.use("/posts", postsRouter);

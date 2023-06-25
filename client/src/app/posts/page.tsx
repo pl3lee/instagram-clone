@@ -10,15 +10,16 @@ export default function Posts() {
   const { user } = useContext(AuthContext);
   const router = useRouter();
   useEffect(() => {
+    console.log("from posts", user);
     if (!user) {
-      router.push("/auth/login");
+      router.push("/");
     }
   }, []);
-
+  if (!user) return null;
   return (
     <div>
       <PostsHeader />
-      <FollowingPostsContainer uid={user?.uid} />
+      <FollowingPostsContainer uid={user._id} />
       <Navbar />
     </div>
   );

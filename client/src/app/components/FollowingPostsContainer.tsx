@@ -1,9 +1,7 @@
 import axios from "axios";
-const getFollowingPosts = (uid: any) => {
+const getFollowingPosts = async (uid: any) => {
   return axios
-    .get(`http://localhost:3001/posts/following/6497ca91bf398e94142a2f11`, {
-      params: { uid: uid },
-    })
+    .get(`http://localhost:3001/posts/following/${uid}`)
     .then((response) => response.data);
 };
 
