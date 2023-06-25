@@ -31,7 +31,7 @@ const SignUp = () => {
         email,
         password
       );
-      axios.post("http://localhost:3001/auth/register", {
+      axios.post("http://localhost:3001/users/register", {
         firebaseId: loggedInUser.user.uid,
       });
       console.log(loggedInUser);

@@ -4,6 +4,7 @@ import { UserModel } from "../models/Users.js";
 
 const router = express.Router();
 
+// registers a new user
 router.post("/register", async (req, res) => {
   const { firebaseId } = req.body;
 
@@ -21,6 +22,10 @@ router.post("/register", async (req, res) => {
 
   res.json({ message: "User registration successful" });
 });
+
+// follows another user
+// router.post("/follow", async (req, res) => {
+//   )
 
 // remember to export the router
 export { router as userRouter };

@@ -16,8 +16,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// now whatever endpoints we create in userRouter will automatically start with /auth
-app.use("/auth", userRouter);
+app.use("/users", userRouter);
 app.use("/posts", postsRouter);
 
 // put this after middlewares are applied and before listen

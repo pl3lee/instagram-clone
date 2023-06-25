@@ -6,15 +6,12 @@ const router = express.Router();
 
 // gets all posts, regardless of who posted it
 router.get("/", async (req, res) => {
-  try {
-    // the object inside .find are find conditions. Since we want to find all recipes, we pass in an empty object
-    const response = await PostModel.find({});
-    res.json(response);
-  } catch (err) {
-    res.json(err);
-  }
+  PostModel.find()
+    .then((posts) => res.json(posts))
+    .catch((error) => res.json(error));
 });
 
+// creates a post for a user
 router.post("/create", async (req, res) => {
   const { firebaseId, img, caption } = req.body;
   UserModel.findOne({ firebaseId: firebaseId })
@@ -30,5 +27,8 @@ router.post("/create", async (req, res) => {
     .catch((err) => console.log(err));
 });
 
+router.get("/user", async (req, res) => {
+  return res.json({ message: "user" });
+});
 // remember to export the router
 export { router as postsRouter };
