@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../../../firebase/firebase-config";
 import {
   createUserWithEmailAndPassword,
@@ -9,21 +9,20 @@ import {
   signOut,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
-import { setAuth } from "../../contexts/AuthContext";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
   const router = useRouter();
-  // const userAuth = getAuth();
+  const { user, setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, loading } = useAuth();
-  if (!loading && user) {
-    router.push("/");
-  }
-  // if (userAuth) {
-  //   router.push("/");
-  // }
+
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,9 +32,8 @@ const Login = () => {
         email,
         password
       );
-      // console.log(loggedInUser);
-      setAuth(loggedInUser);
-      router.push("/");
+      console.log(loggedInUser);
+      setUser(loggedInUser);
     } catch (error) {
       console.log(error.message);
     }

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../../../firebase/firebase-config";
 import {
   createUserWithEmailAndPassword,
@@ -9,16 +9,19 @@ import {
   signOut,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const SignUp = () => {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  if (!loading && user) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -28,7 +31,7 @@ const SignUp = () => {
         password
       );
       console.log(loggedInUser);
-      router.push("/");
+      setUser(loggedInUser);
     } catch (error) {
       console.log(error.message);
     }
