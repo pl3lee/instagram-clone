@@ -23,7 +23,7 @@ app.use(cors());
 // put this after middlewares are applied and before listen
 // process.env is a available globally
 mongoose.connect(
-  "mongodb+srv://billy:oDPNQInPBEE9oNDb@recipes.ybjez7b.mongodb.net/recipes?retryWrites=true&w=majority"
+  "mongodb+srv://billy:oDPNQInPBEE9oNDb@instagram.gza37jc.mongodb.net/?retryWrites=true&w=majority"
 );
 
 // for heroku
