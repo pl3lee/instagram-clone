@@ -13,7 +13,7 @@ const AuthProvider = ({ children }: any) => {
 
   const refetchUser = () => {
     axios
-      .get(`http://localhost:3001/users/${user.uid}`)
+      .get(`http://localhost:3001/users/${user._id}`)
       .then((response) => {
         setUser(response.data);
       })

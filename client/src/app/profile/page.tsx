@@ -42,7 +42,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="p-6">{user.bio}</div>
-      <div className="w-full flex gap-3 justify-around border-y border-solid border-slate-200 py-4">
+      <div className="w-full flex gap-3 justify-around border-y border-solid border-slate-300 py-4">
         <BasicInfo num={user.posts.length} text="posts" />
         <BasicInfo num={data.length} text="followers" />
         <BasicInfo num={user.follows.length} text="following" />
@@ -55,7 +55,7 @@ const BasicInfo = ({ num, text }: any) => {
   return (
     <div className="flex flex-col align-middle justify-center">
       <div className="text-center">{num}</div>
-      <div className="text-slate-700 font-extralight">{text}</div>
+      <div className="text-slate-400">{text}</div>
     </div>
   );
 };

@@ -2,14 +2,29 @@
 import Link from "next/link";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Edit = () => {
+  const router = useRouter();
   const { user, setUser, refetchUser } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
-  const handleSubmit = () => {
-    return;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .patch(`http://localhost:3001/users/update/${user._id}`, {
+        username,
+        bio,
+        profilePicture,
+      })
+      .then((response) => {
+        console.log(response.data);
+        refetchUser();
+        router.push("/profile");
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className="flex flex-col p-3 gap-3">
@@ -43,9 +58,11 @@ const Edit = () => {
           Profile Picture (Paste image link)
         </label>
         <input
+          value={profilePicture}
           className="auth-input"
           onChange={(event) => {
             setProfilePicture(event.target.value);
+            console.log(profilePicture);
           }}
         />
         <button
@@ -56,7 +73,7 @@ const Edit = () => {
         </button>
       </form>
       <button className="bg-blue-400 rounded-lg py-1 text-white">
-        <Link href="/profile">Cancel</Link>
+        <Link href="/profile">Go Back</Link>
       </button>
     </div>
   );

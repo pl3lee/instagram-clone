@@ -118,14 +118,23 @@ router.get("/fb/:firebaseId", async (req, res) => {
 
 router.patch("/update/:uid", async (req, res) => {
   const { uid } = req.params;
-  const { username, bio, profilePic } = req.body;
-  UserModel.find({ _id: uid })
-    .then((user) => {
-      user.username = username;
-      user.bio = bio;
-      user.profilePic = profilePic;
-      user.save();
-      res.json({ message: "User updated" });
+  let { username, bio, profilePicture } = req.body;
+
+  // Create an object with the fields to update
+  let updateFields = { username, bio, profilePicture };
+
+  // Remove any fields that are empty strings
+  Object.keys(updateFields).forEach((key) => {
+    if (updateFields[key] === "") {
+      delete updateFields[key];
+    }
+  });
+  console.log(updateFields);
+
+  UserModel.updateOne({ _id: uid }, { $set: updateFields })
+    .then((response) => {
+      console.log(response);
+      res.json(response);
     })
     .catch((err) => {
       console.log(err);
