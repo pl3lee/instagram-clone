@@ -11,14 +11,23 @@ export const AuthContext = createContext<{ user: any; setUser: any } | null>(
 const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState(null);
 
+  const refetchUser = () => {
+    axios
+      .get(`http://localhost:3001/users/${user.uid}`)
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         axios
           .get(`http://localhost:3001/users/fb/${currentUser.uid}`)
           .then((response) => {
-            console.log("AuthContext changed", response.data[0]);
-            setUser(response.data[0]);
+            console.log("AuthContext changed", response.data);
+            setUser(response.data);
           })
           .catch((err) => console.log(err));
       } else {
@@ -28,7 +37,7 @@ const AuthProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, refetchUser }}>
       {children}
     </AuthContext.Provider>
   );

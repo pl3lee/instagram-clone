@@ -108,11 +108,28 @@ router.get("/:uid", async (req, res) => {
 // get the user's information by firebase id
 router.get("/fb/:firebaseId", async (req, res) => {
   const { firebaseId } = req.params;
-  UserModel.find({ firebaseId: firebaseId })
+  UserModel.findOne({ firebaseId: firebaseId })
     .then((user) => res.json(user))
     .catch((err) => {
       console.log(err);
       res.status(500).json({ message: "User retrieval failed" });
+    });
+});
+
+router.patch("/update/:uid", async (req, res) => {
+  const { uid } = req.params;
+  const { username, bio, profilePic } = req.body;
+  UserModel.find({ _id: uid })
+    .then((user) => {
+      user.username = username;
+      user.bio = bio;
+      user.profilePic = profilePic;
+      user.save();
+      res.json({ message: "User updated" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "User update failed" });
     });
 });
 

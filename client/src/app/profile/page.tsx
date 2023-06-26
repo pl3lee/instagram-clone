@@ -7,6 +7,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import ProfileHeader from "../components/ProfileHeader";
 import useSWR from "swr";
 import axios from "axios";
+import Link from "next/link";
 
 const fetcher = (url: string) =>
   axios.get(url).then((res) => {
@@ -36,7 +37,7 @@ const Profile = () => {
         <div className="flex flex-col align-middle justify-center w-full gap-3 p-1">
           <div className="text-3xl">{user.username}</div>
           <button className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black">
-            Edit Profile
+            <Link href="/profile/edit">Edit Profile</Link>
           </button>
         </div>
       </div>
