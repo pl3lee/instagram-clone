@@ -5,12 +5,25 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import ProfileHeader from "../components/ProfileHeader";
+import useSWR from "swr";
+import axios from "axios";
+
+const fetcher = (url: string) =>
+  axios.get(url).then((res) => {
+    console.log(res.data);
+    return res.data;
+  });
 
 const Profile = () => {
   const router = useRouter();
   const { user, setUser } = useContext(AuthContext);
-  if (!user) return null;
-
+  if (!user) router.push("/");
+  const { data, error, isLoading } = useSWR(
+    `http://localhost:3001/users/followers/${user?._id}/id`,
+    fetcher
+  );
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error...</div>;
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-center p-6 gap-8">
@@ -34,7 +47,7 @@ const Profile = () => {
           <div className="text-slate-700 font-extralight">posts</div>
         </div> */}
         <BasicInfo num={user.posts.length} text="posts" />
-        {/* <BasicInfo num={user.followers.length} text="followers" /> */}
+        <BasicInfo num={data.length} text="followers" />
         <BasicInfo num={user.follows.length} text="following" />
       </div>
     </div>
