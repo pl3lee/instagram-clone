@@ -20,7 +20,6 @@ const Edit = () => {
         profilePicture,
       })
       .then((response) => {
-        console.log(response.data);
         refetchUser();
         router.push("/profile");
       })
@@ -58,11 +57,9 @@ const Edit = () => {
           Profile Picture (Paste image link)
         </label>
         <input
-          value={profilePicture}
           className="auth-input"
           onChange={(event) => {
             setProfilePicture(event.target.value);
-            console.log(profilePicture);
           }}
         />
         <button

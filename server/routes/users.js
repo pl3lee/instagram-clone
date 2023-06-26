@@ -133,7 +133,6 @@ router.patch("/update/:uid", async (req, res) => {
 
   UserModel.updateOne({ _id: uid }, { $set: updateFields })
     .then((response) => {
-      console.log(response);
       res.json(response);
     })
     .catch((err) => {
