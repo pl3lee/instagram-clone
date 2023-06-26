@@ -71,17 +71,27 @@ router.patch("/unfollow", async (req, res) => {
 // gets the ids of the accounts that the user follows
 router.get("/following/:uid/id", async (req, res) => {
   const { uid } = req.params;
-  UserModel.findById(uid).then((user) => {
-    res.json(user.follows);
-  });
+  UserModel.findById(uid)
+    .then((user) => {
+      res.json(user.follows);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Following retrieval failed" });
+    });
 });
 
 // gets the ids of all the accounts that follow the user
 router.get("/followers/:uid/id", async (req, res) => {
   const { uid } = req.params;
-  UserModel.find({ follows: uid }).then((users) => {
-    res.json(users.map((user) => user._id));
-  });
+  UserModel.find({ follows: uid })
+    .then((users) => {
+      res.json(users.map((user) => user._id));
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Followers retrieval failed" });
+    });
 });
 
 // get the user's information by mongodb id
