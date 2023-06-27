@@ -18,7 +18,6 @@ export default function Posts() {
   if (!user) return null;
   return (
     <div className="mb-[10vh]">
-      <PostsHeader />
       <FollowingPostsContainer uid={user._id} />
     </div>
   );
