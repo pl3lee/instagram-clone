@@ -34,9 +34,13 @@ const ViewComments = ({ post }: any) => {
           </Card.Header>
           <Card.Body>
             <div className="text-black max-h-[50vh] overflow-y-scroll">
-              {comments.map((comment: any) => {
-                return <Comment key={comment._id} comment={comment} />;
-              })}
+              {comments.length > 0 ? (
+                comments.map((comment: any) => {
+                  return <Comment key={comment._id} comment={comment} />;
+                })
+              ) : (
+                <div className="text-black">No comments yet</div>
+              )}
             </div>
           </Card.Body>
           <Card.Footer>
