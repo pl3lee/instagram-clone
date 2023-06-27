@@ -129,7 +129,6 @@ router.patch("/update/:uid", async (req, res) => {
       delete updateFields[key];
     }
   });
-  console.log(updateFields);
 
   UserModel.updateOne({ _id: uid }, { $set: updateFields })
     .then((response) => {

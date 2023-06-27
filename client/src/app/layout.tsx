@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import Navbar from "./components/Navbar";
 import AuthProvider, { AuthContext } from "./contexts/AuthContext";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Loading from "./loading";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -16,12 +18,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      {/* <Suspense fallback={<Loading />}> */}
       <AuthProvider>
         <body className={inter.className}>
           {children}
           <Navbar />
         </body>
       </AuthProvider>
+      {/* </Suspense> */}
     </html>
   );
 }

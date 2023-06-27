@@ -4,10 +4,13 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
+import Error from "@/app/error";
 
 const Edit = () => {
   const router = useRouter();
-  const { user, setUser, refetchUser } = useContext(AuthContext);
+  const { user, setUser, refetchUser, loading, error } =
+    useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
@@ -25,6 +28,8 @@ const Edit = () => {
       })
       .catch((err) => console.log(err));
   };
+  if (loading) return <Loading />;
+  if (error) return <Error />;
   return (
     <div className="flex flex-col p-3 gap-3">
       <div className="flex">

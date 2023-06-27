@@ -10,18 +10,28 @@ export const AuthContext = createContext<{ user: any; setUser: any } | null>(
 
 const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const refetchUser = () => {
+    setLoading(true);
+    setError(null);
     axios
       .get(`http://localhost:3001/users/${user._id}`)
       .then((response) => {
         setUser(response.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setError(err);
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
+      setLoading(true);
+      setError(null);
       if (currentUser) {
         axios
           .get(`http://localhost:3001/users/fb/${currentUser.uid}`)
@@ -29,7 +39,11 @@ const AuthProvider = ({ children }: any) => {
             console.log("AuthContext changed", response.data);
             setUser(response.data);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            setError(err);
+          })
+          .finally(() => setLoading(false));
       } else {
         setUser(null);
       }
@@ -37,7 +51,9 @@ const AuthProvider = ({ children }: any) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, refetchUser }}>
+    <AuthContext.Provider
+      value={{ user, setUser, refetchUser, loading, error }}
+    >
       {children}
     </AuthContext.Provider>
   );
