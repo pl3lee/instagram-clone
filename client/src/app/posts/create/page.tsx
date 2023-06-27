@@ -13,7 +13,7 @@ const Create = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3001/posts/create`, {
+      .post(`http://localhost:3001/posts/create/${user._id}`, {
         img: image,
         caption,
       })
@@ -26,7 +26,7 @@ const Create = () => {
   if (error) return <Error />;
   return (
     <div className="flex flex-col p-2">
-      <form className="flex flex-col gap-5">
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-2">
           <label className="text-xl font-bold">Image (Paste Link Here)</label>
           <input
@@ -45,9 +45,7 @@ const Create = () => {
             }}
           />
         </div>
-        <button type="submit" onSubmit={handleSubmit}>
-          Post
-        </button>
+        <button type="submit">Post</button>
       </form>
     </div>
   );

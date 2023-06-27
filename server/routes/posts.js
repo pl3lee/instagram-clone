@@ -2,6 +2,7 @@ import express from "express";
 import { PostModel } from "../models/Posts.js";
 import { UserModel } from "../models/Users.js";
 import { CommentModel } from "../models/Posts.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -16,6 +17,10 @@ router.get("/", async (req, res) => {
 router.post("/create/:uid", async (req, res) => {
   const { uid } = req.params;
   const { img, caption } = req.body;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
+
   UserModel.findById(uid)
     .then((user) => {
       const newPost = new PostModel({
@@ -24,8 +29,12 @@ router.post("/create/:uid", async (req, res) => {
         uid: uid,
       });
       newPost.save();
-      user.posts.push(newPost._id);
-      user.save();
+      UserModel.updateOne(
+        { _id: uid },
+        { $push: { posts: newPost._id } }
+      ).catch((err) => {
+        console.log(err);
+      });
       res.json({ message: "New Post created", newPost });
     })
     .catch((err) => {
@@ -36,6 +45,9 @@ router.post("/create/:uid", async (req, res) => {
 // gets all posts from following users, including the user himself
 router.get("/following/:uid", async (req, res) => {
   const { uid } = req.params;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
   UserModel.findById(uid)
     .then((user) => {
       const followingUsers = [...user.follows, user._id];
@@ -49,6 +61,18 @@ router.get("/following/:uid", async (req, res) => {
 // likes a post
 router.patch("/like/:uid/:postId", async (req, res) => {
   const { uid, postId } = req.params;
+  if (uid === undefined || postId === undefined) {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+  if (uid === "" || postId === "") {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(postId) === false) {
+    res.status(400).json({ message: "Invalid post id" });
+  }
 
   await UserModel.findById(uid).catch((err) =>
     res.status(404).json({ message: "User not found" })
@@ -76,6 +100,18 @@ router.patch("/like/:uid/:postId", async (req, res) => {
 // unlikes a post
 router.patch("/unlike/:uid/:postId", async (req, res) => {
   const { uid, postId } = req.params;
+  if (uid === undefined || postId === undefined) {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+  if (uid === "" || postId === "") {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(postId) === false) {
+    res.status(400).json({ message: "Invalid post id" });
+  }
 
   await UserModel.findById(uid).catch((err) =>
     res.status(404).json({ message: "User not found" })
@@ -103,6 +139,15 @@ router.patch("/unlike/:uid/:postId", async (req, res) => {
 // gets all the users that likes a post
 router.get("/likes/:postId", async (req, res) => {
   const { postId } = req.params;
+  if (postId === undefined) {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+  if (postId === "") {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(postId) === false) {
+    res.status(400).json({ message: "Invalid post id" });
+  }
   const users = [];
   PostModel.findById(postId)
     .then((post) => {
@@ -130,6 +175,16 @@ router.get("/likes/:postId", async (req, res) => {
 router.patch("/comment/:uid/:postId", async (req, res) => {
   const { uid, postId } = req.params;
   const { comment } = req.body;
+  if (uid === undefined || postId === undefined) {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(postId) === false) {
+    res.status(400).json({ message: "Invalid post id" });
+  }
 
   await UserModel.findById(uid).catch((err) =>
     res.status(404).json({ message: "User not found" })
@@ -153,6 +208,12 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
 // gets all the comments of a post
 router.get("/comments/:postId", async (req, res) => {
   const { postId } = req.params;
+  if (postId === undefined) {
+    res.status(400).json({ message: "Missing user id or post id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(postId) === false) {
+    res.status(400).json({ message: "Invalid post id" });
+  }
   PostModel.findById(postId)
     .then((post) => {
       res.json(post.comments);

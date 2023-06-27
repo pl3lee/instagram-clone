@@ -1,6 +1,7 @@
 // users route encompass everything relating to logging in and registering
 import express from "express";
 import { UserModel } from "../models/Users.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -27,6 +28,12 @@ router.post("/register", async (req, res) => {
 // follows another user
 router.patch("/follow", async (req, res) => {
   const { uid, followId } = req.body;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(followId) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
   if (uid == followId) {
     res.status(500).json({ message: "User cannot follow themselves" });
   }
@@ -49,6 +56,12 @@ router.patch("/follow", async (req, res) => {
 // unfollows another user
 router.patch("/unfollow", async (req, res) => {
   const { uid, followId } = req.body;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(followId) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
   if (uid == followId) {
     res.status(500).json({ message: "User cannot follow themselves" });
   }
@@ -71,6 +84,9 @@ router.patch("/unfollow", async (req, res) => {
 // gets the ids of the accounts that the user follows
 router.get("/following/:uid/id", async (req, res) => {
   const { uid } = req.params;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
   UserModel.findById(uid)
     .then((user) => {
       res.json(user.follows);
@@ -84,6 +100,9 @@ router.get("/following/:uid/id", async (req, res) => {
 // gets the ids of all the accounts that follow the user
 router.get("/followers/:uid/id", async (req, res) => {
   const { uid } = req.params;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
   UserModel.find({ follows: uid })
     .then((users) => {
       res.json(users.map((user) => user._id));
@@ -97,6 +116,9 @@ router.get("/followers/:uid/id", async (req, res) => {
 // get the user's information by mongodb id
 router.get("/:uid", async (req, res) => {
   const { uid } = req.params;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
   UserModel.findById(uid)
     .then((user) => res.json(user))
     .catch((err) => {
@@ -118,6 +140,9 @@ router.get("/fb/:firebaseId", async (req, res) => {
 
 router.patch("/update/:uid", async (req, res) => {
   const { uid } = req.params;
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
   let { username, bio, profilePicture } = req.body;
 
   // Create an object with the fields to update
