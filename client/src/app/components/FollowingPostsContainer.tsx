@@ -38,6 +38,7 @@ const Post = async ({ post }: any) => {
       />
       <PostImage img={post.img} />
       <PostIconBar />
+      <PostInformation post={post} user={user} />
     </div>
   );
 };
@@ -106,7 +107,14 @@ const PostIconBar = () => {
   );
 };
 
-const PostInformation = ({ post }: any) => {
-  <div className="flex flex-col"></div>;
+const PostInformation = ({ post, user }: any) => {
+  return (
+    <div className="flex flex-col px-2 py-2">
+      <div>Likes: {post.likes.length}</div>
+      <div>
+        {user.username} {post.caption}
+      </div>
+    </div>
+  );
 };
 export default FollowingPostsContainer;

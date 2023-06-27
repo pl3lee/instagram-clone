@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
   bio: { type: String, default: "" },
   follows: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
   notifications: [{ type: String }],
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "posts" }],
   rooms: [{ type: mongoose.Schema.Types.ObjectId, ref: "rooms" }],
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "posts" }],
 });
