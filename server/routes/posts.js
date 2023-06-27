@@ -1,6 +1,7 @@
 import express from "express";
 import { PostModel } from "../models/Posts.js";
 import { UserModel } from "../models/Users.js";
+import { CommentModel } from "../models/Posts.js";
 
 const router = express.Router();
 
@@ -119,6 +120,30 @@ router.get("/likes/:postId", async (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json({ message: "Failed to find post" });
+    });
+});
+
+// adds a comment to a post
+router.patch("/comment/:uid/:postId", async (req, res) => {
+  const { uid, postId } = req.params;
+  const { comment } = req.body;
+
+  await UserModel.findById(uid).catch((err) =>
+    res.status(404).json({ message: "User not found" })
+  );
+  await PostModel.findById(postId).catch((err) =>
+    res.status(404).json({ message: "Post not found" })
+  );
+
+  const newComment = new CommentModel({
+    uid: uid,
+    comment: comment,
+  });
+  PostModel.updateOne({ _id: postId }, { $addToSet: { comments: newComment } })
+    .then(() => res.json({ message: "Comment added" }))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Failed to add comment" });
     });
 });
 
