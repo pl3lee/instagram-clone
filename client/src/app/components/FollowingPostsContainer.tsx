@@ -46,13 +46,13 @@ const Post = async ({ post }: any) => {
 const PostHeader = ({ profilePicture, username }: any) => {
   return (
     <div className="flex gap-1 px-2 py-3">
-      <div className="flex-shrink-0 flex-grow-[1]">
+      <div className="flex-shrink-0 mr-3">
         <img
           src={profilePicture}
           className="w-[40px] h-[40px] rounded-full object-cover"
         />
       </div>
-      <div className="flex-[9] text-lg font-bold flex items-center">
+      <div className="flex-grow-[9] text-lg font-bold flex items-center">
         {username}
       </div>
     </div>
