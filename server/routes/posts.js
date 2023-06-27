@@ -13,21 +13,24 @@ router.get("/", async (req, res) => {
 });
 
 // creates a post for a user
-router.post("/create", async (req, res) => {
-  const { firebaseId, img, caption } = req.body;
-  UserModel.findOne({ firebaseId: firebaseId })
+router.post("/create/:uid", async (req, res) => {
+  const { uid } = req.params;
+  const { img, caption } = req.body;
+  UserModel.findById(uid)
     .then((user) => {
       const newPost = new PostModel({
         img: img,
         caption: caption,
-        uid: user._id,
+        uid: uid,
       });
       newPost.save();
       user.posts.push(newPost._id);
       user.save();
-      res.json(newPost);
+      res.json({ message: "New Post created", newPost });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      res.json({ message: "User not found" });
+    });
 });
 
 // gets all posts from following users, including the user himself
