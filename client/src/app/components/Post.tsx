@@ -117,7 +117,7 @@ const PostInformation = ({ post, user }: any) => {
       <div>
         <span className="font-bold">{user.username}</span> {post.caption}
       </div>
-      {post.comments.length > 0 && <ViewComments post={post} />}
+      <ViewComments post={post} />
       <div className="font-light opacity-50 text-sm">
         Posted on {days[postDate.getDay()]}, {postDate.getFullYear()}/
         {postDate.getMonth()}/{postDate.getDate()}

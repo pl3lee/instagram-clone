@@ -147,5 +147,18 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
     });
 });
 
+// gets all the comments of a post
+router.get("/comments/:postId", async (req, res) => {
+  const { postId } = req.params;
+  PostModel.findById(postId)
+    .then((post) => {
+      res.json(post.comments);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Failed to get comments" });
+    });
+});
+
 // remember to export the router
 export { router as postsRouter };
