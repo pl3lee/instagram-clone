@@ -1,6 +1,5 @@
 "use client";
 import HomeHeader from "./components/PostsHeader";
-import Navbar from "./components/Navbar";
 import useAuth from "@/hooks/useAuth";
 import { redirect } from "next/navigation";
 import { useContext } from "react";

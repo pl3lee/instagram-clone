@@ -20,7 +20,6 @@ export default function Posts() {
     <div>
       <PostsHeader />
       <FollowingPostsContainer uid={user._id} />
-      <Navbar />
     </div>
   );
 }

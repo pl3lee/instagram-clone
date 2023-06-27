@@ -9,7 +9,7 @@ const Navbar = () => {
   if (!user) return null;
   return (
     <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full bg-white border-slate-500 border-solid border-t-[0.5px] dark:bg-black">
-      <li className="nav-icon-container">
+      <li className="icon-container">
         <Link href="/posts">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@ const Navbar = () => {
           </svg>
         </Link>
       </li>
-      <li className="nav-icon-container">
+      <li className="icon-container">
         <Link href="/search">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +36,7 @@ const Navbar = () => {
           </svg>
         </Link>
       </li>
-      <li className="nav-icon-container">
+      <li className="icon-container">
         <Link href="/chat">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +51,7 @@ const Navbar = () => {
           </svg>
         </Link>
       </li>
-      <li className="nav-icon-container">
+      <li className="icon-container">
         <Link href="/profile">
           <svg
             xmlns="http://www.w3.org/2000/svg"

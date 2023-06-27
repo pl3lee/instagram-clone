@@ -23,7 +23,7 @@
   .auth-input {
     @apply border border-gray-300 p-2 rounded focus:border-gray-600 focus:outline-none caret-blue-500 bg-slate-50 text-black
   }
-  .nav-icon-container {
+  .icon-container{
     @apply flex justify-center items-center p-2
   }
 

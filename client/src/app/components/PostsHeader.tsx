@@ -11,7 +11,7 @@ const PostsHeader = () => {
       <li className="flex-grow-[7]">
         <div className="text-3xl p-2 font-bold">Instagram</div>
       </li>
-      <li className="nav-icon-container">
+      <li className="icon-container">
         <Link href="/create">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@ const PostsHeader = () => {
           </svg>
         </Link>
       </li>
-      <li className="nav-icon-container">
+      <li className="icon-container">
         <Link href="/profile">
           <svg
             xmlns="http://www.w3.org/2000/svg"
