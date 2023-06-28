@@ -6,6 +6,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { userRouter } from "./routes/users.js";
 import { postsRouter } from "./routes/posts.js";
+import { auth } from "./firebase/firebase-config.js";
 
 dotenv.config();
 // generate version of our API
@@ -19,6 +20,11 @@ app.use(
     origin: ["http://localhost:3000", "http://localhost:3001"],
   })
 );
+// app.use((req, res, next) => {
+//   let user = auth.currentUser;
+//   res.locals.currentUser = user;
+//   next();
+// });
 
 app.use("/users", userRouter);
 app.use("/posts", postsRouter);

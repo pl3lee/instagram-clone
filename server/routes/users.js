@@ -2,29 +2,66 @@
 import express from "express";
 import { UserModel } from "../models/Users.js";
 import mongoose from "mongoose";
+import { auth } from "../firebase/firebase-config.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import axios from "axios";
 
 const router = express.Router();
 
 // registers a new user
-router.post("/register/:firebaseId", async (req, res) => {
-  const { firebaseId } = req.params;
-
-  const newUser = new UserModel({
-    firebaseId: firebaseId,
-    username: firebaseId,
-  });
-  // add to mongoDB
-  newUser
-    .save()
-    .then((user) => res.json(user))
+router.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((createdUser) => {
+      const newUser = new UserModel({
+        firebaseId: createdUser.user.uid,
+        username: createdUser.user.uid,
+      });
+      // add to mongoDB
+      newUser
+        .save()
+        .then((user) => {
+          res.redirect("/");
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ message: "User registration failed" });
+        });
+    })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ message: "User registration failed" });
+      res
+        .status(500)
+        .json({ messsage: "Error with registering with firebase auth" });
     });
-
-  // res.json({ message: "User registration successful" });
 });
 
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  signInWithEmailAndPassword(auth, email, password)
+    .then((user) => {
+      res.redirect("/");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "User login failed" });
+    });
+});
+
+router.post("/logout", async (req, res) => {
+  signOut()
+    .then(() => {
+      res.redirect("/auth/login");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "User logout failed" });
+    });
+});
 // follows another user
 router.patch("/follow", async (req, res) => {
   const { uid, followId } = req.body;
