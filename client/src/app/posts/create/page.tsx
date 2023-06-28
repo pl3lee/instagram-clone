@@ -1,15 +1,21 @@
 "use client";
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Loading from "@/app/loading";
-import Error from "@/app/error";
 const Create = () => {
-  const { user, setUser, error, loading } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  useEffect(() => {
+    const getUser = JSON.parse(window.localStorage.getItem("user"));
+    console.log(getUser);
+    if (!getUser) {
+      router.push("/auth/login");
+    } else {
+      setUser(getUser);
+    }
+  }, []);
   const [image, setImage] = useState("");
   const [caption, setCaption] = useState("");
-  const router = useRouter();
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -22,8 +28,6 @@ const Create = () => {
       })
       .catch((err) => console.log(err));
   };
-  if (loading) return <Loading />;
-  if (error) return <Error />;
   return (
     <div className="flex flex-col p-2">
       <form className="flex flex-col gap-5" onSubmit={handleSubmit}>

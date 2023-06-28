@@ -1,13 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { auth } from "../../../firebase/firebase-config";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -18,17 +11,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // useEffect(() => {
-  //   if (user) {
-  //     router.push("/");
-  //   }
-  // }, [user]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password)
-      .then(router.push("/"))
-      .catch((err) => console.log(err));
+    await login(email, password).catch((err) => console.log(err));
   };
 
   return (

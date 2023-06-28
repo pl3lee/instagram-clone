@@ -1,22 +1,22 @@
 "use client";
-import Link from "next/link";
-import { auth } from "../../firebase/firebase-config";
-import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 const ProfileHeader = () => {
-  const { user, setUser, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const router = useRouter();
-  const [userInfo, setUserInfo] = useState(null);
-  // const logout = async () => {
-  //   await signOut(auth);
-  //   setUser(null);
-  //   router.push("/");
-  // };
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getUser = JSON.parse(window.localStorage.getItem("user"));
+    console.log(getUser);
+    if (!getUser) {
+      router.push("/auth/login");
+    } else {
+      setUser(getUser);
+    }
+  }, []);
   if (!user) return null;
 
   return (

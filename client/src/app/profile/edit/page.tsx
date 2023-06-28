@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Loading from "@/app/loading";
@@ -9,8 +9,17 @@ import Error from "@/app/error";
 
 const Edit = () => {
   const router = useRouter();
-  const { user, setUser, refetchUser, loading, error } =
-    useContext(AuthContext);
+  const { refetchUser, loading, error } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getUser = JSON.parse(window.localStorage.getItem("user"));
+    console.log(getUser);
+    if (!getUser) {
+      router.push("/auth/login");
+    } else {
+      setUser(getUser);
+    }
+  }, []);
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [profilePicture, setProfilePicture] = useState("");

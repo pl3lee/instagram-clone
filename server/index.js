@@ -6,6 +6,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { userRouter } from "./routes/users.js";
 import { postsRouter } from "./routes/posts.js";
+import { auth } from "./firebase/firebase-config.js";
+import { onAuthStateChanged } from "firebase/auth";
 
 dotenv.config();
 // generate version of our API

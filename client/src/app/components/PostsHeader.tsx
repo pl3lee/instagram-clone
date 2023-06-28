@@ -1,11 +1,17 @@
 "use client";
 import Link from "next/link";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 const PostsHeader = () => {
-  const { user } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getUser = JSON.parse(window.localStorage.getItem("user"));
+    console.log(getUser);
+    if (getUser) {
+      setUser(getUser);
+    }
+  }, []);
   const pathname = usePathname();
   if (!user) return null;
   if (pathname === "/posts") {

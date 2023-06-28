@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     default: [],
   },
+  followers: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+    default: [],
+  },
   notifications: { type: [{ type: String }], default: [] },
   likes: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "posts" }],

@@ -2,14 +2,22 @@
 import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import Loading from "../loading";
 
 const ViewComments = ({ post }: any) => {
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState(post.comments);
-  const { user, setUser, loading, error } = useContext(AuthContext);
   const [comment, setComment] = useState("");
+
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getUser = JSON.parse(window.localStorage.getItem("user"));
+    console.log(getUser);
+    if (!getUser) {
+      router.push("/auth/login");
+    } else {
+      setUser(getUser);
+    }
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -24,7 +32,7 @@ const ViewComments = ({ post }: any) => {
           .then((response) => setComments(response.data));
       });
   };
-  if (loading) return <Loading />;
+
   return (
     <div>
       <Drawer position="bottom" open={open} onClose={() => setOpen(false)}>
