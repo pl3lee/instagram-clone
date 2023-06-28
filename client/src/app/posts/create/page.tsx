@@ -1,10 +1,7 @@
 "use client";
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Loading from "@/app/loading";
-import Error from "@/app/error";
 const Create = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();

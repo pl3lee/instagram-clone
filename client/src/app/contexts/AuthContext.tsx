@@ -1,13 +1,6 @@
 "use client";
 import { createContext, useState, useEffect } from "react";
-// import { auth } from "../../firebase/firebase-config";
-// import { onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
-// import {
-//   signOut,
-//   signInWithEmailAndPassword,
-//   createUserWithEmailAndPassword,
-// } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 export const AuthContext = createContext<{ user: any; setUser: any } | null>(

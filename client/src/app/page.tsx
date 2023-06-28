@@ -1,11 +1,6 @@
 "use client";
-import HomeHeader from "./components/PostsHeader";
-import useAuth from "@/hooks/useAuth";
-import { redirect, useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "./contexts/AuthContext";
-import Loading from "./loading";
-import Error from "./error";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();

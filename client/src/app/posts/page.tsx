@@ -1,9 +1,6 @@
 "use client";
-import PostsHeader from "../components/PostsHeader";
-import Navbar from "../components/Navbar";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useEffect, useState } from "react";
 import FollowingPostsContainer from "../components/FollowingPostsContainer";
 
 export default function Posts() {

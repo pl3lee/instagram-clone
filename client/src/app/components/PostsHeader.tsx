@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 const PostsHeader = () => {

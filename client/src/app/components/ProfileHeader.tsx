@@ -1,9 +1,5 @@
 "use client";
-import Link from "next/link";
-import { auth } from "../../firebase/firebase-config";
-import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
@@ -21,7 +17,6 @@ const ProfileHeader = () => {
       setUser(getUser);
     }
   }, []);
-  const [userInfo, setUserInfo] = useState(null);
   if (!user) return null;
 
   return (

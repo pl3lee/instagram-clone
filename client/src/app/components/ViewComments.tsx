@@ -2,13 +2,10 @@
 import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import Loading from "../loading";
 
 const ViewComments = ({ post }: any) => {
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState(post.comments);
-  // const { user, setUser, loading, error } = useContext(AuthContext);
   const [comment, setComment] = useState("");
 
   const [user, setUser] = useState(null);

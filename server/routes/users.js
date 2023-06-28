@@ -70,27 +70,29 @@ router.post("/logout", async (req, res) => {
 // follows another user
 router.patch("/follow", async (req, res) => {
   const { uid, followId } = req.body;
+
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   if (mongoose.Types.ObjectId.isValid(followId) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   if (uid == followId) {
     res.status(500).json({ message: "User cannot follow themselves" });
+    return;
   }
-  UserModel.findById(uid)
-    .then((user) => {
-      if (user.follows.includes(followId)) {
-        res.status(500).json({ message: "User already followed" });
-      } else {
-        user.follows.push(followId);
-        user.save();
-        res.json({ message: "User followed" });
-      }
+  UserModel.updateOne({ _id: uid }, { $addToSet: { follows: followId } }).catch(
+    (err) => {
+      res.status(500).json({ message: "User follow failed" });
+    }
+  );
+  UserModel.updateOne({ _id: followId }, { $addToSet: { followers: uid } })
+    .then(() => {
+      res.json({ message: "User followed" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({ message: "User follow failed" });
     });
 });
@@ -107,18 +109,16 @@ router.patch("/unfollow", async (req, res) => {
   if (uid == followId) {
     res.status(500).json({ message: "User cannot follow themselves" });
   }
-  UserModel.findById(uid)
-    .then((user) => {
-      if (user.follows.includes(followId)) {
-        user.follows.pull(followId);
-        user.save();
-        res.json({ message: "User unfollowed" });
-      } else {
-        res.status(500).json({ message: "User already not followed" });
-      }
+  UserModel.updateOne({ _id: uid }, { $pull: { follows: followId } }).catch(
+    (err) => {
+      res.status(500).json({ message: "User unfollow failed" });
+    }
+  );
+  UserModel.updateOne({ _id: followId }, { $pull: { followers: uid } })
+    .then(() => {
+      res.json({ message: "User unfollowed" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({ message: "User unfollow failed" });
     });
 });
