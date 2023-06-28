@@ -9,14 +9,14 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 const ProfileHeader = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, logout } = useContext(AuthContext);
   const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
-  const logout = async () => {
-    await signOut(auth);
-    setUser(null);
-    router.push("/");
-  };
+  // const logout = async () => {
+  //   await signOut(auth);
+  //   setUser(null);
+  //   router.push("/");
+  // };
   if (!user) return null;
 
   return (

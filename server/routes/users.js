@@ -6,8 +6,8 @@ import mongoose from "mongoose";
 const router = express.Router();
 
 // registers a new user
-router.post("/register", async (req, res) => {
-  const { firebaseId } = req.body;
+router.post("/register/:firebaseId", async (req, res) => {
+  const { firebaseId } = req.params;
 
   const newUser = new UserModel({
     firebaseId: firebaseId,

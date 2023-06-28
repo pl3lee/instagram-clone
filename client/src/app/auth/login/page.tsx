@@ -14,27 +14,21 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
   const router = useRouter();
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    if (user) {
-      router.push("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     router.push("/");
+  //   }
+  // }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const loggedInUser = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-    } catch (error) {
-      console.log(error.message);
-    }
+    await login(email, password)
+      .then(router.push("/"))
+      .catch((err) => console.log(err));
   };
 
   return (

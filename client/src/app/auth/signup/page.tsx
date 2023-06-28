@@ -15,7 +15,7 @@ import axios from "axios";
 
 const SignUp = () => {
   const router = useRouter();
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, register } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   useEffect(() => {
@@ -25,19 +25,7 @@ const SignUp = () => {
   }, [user]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const loggedInUser = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      axios.post("http://localhost:3001/users/register", {
-        firebaseId: loggedInUser.user.uid,
-      });
-      console.log(loggedInUser);
-    } catch (error) {
-      console.log(error.message);
-    }
+    await register(email, password).catch((err) => console.log(err));
   };
 
   return (
