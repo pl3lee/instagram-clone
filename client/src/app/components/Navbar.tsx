@@ -1,11 +1,18 @@
 "use client";
 import Link from "next/link";
 // import useAuth from "@/hooks/useAuth";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getUser = JSON.parse(window.localStorage.getItem("user"));
+    console.log(getUser);
+    if (getUser) {
+      setUser(getUser);
+    }
+  }, []);
   if (!user) return null;
   return (
     <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full bg-white border-slate-500 border-solid border-t-[0.5px] dark:bg-black">

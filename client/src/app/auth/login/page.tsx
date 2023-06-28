@@ -18,17 +18,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // useEffect(() => {
-  //   if (user) {
-  //     router.push("/");
-  //   }
-  // }, [user]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password)
-      .then(router.push("/"))
-      .catch((err) => console.log(err));
+    await login(email, password).catch((err) => console.log(err));
   };
 
   return (

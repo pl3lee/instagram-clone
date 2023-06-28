@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
       newUser
         .save()
         .then((user) => {
-          res.redirect("/");
+          res.json(user);
         })
         .catch((err) => {
           console.log(err);
@@ -44,7 +44,12 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   signInWithEmailAndPassword(auth, email, password)
     .then((user) => {
-      res.redirect("/");
+      UserModel.findOne({ firebaseId: user.user.uid })
+        .then((mongoUser) => res.json(mongoUser))
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ message: "User login failed" });
+        });
     })
     .catch((err) => {
       console.log(err);
@@ -55,7 +60,7 @@ router.post("/login", async (req, res) => {
 router.post("/logout", async (req, res) => {
   signOut()
     .then(() => {
-      res.redirect("/auth/login");
+      res.json({ message: "User logged out" });
     })
     .catch((err) => {
       console.log(err);
