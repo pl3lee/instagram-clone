@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/logout", async (req, res) => {
-  signOut()
+  signOut(auth)
     .then(() => {
       res.json({ message: "User logged out" });
     })
@@ -142,8 +142,13 @@ router.get("/following/:uid/id", async (req, res) => {
 // gets the ids of all the accounts that follow the user
 router.get("/followers/:uid/id", async (req, res) => {
   const { uid } = req.params;
+  if (uid === undefined) {
+    res.json({ message: "User id not provided" });
+    return;
+  }
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   UserModel.find({ follows: uid })
     .then((users) => {
@@ -182,8 +187,13 @@ router.get("/fb/:firebaseId", async (req, res) => {
 
 router.patch("/update/:uid", async (req, res) => {
   const { uid } = req.params;
+  if (uid === undefined) {
+    res.status(400).json({ message: "User id not provided" });
+    return;
+  }
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   let { username, bio, profilePicture } = req.body;
 
