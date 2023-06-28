@@ -13,6 +13,14 @@ const AuthProvider = ({ children }: any) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const getUser = JSON.parse(window.localStorage.getItem("user"));
+    console.log(getUser);
+    if (getUser) {
+      setUser(getUser);
+    }
+  }, []);
+
   const logout = async () => {
     setLoading(true);
     setError(null);
@@ -76,9 +84,11 @@ const AuthProvider = ({ children }: any) => {
   const refetchUser = () => {
     setLoading(true);
     setError(null);
+    console.log("refetching user");
     axios
-      .get(`http://localhost:3001/users/${user._id}`)
+      .get(`http://localhost:3001/users/${user?._id}`)
       .then((response) => {
+        console.log("refetch user success", response.data);
         setUser(response.data);
         setError(null);
         localStorage.setItem("user", JSON.stringify(response.data));

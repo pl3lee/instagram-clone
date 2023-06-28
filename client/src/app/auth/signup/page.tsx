@@ -7,14 +7,9 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 const SignUp = () => {
   const router = useRouter();
-  const { user, setUser, register } = useContext(AuthContext);
+  const { register } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  useEffect(() => {
-    if (user) {
-      router.push("/");
-    }
-  }, [user]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     await register(email, password).catch((err) => console.log(err));

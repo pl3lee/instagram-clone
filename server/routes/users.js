@@ -102,12 +102,15 @@ router.patch("/unfollow", async (req, res) => {
   const { uid, followId } = req.body;
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   if (mongoose.Types.ObjectId.isValid(followId) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   if (uid == followId) {
     res.status(500).json({ message: "User cannot follow themselves" });
+    return;
   }
   UserModel.updateOne({ _id: uid }, { $pull: { follows: followId } }).catch(
     (err) => {
@@ -126,8 +129,13 @@ router.patch("/unfollow", async (req, res) => {
 // gets the ids of the accounts that the user follows
 router.get("/following/:uid/id", async (req, res) => {
   const { uid } = req.params;
+  if (uid === undefined) {
+    res.json({ message: "User id not provided" });
+    return;
+  }
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   UserModel.findById(uid)
     .then((user) => {
@@ -163,8 +171,13 @@ router.get("/followers/:uid/id", async (req, res) => {
 // get the user's information by mongodb id
 router.get("/:uid", async (req, res) => {
   const { uid } = req.params;
+  if (uid === undefined) {
+    res.json({ message: "User id not provided" });
+    return;
+  }
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   UserModel.findById(uid)
     .then((user) => res.json(user))

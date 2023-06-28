@@ -9,7 +9,7 @@ import Error from "@/app/error";
 
 const Edit = () => {
   const router = useRouter();
-  const { refetchUser, loading, error } = useContext(AuthContext);
+  const { refetchUser } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   useEffect(() => {
     const getUser = JSON.parse(window.localStorage.getItem("user"));
@@ -32,13 +32,12 @@ const Edit = () => {
         profilePicture,
       })
       .then((response) => {
+        console.log("response from update", response);
         refetchUser();
         router.push("/profile");
       })
       .catch((err) => console.log(err));
   };
-  if (loading) return <Loading />;
-  if (error) return <Error />;
   return (
     <div className="flex flex-col p-3 gap-3">
       <div className="flex">
