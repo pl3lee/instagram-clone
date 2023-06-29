@@ -1,16 +1,18 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FollowingPostsContainer from "../components/FollowingPostsContainer";
 import useLocalStorage from "use-local-storage";
 
 export default function Posts() {
-  const [user, setUser] = useLocalStorage("user", null);
+  const [localuser, setLocaluser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
   const router = useRouter();
   useEffect(() => {
-    if (!user) {
+    if (!localuser) {
       router.push("/auth/login");
     }
+    setUser(localuser);
   }, []);
 
   return (

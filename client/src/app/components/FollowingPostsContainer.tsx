@@ -5,7 +5,6 @@ const getFollowingPosts = async (uid: any) => {
   return axios
     .get(`http://localhost:3001/posts/following/${uid}`)
     .then((response) => {
-      console.log(response.data);
       return response.data.reverse();
     })
     .catch((err) => console.log(err));

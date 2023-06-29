@@ -1,10 +1,15 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 
 const PostsHeader = () => {
-  const [user, setUser] = useLocalStorage("user", null);
+  const [localuser, setLocaluser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    setUser(localuser);
+  }, []);
   const pathname = usePathname();
   if (!user) return <div></div>;
   if (pathname === "/posts") {

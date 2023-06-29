@@ -6,12 +6,15 @@ import useLocalStorage from "use-local-storage";
 
 const Profile = () => {
   const router = useRouter();
-  const [user, setUser] = useLocalStorage("user", null);
+  const [localuser, setLocaluser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    if (!user) {
+    if (!localuser) {
       router.push("/auth/login");
     }
-  }, []);
+    setUser(localuser);
+  }, [localuser]);
+
   if (!user) {
     return <div></div>;
   }

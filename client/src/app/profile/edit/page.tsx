@@ -9,11 +9,13 @@ import useLocalStorage from "use-local-storage";
 const Edit = () => {
   const router = useRouter();
   const { refetchUser } = useContext(AuthContext);
-  const [user, setUser] = useLocalStorage("user", null);
+  const [localuser, setLocaluser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    if (user) {
+    if (!localuser) {
       router.push("/auth/login");
     }
+    setUser(localuser);
   }, []);
 
   const [username, setUsername] = useState("");

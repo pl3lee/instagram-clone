@@ -1,9 +1,19 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  const [user, setUser] = useLocalStorage("user", null);
+  const pathname = usePathname();
+  const [localuser, setLocaluser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    setUser(localuser);
+  }, []);
+  if (pathname === "/auth/login" || pathname === "/auth/signup") {
+    return <div></div>;
+  }
   if (user) {
     return (
       <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full bg-white border-slate-500 border-solid border-t-[0.5px] dark:bg-black">
