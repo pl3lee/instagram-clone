@@ -1,5 +1,6 @@
 import axios from "axios";
 import ViewComments from "./ViewComments";
+import Link from "next/link";
 const getUser = async (uid: string) => {
   return axios
     .get(`http://localhost:3001/users/${uid}`)
@@ -14,6 +15,7 @@ const Post = async ({ post }: any) => {
       <PostHeader
         profilePicture={user?.profilePicture}
         username={user?.username}
+        uid={user?._id}
       />
       <PostImage img={post.img} />
       <PostIconBar />
@@ -22,7 +24,7 @@ const Post = async ({ post }: any) => {
   );
 };
 
-const PostHeader = ({ profilePicture, username }: any) => {
+const PostHeader = ({ profilePicture, username, uid }: any) => {
   return (
     <div className="flex gap-1 px-2 py-3">
       <div className="flex-shrink-0 mr-3">
@@ -32,7 +34,7 @@ const PostHeader = ({ profilePicture, username }: any) => {
         />
       </div>
       <div className="flex-grow-[9] text-lg font-bold flex items-center">
-        {username}
+        <Link href={`/profile/${uid}`}>{username}</Link>
       </div>
     </div>
   );
