@@ -230,5 +230,19 @@ router.patch("/update/:uid", async (req, res) => {
     });
 });
 
+// checks if a user with username exists
+router.get("/exists/:username", async (req, res) => {
+  const { username } = req.params;
+  UserModel.find({ username: username })
+    .then((users) => {
+      if (users.length > 0) {
+        res.json({ exists: true });
+      } else {
+        res.json({ exists: false });
+      }
+    })
+    .catch((err) => res.status(500).json({ message: "User fetch failed" }));
+});
+
 // remember to export the router
 export { router as userRouter };
