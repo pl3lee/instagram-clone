@@ -1,19 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import useLocalStorage from "use-local-storage";
 
 const PostsHeader = () => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const getUser = JSON.parse(window.localStorage.getItem("user"));
-    console.log(getUser);
-    if (getUser) {
-      setUser(getUser);
-    }
-  }, []);
+  const [user, setUser] = useLocalStorage("user", null);
   const pathname = usePathname();
-  if (!user) return null;
+  if (!user) return <div></div>;
   if (pathname === "/posts") {
     return (
       <ul className="sticky-header">

@@ -4,19 +4,15 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Loading from "@/app/loading";
-import Error from "@/app/error";
+import useLocalStorage from "use-local-storage";
 
 const Edit = () => {
   const router = useRouter();
-  const { user, setUser, refetchUser } = useContext(AuthContext);
+  const { refetchUser } = useContext(AuthContext);
+  const [user, setUser] = useLocalStorage("user", null);
   useEffect(() => {
-    const getUser = JSON.parse(window.localStorage.getItem("user"));
-    console.log(getUser);
-    if (!getUser) {
+    if (user) {
       router.push("/auth/login");
-    } else {
-      setUser(getUser);
     }
   }, []);
 

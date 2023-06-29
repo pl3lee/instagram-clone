@@ -2,22 +2,14 @@
 import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
+import useLocalStorage from "use-local-storage";
 
 const ViewComments = ({ post }: any) => {
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState(post.comments);
   const [comment, setComment] = useState("");
 
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const getUser = JSON.parse(window.localStorage.getItem("user"));
-    console.log(getUser);
-    if (!getUser) {
-      router.push("/auth/login");
-    } else {
-      setUser(getUser);
-    }
-  }, []);
+  const [user, setUser] = useLocalStorage("user", null);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

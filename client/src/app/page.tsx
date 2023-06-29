@@ -1,12 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import useLocalStorage from "use-local-storage";
 
 export default function Home() {
   const router = useRouter();
-  let user: any;
+  const [user, setUser] = useLocalStorage("user", null);
   useEffect(() => {
-    user = window.localStorage.getItem("user");
     if (user) {
       router.push("/posts");
     } else {
