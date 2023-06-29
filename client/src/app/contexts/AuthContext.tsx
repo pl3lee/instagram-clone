@@ -2,6 +2,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import useLocalStorage from "use-local-storage";
 
 export const AuthContext = createContext<{ user: any; setUser: any } | null>(
   null
@@ -9,17 +10,9 @@ export const AuthContext = createContext<{ user: any; setUser: any } | null>(
 
 const AuthProvider = ({ children }: any) => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useLocalStorage("user", null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const getUser = JSON.parse(window.localStorage.getItem("user"));
-    console.log(getUser);
-    if (getUser) {
-      setUser(getUser);
-    }
-  }, []);
 
   const logout = async () => {
     setLoading(true);
@@ -29,7 +22,6 @@ const AuthProvider = ({ children }: any) => {
       .then(() => {
         setUser(null);
         setError(null);
-        localStorage.removeItem("user");
         router.push("/auth/login");
       })
       .catch((err) => {
@@ -48,9 +40,8 @@ const AuthProvider = ({ children }: any) => {
         password,
       })
       .then((loggedInUser) => {
-        setUser(loggedInUser);
+        setUser(loggedInUser.data);
         setError(null);
-        localStorage.setItem("user", JSON.stringify(loggedInUser.data));
         router.push("/");
       })
       .catch((err) => {
@@ -69,9 +60,8 @@ const AuthProvider = ({ children }: any) => {
         password,
       })
       .then((loggedInUser) => {
-        setUser(loggedInUser);
+        setUser(loggedInUser.data);
         setError(null);
-        localStorage.setItem("user", JSON.stringify(loggedInUser.data));
         router.push("/");
       })
       .catch((err) => {
@@ -90,7 +80,6 @@ const AuthProvider = ({ children }: any) => {
       .then((response) => {
         console.log("refetch user success", response.data);
         setError(null);
-        localStorage.setItem("user", JSON.stringify(response.data));
         setUser(response.data);
       })
       .catch((err) => {

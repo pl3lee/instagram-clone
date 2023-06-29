@@ -2,16 +2,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import useLocalStorage from "use-local-storage";
 const Create = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useLocalStorage("user", null);
   const router = useRouter();
   useEffect(() => {
-    const getUser = JSON.parse(window.localStorage.getItem("user"));
-    console.log(getUser);
-    if (!getUser) {
+    if (!user) {
       router.push("/auth/login");
-    } else {
-      setUser(getUser);
     }
   }, []);
   const [image, setImage] = useState("");
