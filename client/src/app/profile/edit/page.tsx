@@ -9,8 +9,7 @@ import Error from "@/app/error";
 
 const Edit = () => {
   const router = useRouter();
-  const { refetchUser } = useContext(AuthContext);
-  const [user, setUser] = useState(null);
+  const { user, setUser, refetchUser } = useContext(AuthContext);
   useEffect(() => {
     const getUser = JSON.parse(window.localStorage.getItem("user"));
     console.log(getUser);
@@ -20,6 +19,7 @@ const Edit = () => {
       setUser(getUser);
     }
   }, []);
+
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [profilePicture, setProfilePicture] = useState("");

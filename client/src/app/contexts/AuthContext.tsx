@@ -89,9 +89,9 @@ const AuthProvider = ({ children }: any) => {
       .get(`http://localhost:3001/users/${user?._id}`)
       .then((response) => {
         console.log("refetch user success", response.data);
-        setUser(response.data);
         setError(null);
         localStorage.setItem("user", JSON.stringify(response.data));
+        setUser(response.data);
       })
       .catch((err) => {
         setError(err);
