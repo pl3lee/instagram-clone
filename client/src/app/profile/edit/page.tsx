@@ -38,7 +38,7 @@ const Edit = () => {
       .then((response) => {
         console.log("response from update", response);
         refetchUser();
-        router.push("/profile");
+        router.push(`/profile/${user._id}`);
       })
       .catch((err) => console.log(err));
   };

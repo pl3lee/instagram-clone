@@ -60,7 +60,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li className="icon-container">
-          <Link href="/profile">
+          <Link href={`/profile/${user._id}`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
