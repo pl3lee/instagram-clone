@@ -20,20 +20,22 @@ const Profile = () => {
   }
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-start p-6 gap-8">
+      <div className="flex justify-center p-6 gap-8 w-full">
         <div className="flex-shrink-0 flex justify-start">
           <img
             src={user.profilePicture}
             className="w-[100px] h-[100px] rounded-full object-cover"
           />
         </div>
-        <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 max-w-[60%]">
+        <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
           <div className="text-3xl overflow-x-auto overflow-y-hidden no-scrollbar">
             {user.username}
           </div>
-          <button className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black">
-            <Link href="/profile/edit">Edit Profile</Link>
-          </button>
+          <div>
+            <button className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black">
+              <Link href="/profile/edit">Edit Profile</Link>
+            </button>
+          </div>
         </div>
       </div>
 
