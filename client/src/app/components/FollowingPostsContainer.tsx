@@ -2,6 +2,9 @@ import axios from "axios";
 import Post from "./Post";
 
 const getFollowingPosts = async (uid: any) => {
+  if (!uid) {
+    return;
+  }
   return axios
     .get(`http://localhost:3001/posts/following/${uid}`)
     .then((response) => {

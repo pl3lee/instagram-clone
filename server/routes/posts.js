@@ -45,8 +45,13 @@ router.post("/create/:uid", async (req, res) => {
 // gets all posts from following users, including the user himself
 router.get("/following/:uid", async (req, res) => {
   const { uid } = req.params;
+  if (uid === undefined) {
+    res.status(400).json({ message: "Missing user id" });
+    return;
+  }
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   UserModel.findById(uid)
     .then((user) => {
