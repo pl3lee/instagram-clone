@@ -1,18 +1,18 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, error } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password).catch((err) => console.log(err));
+    await login(email, password);
   };
 
   return (
@@ -39,6 +39,11 @@ const Login = () => {
           <button type="submit" className="bg-blue-500 text-white p-2 rounded">
             Login
           </button>
+          {error && (
+            <div className="text-red-600 opacity-80 font-extralight text-sm">
+              Your credentials are incorrect
+            </div>
+          )}
         </form>
         <div>
           Don't have an account?{" "}
