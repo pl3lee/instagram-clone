@@ -46,7 +46,12 @@ const Create = () => {
             }}
           />
         </div>
-        <button type="submit">Post</button>
+        <button
+          type="submit"
+          className="bg-blue-400 rounded-lg py-1 text-white disabled:bg-gray-400"
+        >
+          Post
+        </button>
       </form>
     </div>
   );
