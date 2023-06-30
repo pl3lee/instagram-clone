@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 });
 
 // gets all post from a user
-router.get("/:uid", async (req, res) => {
+router.get("/user/:uid", async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "Missing user id" });
@@ -30,6 +30,22 @@ router.get("/:uid", async (req, res) => {
         .then((posts) => res.json(posts))
         .catch((err) => res.status(400).json(err));
     })
+    .catch((err) => res.status(400).json(err));
+});
+
+// gets information about a post
+router.get("/:postId", async (req, res) => {
+  const { postId } = req.params;
+  if (postId === undefined) {
+    res.status(400).json({ message: "Missing post id" });
+    return;
+  }
+  if (mongoose.Types.ObjectId.isValid(postId) === false) {
+    res.status(400).json({ message: "Invalid post id" });
+    return;
+  }
+  PostModel.findById(postId)
+    .then((posts) => res.json(posts))
     .catch((err) => res.status(400).json(err));
 });
 // creates a post for a user

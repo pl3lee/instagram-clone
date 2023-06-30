@@ -126,7 +126,7 @@ const PostsSection = ({ queriedUser }: any) => {
     data: posts,
     error: postsError,
     isLoading: postsIsLoading,
-  } = useSWR(`http://localhost:3001/posts/${queriedUser}`, fetcher);
+  } = useSWR(`http://localhost:3001/posts/user/${queriedUser}`, fetcher);
   if (!postsIsLoading) {
     return (
       <div className="grid grid-cols-3">
