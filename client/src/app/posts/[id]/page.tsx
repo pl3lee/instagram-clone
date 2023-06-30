@@ -13,7 +13,7 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const PostPage = ({ params }: any) => {
   const { id } = params;
   const { data, error, isLoading } = useSWR(
-    `http://localhost:3001/posts/${id}`,
+    `http://localhost:3001/posts/post/${id}`,
     fetcher
   );
   if (!isLoading) {

@@ -244,5 +244,14 @@ router.get("/exists/:username", async (req, res) => {
     .catch((err) => res.status(500).json({ message: "User fetch failed" }));
 });
 
+router.get("/search/:query", async (req, res) => {
+  const { query } = req.params;
+  UserModel.find({ username: { $regex: query, $options: "i" } })
+    .then((users) => {
+      res.json(users);
+    })
+    .catch((err) => res.status(500).json({ message: "User fetch failed" }));
+});
+
 // remember to export the router
 export { router as userRouter };

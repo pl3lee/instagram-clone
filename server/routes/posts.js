@@ -7,9 +7,9 @@ import mongoose from "mongoose";
 const router = express.Router();
 
 // gets all posts, regardless of who posted it
-router.get("/", async (req, res) => {
+router.get("/all", async (req, res) => {
   PostModel.find()
-    .then((posts) => res.status(400).json(posts))
+    .then((posts) => res.json(posts.reverse()))
     .catch((error) => res.status(400).json(error));
 });
 
@@ -34,7 +34,7 @@ router.get("/user/:uid", async (req, res) => {
 });
 
 // gets information about a post
-router.get("/:postId", async (req, res) => {
+router.get("/post/:postId", async (req, res) => {
   const { postId } = req.params;
   if (postId === undefined) {
     res.status(400).json({ message: "Missing post id" });
