@@ -11,7 +11,12 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Profile = ({ params }: any) => {
   const { uid } = params;
-  return <ProfileInfoSection queriedUser={uid} />;
+  return (
+    <div className="flex flex-col">
+      <ProfileInfoSection queriedUser={uid} />
+      <PostsSection queriedUser={uid} />
+    </div>
+  );
 };
 
 const ProfileInfoSection = ({ queriedUser }: any) => {
@@ -116,4 +121,26 @@ const BasicInfo = ({ num, text }: any) => {
   );
 };
 
+const PostsSection = ({ queriedUser }: any) => {
+  const {
+    data: posts,
+    error: postsError,
+    isLoading: postsIsLoading,
+  } = useSWR(`http://localhost:3001/posts/${queriedUser}`, fetcher);
+  if (!postsIsLoading) {
+    return (
+      <div className="grid grid-cols-3">
+        {posts.map((post: any) => {
+          return (
+            <div key={post._id} className="w-full aspect-square">
+              <img src={post.img} className="w-full h-full object-cover" />
+            </div>
+          );
+        })}
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
+};
 export default Profile;
