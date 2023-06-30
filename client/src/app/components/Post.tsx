@@ -6,17 +6,9 @@ import { useContext, useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import useSWR from "swr";
 import { AuthContext } from "../contexts/AuthContext";
-const getUser = async (uid: string) => {
-  return axios
-    .get(`http://localhost:3001/users/${uid}`)
-    .then((response) => response.data)
-    .catch((err) => console.log(err));
-};
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
 const Post = ({ post }: any) => {
-  // const [user] = await Promise.all([getUser(post.uid)]);
   const { refetchUser } = useContext(AuthContext);
   const [localuser, setLocaluser] = useLocalStorage("user", null);
   const [loggedInUser, setLoggedInUser] = useState(null);
