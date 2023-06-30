@@ -1,18 +1,20 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 
 export default function Home() {
   const router = useRouter();
-  const [user, setUser] = useLocalStorage("user", null);
+  const [localuser, setLocaluser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    if (user) {
-      router.push("/posts");
-    } else {
+    if (!localuser) {
       router.push("/auth/login");
+    } else {
+      setUser(localuser);
+      router.push("/posts");
     }
-  }, []);
+  }, [localuser]);
 
   return <div>HOME PAGE</div>;
 }

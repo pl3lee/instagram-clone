@@ -11,16 +11,10 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Profile = ({ params }: any) => {
   const { uid } = params;
-
-  // if (!user) {
-  //   return <div></div>;
-  // }
-  // if (!isLoading) {
-  return <ProfileSection queriedUser={uid} />;
-  // }
+  return <ProfileInfoSection queriedUser={uid} />;
 };
 
-const ProfileSection = ({ queriedUser }: any) => {
+const ProfileInfoSection = ({ queriedUser }: any) => {
   const router = useRouter();
   const { refetchUser } = useContext(AuthContext);
   const [localuser, setLocaluser] = useLocalStorage("user", null);

@@ -10,7 +10,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
     setUser(localuser);
-  }, []);
+  }, [localuser]);
   if (pathname === "/auth/login" || pathname === "/auth/signup") {
     return <div></div>;
   }
