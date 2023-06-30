@@ -225,6 +225,9 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
   if (mongoose.Types.ObjectId.isValid(postId) === false) {
     res.status(400).json({ message: "Invalid post id" });
   }
+  if (comment === "") {
+    res.status(400).json({ message: "Comment cannot be empty" });
+  }
 
   await UserModel.findById(uid).catch((err) =>
     res.status(404).json({ message: "User not found" })
