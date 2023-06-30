@@ -12,7 +12,13 @@ const PostsHeader = () => {
   }, []);
   const pathname = usePathname();
   if (!user) return <div></div>;
-  if (pathname === "/posts") {
+  if (pathname === "/posts/create") {
+    return (
+      <ul className="sticky-header">
+        <li className="text-center text-3xl font-bold p-2">Create post</li>
+      </ul>
+    );
+  } else if (pathname.startsWith("/posts/")) {
     return (
       <ul className="sticky-header">
         <li className="flex-grow-[7]">
@@ -46,12 +52,6 @@ const PostsHeader = () => {
             </svg>
           </Link>
         </li>
-      </ul>
-    );
-  } else if (pathname === "/posts/create") {
-    return (
-      <ul className="sticky-header">
-        <li className="text-center text-3xl font-bold p-2">Create post</li>
       </ul>
     );
   }
