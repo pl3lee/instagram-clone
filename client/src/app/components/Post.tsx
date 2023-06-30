@@ -53,7 +53,7 @@ const Post = ({ post }: any) => {
           username={user?.username}
           uid={user?._id}
         />
-        <PostImage img={post.img} />
+        <PostImage img={post.img} toggleLike={handleToggleLike} />
         <PostIconBar
           toggleLike={handleToggleLike}
           liked={post.likes.includes(localuser?._id)}
@@ -82,9 +82,14 @@ const PostHeader = ({ profilePicture, username, uid }: any) => {
   );
 };
 
-const PostImage = ({ img }: any) => {
+const PostImage = ({ img, toggleLike }: any) => {
   return (
-    <div>
+    <div
+      onDoubleClick={(e) => {
+        toggleLike();
+        console.log("double clicked");
+      }}
+    >
       <img src={img} className="w-full h-auto" />
     </div>
   );
