@@ -21,7 +21,9 @@ const Post = ({ post }: any) => {
   } = useSWR(`http://localhost:3001/users/${post.uid}`, fetcher);
 
   useEffect(() => {
-    setLoggedInUser(localuser);
+    if (localuser) {
+      setLoggedInUser(localuser);
+    }
     return () => {
       refetchUser();
     };
@@ -29,7 +31,7 @@ const Post = ({ post }: any) => {
   const handleToggleLike = () => {
     axios
       .patch(
-        `http://localhost:3001/posts/toggle/${loggedInUser._id}/${post._id}`
+        `http://localhost:3001/posts/toggle/${loggedInUser?._id}/${post._id}`
       )
       .then((res) => {
         if (res.data.message === "Post liked") {
@@ -54,7 +56,7 @@ const Post = ({ post }: any) => {
         <PostImage img={post.img} />
         <PostIconBar
           toggleLike={handleToggleLike}
-          liked={post.likes.includes(loggedInUser._id)}
+          liked={post.likes.includes(localuser?._id)}
         />
         <PostInformation post={post} user={user} likeAmount={likeAmount} />
       </div>
