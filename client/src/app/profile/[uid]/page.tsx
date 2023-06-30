@@ -128,6 +128,7 @@ const PostsSection = ({ queriedUser }: any) => {
     isLoading: postsIsLoading,
   } = useSWR(`http://localhost:3001/posts/user/${queriedUser}`, fetcher);
   if (!postsIsLoading) {
+    posts.reverse();
     return (
       <div className="grid grid-cols-3">
         {posts.map((post: any) => {
