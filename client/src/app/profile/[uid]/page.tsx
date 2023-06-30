@@ -133,7 +133,9 @@ const PostsSection = ({ queriedUser }: any) => {
         {posts.map((post: any) => {
           return (
             <div key={post._id} className="w-full aspect-square">
-              <img src={post.img} className="w-full h-full object-cover" />
+              <Link href={`/posts/${post._id}`}>
+                <img src={post.img} className="w-full h-full object-cover" />
+              </Link>
             </div>
           );
         })}

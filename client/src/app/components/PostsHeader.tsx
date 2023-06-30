@@ -18,7 +18,7 @@ const PostsHeader = () => {
         <li className="text-center text-3xl font-bold p-2">Create post</li>
       </ul>
     );
-  } else if (pathname.startsWith("/posts/")) {
+  } else if (pathname.startsWith("/posts")) {
     return (
       <ul className="sticky-header">
         <li className="flex-grow-[7]">
