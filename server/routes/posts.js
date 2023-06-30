@@ -162,7 +162,6 @@ router.patch("/unlike/:uid/:postId", async (req, res) => {
 
   UserModel.updateOne({ _id: uid }, { $pull: { likes: postId } }).catch(
     (err) => {
-      console.log(err);
       res.status(500).json({ message: "Post unlike failed" });
     }
   );
@@ -171,9 +170,68 @@ router.patch("/unlike/:uid/:postId", async (req, res) => {
       res.json({ message: "Post unliked" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({ message: "Post unlike failed" });
     });
+});
+
+// toggles a like on a post
+router.patch("/toggle/:uid/:postId", async (req, res) => {
+  const { uid, postId } = req.params;
+  if (uid === undefined || postId === undefined) {
+    res.status(400).json({ message: "Missing user id or post id" });
+    return;
+  }
+  if (uid === "" || postId === "") {
+    res.status(400).json({ message: "Missing user id or post id" });
+    return;
+  }
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+    return;
+  }
+  if (mongoose.Types.ObjectId.isValid(postId) === false) {
+    res.status(400).json({ message: "Invalid post id" });
+    return;
+  }
+
+  await UserModel.findById(uid).catch((err) =>
+    res.status(404).json({ message: "User not found" })
+  );
+  await PostModel.findById(postId).catch((err) =>
+    res.status(404).json({ message: "Post not found" })
+  );
+
+  UserModel.findById(uid).then((user) => {
+    if (user.likes.includes(postId)) {
+      UserModel.updateOne({ _id: uid }, { $pull: { likes: postId } }).catch(
+        (err) => {
+          console.log(err);
+          res.status(500).json({ message: "Post unlike failed" });
+        }
+      );
+      PostModel.updateOne({ _id: postId }, { $pull: { likes: uid } })
+        .then(() => {
+          res.json({ message: "Post unliked" });
+        })
+        .catch((err) => {
+          res.status(500).json({ message: "Post unlike failed" });
+        });
+    } else {
+      UserModel.updateOne({ _id: uid }, { $addToSet: { likes: postId } }).catch(
+        (err) => {
+          console.log(err);
+          res.status(500).json({ message: "Post like failed" });
+        }
+      );
+      PostModel.updateOne({ _id: postId }, { $addToSet: { likes: uid } })
+        .then(() => {
+          res.json({ message: "Post liked" });
+        })
+        .catch((err) => {
+          res.status(500).json({ message: "Post like failed" });
+        });
+    }
+  });
 });
 
 // gets all the users that likes a post

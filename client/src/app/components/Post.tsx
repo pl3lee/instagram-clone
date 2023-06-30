@@ -1,6 +1,11 @@
+"use client";
 import axios from "axios";
 import ViewComments from "./ViewComments";
 import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import useLocalStorage from "use-local-storage";
+import useSWR from "swr";
+import { AuthContext } from "../contexts/AuthContext";
 const getUser = async (uid: string) => {
   return axios
     .get(`http://localhost:3001/users/${uid}`)
@@ -8,20 +13,57 @@ const getUser = async (uid: string) => {
     .catch((err) => console.log(err));
 };
 
-const Post = async ({ post }: any) => {
-  const [user] = await Promise.all([getUser(post.uid)]);
-  return (
-    <div className="flex flex-col">
-      <PostHeader
-        profilePicture={user?.profilePicture}
-        username={user?.username}
-        uid={user?._id}
-      />
-      <PostImage img={post.img} />
-      <PostIconBar />
-      <PostInformation post={post} user={user} />
-    </div>
-  );
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+const Post = ({ post }: any) => {
+  // const [user] = await Promise.all([getUser(post.uid)]);
+  const { refetchUser } = useContext(AuthContext);
+  const [localuser, setLocaluser] = useLocalStorage("user", null);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const {
+    data: user,
+    error,
+    isLoading,
+  } = useSWR(`http://localhost:3001/users/${post.uid}`, fetcher);
+
+  useEffect(() => {
+    setLoggedInUser(localuser);
+  }, []);
+  const handleToggleLike = () => {
+    axios
+      .patch(
+        `http://localhost:3001/posts/toggle/${loggedInUser._id}/${post._id}`
+      )
+      .then((res) => {
+        console.log("Like toggled");
+        refetchUser();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  if (user) {
+    console.log(loggedInUser.likes);
+    console.log(post._id);
+    return (
+      <div className="flex flex-col">
+        <PostHeader
+          profilePicture={user?.profilePicture}
+          username={user?.username}
+          uid={user?._id}
+        />
+        <PostImage img={post.img} />
+        <PostIconBar
+          toggleLike={handleToggleLike}
+          liked={post.likes.includes(loggedInUser._id)}
+        />
+        <PostInformation post={post} user={user} />
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
 };
 
 const PostHeader = ({ profilePicture, username, uid }: any) => {
@@ -48,24 +90,21 @@ const PostImage = ({ img }: any) => {
   );
 };
 
-const PostIconBar = () => {
+const PostIconBar = ({ liked, toggleLike }: any) => {
   return (
     <div className="flex">
       <ul className="px-2 py-2 flex gap-3 justify-start w-full bg-white dark:bg-black">
         <li className="icon-container p-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            className="w-7 h-7 dark:stroke-white stroke-black"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-            />
-          </svg>
+          <button onClick={toggleLike}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill={liked ? "red" : "none"}
+              className="w-7 h-7 stroke-black dark:stroke-white"
+            >
+              <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+            </svg>
+          </button>
         </li>
         <li className="icon-container p-0">
           <svg
