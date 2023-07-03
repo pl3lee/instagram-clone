@@ -63,11 +63,12 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
       })
       .catch((err) => console.log(err));
   };
+
   useEffect(() => {
     if (!userLoading) {
       setFollowed(user.follows.includes(queriedUser._id));
     }
-  });
+  }, [user]);
 
   if (userLoading) {
     return <LoadingComponent />;
