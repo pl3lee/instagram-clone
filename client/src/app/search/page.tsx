@@ -44,7 +44,7 @@ const Search = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search for accounts"
-          className="w-full rounded-lg p-2 border-slate-400 border border-solid bg-white dark:bg-black focus:outline-none"
+          className="w-full rounded-lg p-2 border-borderGray border border-solid bg-white dark:bg-black focus:outline-none"
         />
       </div>
       <div>

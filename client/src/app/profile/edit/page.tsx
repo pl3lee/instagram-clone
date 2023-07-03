@@ -161,14 +161,14 @@ const Edit = () => {
           )}
 
           <button
-            className="bg-blue-400 rounded-lg py-1 text-white disabled:bg-gray-400"
+            className="bg-accentBlue rounded-lg py-1 text-white disabled:bg-gray-400"
             type="submit"
             disabled={!dataAcceptable}
           >
             Save
           </button>
         </form>
-        <button className="bg-blue-400 rounded-lg py-1 text-white">
+        <button className="bg-accentBlue rounded-lg py-1 text-white">
           <Link href="/profile">Go Back</Link>
         </button>
       </div>

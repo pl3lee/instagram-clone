@@ -48,7 +48,7 @@ const Create = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-400 rounded-lg py-1 text-white disabled:bg-gray-400"
+          className="bg-accentBlue rounded-lg py-1 text-white disabled:bg-gray-400"
         >
           Post
         </button>

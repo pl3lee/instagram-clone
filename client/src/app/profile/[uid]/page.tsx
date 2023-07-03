@@ -37,12 +37,13 @@ const Profile = ({ params }: any) => {
 const ProfileInfoSection = ({ queriedUser }: any) => {
   const { refetchUser } = useContext(AuthContext);
   const { user, isLoading: userLoading } = useUser();
+  const [followed, setFollowed] = useState(false);
 
   const handleFollow = () => {
     axios
       .patch("http://localhost:3001/users/follow", {
         uid: user._id,
-        followId: queriedUser,
+        followId: queriedUser._id,
       })
       .then((res) => {
         refetchUser();
@@ -54,14 +55,20 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
     axios
       .patch("http://localhost:3001/users/unfollow", {
         uid: user._id,
-        followId: queriedUser,
+        followId: queriedUser._id,
       })
       .then((res) => {
         refetchUser();
-        console.log("User followed");
+        console.log("User unfollowed");
       })
       .catch((err) => console.log(err));
   };
+  useEffect(() => {
+    if (!userLoading) {
+      setFollowed(user.follows.includes(queriedUser._id));
+    }
+  });
+
   if (userLoading) {
     return <LoadingComponent />;
   } else {
@@ -80,20 +87,20 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
             </div>
             <div>
               {queriedUser._id === user._id ? (
-                <button className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black">
+                <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
                   <Link href="/profile/edit">Edit Profile</Link>
                 </button>
-              ) : user.follows.includes(queriedUser._id) ? (
+              ) : followed ? (
                 <button
                   onClick={handleUnfollow}
-                  className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black"
+                  className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black"
                 >
                   Unfollow
                 </button>
               ) : (
                 <button
                   onClick={handleFollow}
-                  className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black"
+                  className="text-lg w-full text-center bg-button1 rounded-lg py-1 text-white"
                 >
                   Follow
                 </button>
@@ -103,7 +110,7 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
         </div>
 
         <div className="p-6">{queriedUser.bio}</div>
-        <div className="w-full flex gap-3 justify-around border-y border-solid border-slate-300 py-4">
+        <div className="w-full flex gap-3 justify-around border-y border-solid border-borderGray py-4">
           <BasicInfo num={queriedUser.posts.length} text="posts" />
           <BasicInfo num={queriedUser.followers.length} text="followers" />
           <BasicInfo num={queriedUser.follows.length} text="following" />

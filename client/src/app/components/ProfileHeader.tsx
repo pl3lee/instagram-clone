@@ -21,7 +21,7 @@ const ProfileHeader = () => {
         </li>
         <li className="flex-1 flex justify-end items-center">
           <button
-            className="px-4 py-1 h-3/4 rounded-full bg-blue-400 text-sm"
+            className="px-4 py-1 h-3/4 rounded-full bg-accentBlue text-sm"
             onClick={logout}
           >
             Logout
