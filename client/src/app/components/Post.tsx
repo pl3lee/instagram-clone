@@ -12,7 +12,6 @@ import LoadingComponent from "./LoadingComponent";
 const Post = ({ post, localUser }: any) => {
   const { refetchUser } = useContext(AuthContext);
   const [likeAmount, setLikeAmount] = useState(post.likes.length);
-  const [liked, setLiked] = useState(post.likes.includes(localUser._id));
   const {
     data: postUser,
     error: postUserError,
@@ -23,12 +22,6 @@ const Post = ({ post, localUser }: any) => {
     axios
       .patch(`http://localhost:3001/posts/toggle/${localUser._id}/${post._id}`)
       .then((res) => {
-        if (res.data.message === "Post liked") {
-          setLikeAmount(likeAmount + 1);
-        } else if (res.data.message === "Post unliked") {
-          setLikeAmount(likeAmount - 1);
-        }
-        setLiked(!liked);
         refetchUser();
       })
       .catch((err) => {
@@ -39,13 +32,14 @@ const Post = ({ post, localUser }: any) => {
   if (!postUserLoading) {
     return (
       <div className="flex flex-col">
-        <PostHeader
-          profilePicture={postUser?.profilePicture}
-          username={postUser?.username}
-          uid={postUser?._id}
+        <PostHeader postUser={postUser} />
+        <PostImage post={post} toggleLike={handleToggleLike} />
+        <PostIconBar
+          toggleLike={handleToggleLike}
+          post={post}
+          localUser={localUser}
+          setLikeAmount={setLikeAmount}
         />
-        <PostImage img={post.img} toggleLike={handleToggleLike} />
-        <PostIconBar toggleLike={handleToggleLike} liked={liked} />
         <PostInformation
           post={post}
           postUser={postUser}
@@ -58,23 +52,23 @@ const Post = ({ post, localUser }: any) => {
   }
 };
 
-const PostHeader = ({ profilePicture, username, uid }: any) => {
+const PostHeader = ({ postUser }: any) => {
   return (
     <div className="flex gap-1 px-2 py-3">
       <div className="flex-shrink-0 mr-3">
         <img
-          src={profilePicture}
+          src={postUser.profilePicture}
           className="w-[40px] h-[40px] rounded-full object-cover"
         />
       </div>
       <div className="flex-grow-[9] text-lg font-bold flex items-center">
-        <Link href={`/profile/${uid}`}>{username}</Link>
+        <Link href={`/profile/${postUser._id}`}>{postUser.username}</Link>
       </div>
     </div>
   );
 };
 
-const PostImage = ({ img, toggleLike }: any) => {
+const PostImage = ({ post, toggleLike }: any) => {
   return (
     <div
       onDoubleClick={(e) => {
@@ -82,12 +76,13 @@ const PostImage = ({ img, toggleLike }: any) => {
         console.log("double clicked");
       }}
     >
-      <img src={img} className="w-full h-auto" />
+      <img src={post.img} className="w-full h-auto" />
     </div>
   );
 };
 
-const PostIconBar = ({ liked, toggleLike }: any) => {
+const PostIconBar = ({ post, localUser, toggleLike, setLikeAmount }: any) => {
+  const [liked, setLiked] = useState(post.likes.includes(localUser._id));
   return (
     <div className="flex">
       <ul className="px-2 py-2 flex gap-3 justify-start w-full bg-white dark:bg-black">
@@ -95,6 +90,14 @@ const PostIconBar = ({ liked, toggleLike }: any) => {
           <button
             onClick={(e) => {
               toggleLike();
+              setLiked(!liked);
+              setLikeAmount((prevState: any) => {
+                if (liked) {
+                  return prevState - 1;
+                } else {
+                  return prevState + 1;
+                }
+              });
             }}
           >
             <svg
