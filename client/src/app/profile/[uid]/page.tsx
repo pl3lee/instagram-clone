@@ -1,40 +1,42 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import useLocalStorage from "use-local-storage";
 import useSWR from "swr";
 import axios from "axios";
 import { AuthContext } from "@/app/contexts/AuthContext";
+import useUser from "@/app/hooks/useUser";
+import LoadingComponent from "@/app/components/LoadingComponent";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Profile = ({ params }: any) => {
   const { uid } = params;
-  return (
-    <div className="flex flex-col">
-      <ProfileInfoSection queriedUser={uid} />
-      <PostsSection queriedUser={uid} />
-    </div>
-  );
+  const {
+    data: queriedUserData,
+    error: queryUserError,
+    isLoading: queryUserLoading,
+  } = useSWR(`http://localhost:3001/users/${uid}`, fetcher);
+  const {
+    data: posts,
+    error: postsError,
+    isLoading: postsLoading,
+  } = useSWR(`http://localhost:3001/posts/user/${uid}`, fetcher);
+
+  if (queryUserLoading || postsLoading) {
+    return <LoadingComponent />;
+  } else {
+    return (
+      <div className="flex flex-col">
+        <ProfileInfoSection queriedUser={queriedUserData} />
+        <PostsSection posts={[...posts].reverse()} />
+      </div>
+    );
+  }
 };
 
 const ProfileInfoSection = ({ queriedUser }: any) => {
-  const router = useRouter();
   const { refetchUser } = useContext(AuthContext);
-  const [localuser, setLocaluser] = useLocalStorage("user", null);
-  const [user, setUser] = useState(null);
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:3001/users/${queriedUser}`,
-    fetcher
-  );
-
-  useEffect(() => {
-    if (!localuser) {
-      router.push("/auth/login");
-    }
-    setUser(localuser);
-  }, [localuser]);
+  const { user, isLoading: userLoading } = useUser();
 
   const handleFollow = () => {
     axios
@@ -60,29 +62,28 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
       })
       .catch((err) => console.log(err));
   };
-  if (!user) {
-    return <div></div>;
-  }
-  if (!isLoading) {
+  if (userLoading) {
+    return <LoadingComponent />;
+  } else {
     return (
       <div className="flex flex-col gap-2">
         <div className="flex justify-center p-6 gap-8 w-full">
           <div className="flex-shrink-0 flex justify-start">
             <img
-              src={data.profilePicture}
+              src={queriedUser.profilePicture}
               className="w-[100px] h-[100px] rounded-full object-cover"
             />
           </div>
           <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
             <div className="text-3xl overflow-x-auto overflow-y-hidden no-scrollbar">
-              {data.username}
+              {queriedUser.username}
             </div>
             <div>
-              {data._id === user._id ? (
+              {queriedUser._id === user._id ? (
                 <button className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black">
                   <Link href="/profile/edit">Edit Profile</Link>
                 </button>
-              ) : user.follows.includes(queriedUser) ? (
+              ) : user.follows.includes(queriedUser._id) ? (
                 <button
                   onClick={handleUnfollow}
                   className="text-lg w-full text-center bg-slate-200 rounded-lg py-1 text-black"
@@ -101,11 +102,11 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
           </div>
         </div>
 
-        <div className="p-6">{data.bio}</div>
+        <div className="p-6">{queriedUser.bio}</div>
         <div className="w-full flex gap-3 justify-around border-y border-solid border-slate-300 py-4">
-          <BasicInfo num={data.posts.length} text="posts" />
-          <BasicInfo num={data.followers.length} text="followers" />
-          <BasicInfo num={data.follows.length} text="following" />
+          <BasicInfo num={queriedUser.posts.length} text="posts" />
+          <BasicInfo num={queriedUser.followers.length} text="followers" />
+          <BasicInfo num={queriedUser.follows.length} text="following" />
         </div>
       </div>
     );
@@ -121,29 +122,19 @@ const BasicInfo = ({ num, text }: any) => {
   );
 };
 
-const PostsSection = ({ queriedUser }: any) => {
-  const {
-    data: posts,
-    error: postsError,
-    isLoading: postsIsLoading,
-  } = useSWR(`http://localhost:3001/posts/user/${queriedUser}`, fetcher);
-  if (!postsIsLoading) {
-    posts.reverse();
-    return (
-      <div className="grid grid-cols-3">
-        {posts.map((post: any) => {
-          return (
-            <div key={post._id} className="w-full aspect-square">
-              <Link href={`/posts/${post._id}`}>
-                <img src={post.img} className="w-full h-full object-cover" />
-              </Link>
-            </div>
-          );
-        })}
-      </div>
-    );
-  } else {
-    return <div></div>;
-  }
+const PostsSection = ({ posts }: any) => {
+  return (
+    <div className="grid grid-cols-3">
+      {posts.map((post: any) => {
+        return (
+          <div key={post._id} className="w-full aspect-square">
+            <Link href={`/posts/${post._id}`}>
+              <img src={post.img} className="w-full h-full object-cover" />
+            </Link>
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 export default Profile;

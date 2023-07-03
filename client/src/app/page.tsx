@@ -6,16 +6,6 @@ import useUser from "./hooks/useUser";
 
 export default function Home() {
   const router = useRouter();
-  // const [localuser, setLocaluser] = useLocalStorage("user", null);
-  // const [user, setUser] = useState(null);
-  // useEffect(() => {
-  //   if (!localuser) {
-  //     router.push("/auth/login");
-  //   } else {
-  //     setUser(localuser);
-  //     router.push("/posts");
-  //   }
-  // }, [localuser]);
   const { user, isLoading } = useUser();
   useEffect(() => {
     if (!isLoading && user) {
