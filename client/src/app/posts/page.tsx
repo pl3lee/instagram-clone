@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import FollowingPostsContainer from "../components/FollowingPostsContainer";
-import useLocalStorage from "use-local-storage";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "../components/LoadingComponent";
 
@@ -14,7 +13,7 @@ export default function Posts() {
   } else {
     return (
       <div className="mb-[10vh]">
-        <FollowingPostsContainer uid={user?._id} />
+        <FollowingPostsContainer user={user} />
       </div>
     );
   }

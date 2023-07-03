@@ -6,35 +6,22 @@ import { useContext, useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import useSWR from "swr";
 import { AuthContext } from "../contexts/AuthContext";
+import fetcher from "../fetcher/fetcher";
+import LoadingComponent from "./LoadingComponent";
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
-const Post = ({ post }: any) => {
+const Post = ({ post, localUser }: any) => {
   const { refetchUser } = useContext(AuthContext);
-  const [localuser, setLocaluser] = useLocalStorage("user", null);
-  const [loggedInUser, setLoggedInUser] = useState(null);
   const [likeAmount, setLikeAmount] = useState(post.likes.length);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(post.likes.includes(localUser._id));
   const {
-    data: user,
-    error,
-    isLoading,
+    data: postUser,
+    error: postUserError,
+    isLoading: postUserLoading,
   } = useSWR(`http://localhost:3001/users/${post.uid}`, fetcher);
 
-  useEffect(() => {
-    if (localuser) {
-      setLoggedInUser(localuser);
-      setLiked(post.likes.includes(localuser._id));
-    }
-    return () => {
-      refetchUser();
-    };
-  }, []);
   const handleToggleLike = () => {
     axios
-      .patch(
-        `http://localhost:3001/posts/toggle/${loggedInUser?._id}/${post._id}`
-      )
+      .patch(`http://localhost:3001/posts/toggle/${localUser._id}/${post._id}`)
       .then((res) => {
         if (res.data.message === "Post liked") {
           setLikeAmount(likeAmount + 1);
@@ -42,27 +29,32 @@ const Post = ({ post }: any) => {
           setLikeAmount(likeAmount - 1);
         }
         setLiked(!liked);
+        refetchUser();
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  if (user) {
+  if (!postUserLoading) {
     return (
       <div className="flex flex-col">
         <PostHeader
-          profilePicture={user?.profilePicture}
-          username={user?.username}
-          uid={user?._id}
+          profilePicture={postUser?.profilePicture}
+          username={postUser?.username}
+          uid={postUser?._id}
         />
         <PostImage img={post.img} toggleLike={handleToggleLike} />
         <PostIconBar toggleLike={handleToggleLike} liked={liked} />
-        <PostInformation post={post} user={user} likeAmount={likeAmount} />
+        <PostInformation
+          post={post}
+          postUser={postUser}
+          likeAmount={likeAmount}
+        />
       </div>
     );
   } else {
-    return <div></div>;
+    return <LoadingComponent />;
   }
 };
 
@@ -136,7 +128,7 @@ const PostIconBar = ({ liked, toggleLike }: any) => {
   );
 };
 
-const PostInformation = ({ post, user, likeAmount }: any) => {
+const PostInformation = ({ post, postUser, likeAmount }: any) => {
   const postDate = new Date(post.postDateTime);
   const days = [
     "Sunday",
@@ -165,7 +157,7 @@ const PostInformation = ({ post, user, likeAmount }: any) => {
         </div>
       </div>
       <div>
-        <span className="font-bold">{user.username}</span> {post.caption}
+        <span className="font-bold">{postUser.username}</span> {post.caption}
       </div>
       <ViewComments post={post} />
       <div className="font-light opacity-50 text-sm">
