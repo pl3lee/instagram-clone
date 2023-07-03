@@ -2,7 +2,6 @@
 import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import useLocalStorage from "use-local-storage";
 import { Input } from "@rewind-ui/core";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "./LoadingComponent";

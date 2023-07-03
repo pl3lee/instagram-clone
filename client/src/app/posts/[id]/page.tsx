@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import useLocalStorage from "use-local-storage";
 import useSWR from "swr";
 import axios from "axios";
 import { AuthContext } from "@/app/contexts/AuthContext";

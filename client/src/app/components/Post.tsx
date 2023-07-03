@@ -3,7 +3,6 @@ import axios from "axios";
 import ViewComments from "./ViewComments";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import useLocalStorage from "use-local-storage";
 import useSWR from "swr";
 import { AuthContext } from "../contexts/AuthContext";
 import fetcher from "../fetcher/fetcher";

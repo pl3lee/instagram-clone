@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useLocalStorage from "use-local-storage";
 import { usePathname } from "next/navigation";
 import useUser from "../hooks/useUser";
 

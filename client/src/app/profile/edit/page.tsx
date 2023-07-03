@@ -4,7 +4,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import useLocalStorage from "use-local-storage";
 import FormRequirement from "@/app/components/FormRequirement";
 import useUser from "@/app/hooks/useUser";
 import CircularProgress from "@mui/material/CircularProgress";
