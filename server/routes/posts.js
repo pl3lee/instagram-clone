@@ -9,7 +9,8 @@ const router = express.Router();
 // gets all posts, regardless of who posted it
 router.get("/all", async (req, res) => {
   PostModel.find()
-    .then((posts) => res.json(posts.reverse()))
+    .sort({ postDateTime: -1 })
+    .then((posts) => res.json(posts))
     .catch((error) => res.status(400).json(error));
 });
 
@@ -27,6 +28,7 @@ router.get("/user/:uid", async (req, res) => {
   UserModel.findById(uid)
     .then((user) => {
       PostModel.find({ uid: uid })
+        .sort({ postDateTime: -1 })
         .then((posts) => res.json(posts))
         .catch((err) => res.status(400).json(err));
     })
@@ -92,6 +94,7 @@ router.get("/following/:uid", async (req, res) => {
     .then((user) => {
       const followingUsers = [...user.follows, user._id];
       PostModel.find({ uid: { $in: followingUsers } })
+        .sort({ postDateTime: -1 })
         .then((posts) => res.json(posts))
         .catch((err) => res.status(400).json(err));
     })

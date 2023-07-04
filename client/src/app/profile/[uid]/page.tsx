@@ -27,7 +27,7 @@ const Profile = ({ params }: any) => {
     return (
       <div className="flex flex-col">
         <ProfileInfoSection queriedUser={queriedUserData} />
-        <PostsSection posts={[...posts].reverse()} />
+        <PostsSection posts={posts} />
       </div>
     );
   }
