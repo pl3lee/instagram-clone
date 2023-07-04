@@ -2,7 +2,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import useLocalStorage from "use-local-storage";
 import useUser from "../hooks/useUser";
 
 export const AuthContext = createContext<{ user: any; setUser: any } | null>(

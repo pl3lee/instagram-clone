@@ -1,17 +1,13 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import useLocalStorage from "use-local-storage";
+import useUser from "../hooks/useUser";
 
 const ProfileHeader = () => {
   const { logout } = useContext(AuthContext);
-  const [localuser, setLocaluser] = useLocalStorage("user", null);
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    setUser(localuser);
-  }, [localuser]);
+  const { user, isLoading } = useUser();
 
-  if (user) {
+  if (!isLoading && user) {
     return (
       <ul className="sticky-header px-4">
         <li className="flex-2 list-none">
