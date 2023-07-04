@@ -1,10 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import Link from "next/link";
 import useSWR from "swr";
-import axios from "axios";
-import { AuthContext } from "@/app/contexts/AuthContext";
 import Post from "@/app/components/Post";
 import fetcher from "@/app/fetcher/fetcher";
 import useUser from "@/app/hooks/useUser";
