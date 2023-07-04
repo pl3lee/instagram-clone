@@ -21,14 +21,14 @@
     @apply fill-black dark:fill-white w-8 h-8
   }
   .auth-input {
-    @apply border border-gray-300 p-2 rounded focus:border-gray-600 focus:outline-none caret-blue-500 bg-slate-50 text-black
+    @apply border border-borderGray p-2 rounded focus:border-gray-600 focus:outline-none caret-accentBlue bg-slate-50 text-black
   }
   .icon-container{
     @apply flex justify-center items-center p-2
   }
 
   .sticky-header {
-    @apply py-2 flex gap-3 justify-between sticky top-0 left-0 w-full px-1 list-none m-0 bg-white border-slate-200 border-solid border-b-[0.5px] dark:bg-black
+    @apply py-2 flex gap-3 justify-between sticky top-0 left-0 w-full px-1 list-none m-0 bg-white border-borderGray border-solid border-b-[0.5px] dark:bg-black
   }
 }
 

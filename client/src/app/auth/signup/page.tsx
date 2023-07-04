@@ -36,7 +36,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await register(email, password).catch((err) => console.log(err));
+    await register(email, password, username).catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -228,7 +228,7 @@ const SignUp = () => {
 
           <button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded disabled:bg-gray-400"
+            className="bg-accentBlue text-white p-2 rounded disabled:bg-gray-400"
             disabled={!dataAcceptable}
           >
             Register
@@ -236,7 +236,7 @@ const SignUp = () => {
         </form>
         <div>
           Already have an account?{" "}
-          <Link className="text-blue-900" href="/auth/login">
+          <Link className="text-linkBlue" href="/auth/login">
             Log in
           </Link>
         </div>

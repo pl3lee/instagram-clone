@@ -2,22 +2,19 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import FollowingPostsContainer from "../components/FollowingPostsContainer";
-import useLocalStorage from "use-local-storage";
+import useUser from "../hooks/useUser";
+import LoadingComponent from "../components/LoadingComponent";
 
 export default function Posts() {
-  const [localuser, setLocaluser] = useLocalStorage("user", null);
-  const [user, setUser] = useState(null);
-  const router = useRouter();
-  useEffect(() => {
-    if (!localuser) {
-      router.push("/auth/login");
-    }
-    setUser(localuser);
-  }, []);
+  const { user, isLoading } = useUser();
 
-  return (
-    <div className="mb-[10vh]">
-      <FollowingPostsContainer uid={user?._id} />
-    </div>
-  );
+  if (isLoading) {
+    return <LoadingComponent />;
+  } else {
+    return (
+      <div className="mb-[10vh]">
+        <FollowingPostsContainer user={user} />
+      </div>
+    );
+  }
 }

@@ -1,7 +1,6 @@
 "use client";
-import CircularProgress from "@mui/material/CircularProgress";
-
-const Loading = () => {
+import { CircularProgress } from "@mui/material";
+const LoadingComponent = () => {
   return (
     <div className="flex justify-center items-center h-screen w-full">
       <CircularProgress />
@@ -9,4 +8,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default LoadingComponent;

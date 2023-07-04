@@ -1,20 +1,15 @@
+"use client";
 import axios from "axios";
 import Post from "./Post";
+import useSWR from "swr";
+import fetcher from "../fetcher/fetcher";
 
-const getFollowingPosts = async (uid: any) => {
-  if (!uid) {
-    return;
-  }
-  return axios
-    .get(`http://localhost:3001/posts/following/${uid}`)
-    .then((response) => {
-      return response.data.reverse();
-    })
-    .catch((err) => console.log(err));
-};
-
-const FollowingPostsContainer = async ({ uid }: any) => {
-  const [posts] = await Promise.all([getFollowingPosts(uid)]);
+const FollowingPostsContainer = ({ user }: any) => {
+  const {
+    data: posts,
+    error,
+    isLoading,
+  } = useSWR(`http://localhost:3001/posts/following/${user._id}`, fetcher);
 
   return (
     <div>
@@ -22,7 +17,7 @@ const FollowingPostsContainer = async ({ uid }: any) => {
         posts.map((post: any) => {
           return (
             <div key={post._id}>
-              <Post post={post} />
+              <Post post={post} localUser={user} />
             </div>
           );
         })}

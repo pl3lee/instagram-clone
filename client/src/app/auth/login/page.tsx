@@ -36,7 +36,10 @@ const Login = () => {
               setPassword(e.target.value);
             }}
           />
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+          <button
+            type="submit"
+            className="bg-accentBlue text-white p-2 rounded"
+          >
             Login
           </button>
           {error && (
@@ -47,7 +50,7 @@ const Login = () => {
         </form>
         <div>
           Don't have an account?{" "}
-          <Link className="text-blue-900" href="/auth/signup">
+          <Link className="text-linkBlue" href="/auth/signup">
             Sign up
           </Link>
         </div>

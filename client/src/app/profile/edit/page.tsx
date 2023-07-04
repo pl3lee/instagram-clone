@@ -4,14 +4,14 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import useLocalStorage from "use-local-storage";
 import FormRequirement from "@/app/components/FormRequirement";
+import useUser from "@/app/hooks/useUser";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Edit = () => {
   const router = useRouter();
   const { refetchUser } = useContext(AuthContext);
-  const [localuser, setLocaluser] = useLocalStorage("user", null);
-  const [user, setUser] = useState(null);
+  const { user, isLoading } = useUser();
 
   const [username, setUsername] = useState("");
   const [usernameNotExists, setUsernameNotExists] = useState(false);
@@ -42,14 +42,6 @@ const Edit = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  // sets user to localuser on mount
-  useEffect(() => {
-    if (!localuser) {
-      router.push("/auth/login");
-    }
-    setUser(localuser);
-  }, []);
 
   // checks username exists
   useEffect(() => {
@@ -103,83 +95,90 @@ const Edit = () => {
     profilePicture,
     profilePictureAcceptable,
   ]);
-
-  return (
-    <div className="flex flex-col p-3 gap-3">
-      <div className="flex">
-        <div className="flex-shrink-0 flex-grow-[2]">
-          <img
-            src={user?.profilePicture}
-            className="w-[50px] h-[50px] rounded-full object-cover"
+  if (!isLoading && user) {
+    return (
+      <div className="flex flex-col p-3 gap-3">
+        <div className="flex">
+          <div className="flex-shrink-0 flex-grow-[2]">
+            <img
+              src={user?.profilePicture}
+              className="w-[50px] h-[50px] rounded-full object-cover"
+            />
+          </div>
+          <div className="flex flex-grow-[8] items-center text-xl">
+            {user?.username}
+          </div>
+        </div>
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+          <label className="text-xl font-bold">Username</label>
+          <input
+            className="auth-input"
+            onChange={(event) => {
+              setUsername(event.target.value);
+            }}
           />
-        </div>
-        <div className="flex flex-grow-[8] items-center text-xl">
-          {user?.username}
-        </div>
-      </div>
-      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-        <label className="text-xl font-bold">Username</label>
-        <input
-          className="auth-input"
-          onChange={(event) => {
-            setUsername(event.target.value);
-          }}
-        />
-        {username.length > 0 && (
-          <div className="flex flex-col gap-1">
-            <FormRequirement
-              text="Username must be unique"
-              state={usernameNotExists}
-            />
-            <FormRequirement
-              text="Username must be between 5 and 15 characters"
-              state={usernameGoodLength}
-            />
-            <FormRequirement
-              text="Username must not contain spaces"
-              state={usernameNoSpaces}
-            />
-          </div>
-        )}
+          {username.length > 0 && (
+            <div className="flex flex-col gap-1">
+              <FormRequirement
+                text="Username must be unique"
+                state={usernameNotExists}
+              />
+              <FormRequirement
+                text="Username must be between 5 and 15 characters"
+                state={usernameGoodLength}
+              />
+              <FormRequirement
+                text="Username must not contain spaces"
+                state={usernameNoSpaces}
+              />
+            </div>
+          )}
 
-        <label className="text-xl font-bold">Bio</label>
-        <input
-          className="auth-input"
-          onChange={(event) => {
-            setBio(event.target.value);
-          }}
-        />
-        <label className="text-xl font-bold">
-          Profile Picture (Paste image link)
-        </label>
-        <input
-          className="auth-input"
-          onChange={(event) => {
-            setProfilePicture(event.target.value);
-          }}
-        />
-        {profilePicture.length > 0 && (
-          <div className="flex flex-col gap-1">
-            <FormRequirement
-              text="Profile picture must be a valid image link"
-              state={profilePictureAcceptable}
-            />
-          </div>
-        )}
+          <label className="text-xl font-bold">Bio</label>
+          <input
+            className="auth-input"
+            onChange={(event) => {
+              setBio(event.target.value);
+            }}
+          />
+          <label className="text-xl font-bold">
+            Profile Picture (Paste image link)
+          </label>
+          <input
+            className="auth-input"
+            onChange={(event) => {
+              setProfilePicture(event.target.value);
+            }}
+          />
+          {profilePicture.length > 0 && (
+            <div className="flex flex-col gap-1">
+              <FormRequirement
+                text="Profile picture must be a valid image link"
+                state={profilePictureAcceptable}
+              />
+            </div>
+          )}
 
-        <button
-          className="bg-blue-400 rounded-lg py-1 text-white disabled:bg-gray-400"
-          type="submit"
-          disabled={!dataAcceptable}
-        >
-          Save
+          <button
+            className="bg-accentBlue rounded-lg py-1 text-white disabled:bg-gray-400"
+            type="submit"
+            disabled={!dataAcceptable}
+          >
+            Save
+          </button>
+        </form>
+        <button className="bg-accentBlue rounded-lg py-1 text-white">
+          <Link href="/profile">Go Back</Link>
         </button>
-      </form>
-      <button className="bg-blue-400 rounded-lg py-1 text-white">
-        <Link href="/profile">Go Back</Link>
-      </button>
-    </div>
-  );
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex justify-center items-center h-screen w-full">
+        <CircularProgress />
+      </div>
+    );
+  }
 };
 
 export default Edit;
