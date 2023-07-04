@@ -1,13 +1,16 @@
 "use client";
 import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, FormEventHandler } from "react";
 import { Input } from "@rewind-ui/core";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "./LoadingComponent";
 import Navbar from "./Navbar";
+import { PostInterface } from "../interfaces/Post";
+import { CommentInterface } from "../interfaces/Comment";
+import { UserInterface } from "../interfaces/User";
 
-const ViewComments = ({ post }: any) => {
+const ViewComments = ({ post }: { post: PostInterface }) => {
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState(post.comments);
   const [comment, setComment] = useState("");
@@ -15,12 +18,12 @@ const ViewComments = ({ post }: any) => {
 
   const { user, isLoading } = useUser();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setComment("");
     setCommentPlaceHolder("Posting comment...");
     axios
-      .patch(`http://localhost:3001/posts/comment/${user._id}/${post._id}`, {
+      .patch(`http://localhost:3001/posts/comment/${user?._id}/${post._id}`, {
         comment,
       })
       .then((response) => {
@@ -64,7 +67,7 @@ const ViewComments = ({ post }: any) => {
                     <form onSubmit={handleSubmit} className="w-full">
                       <Input
                         withRing={false}
-                        color="white"
+                        color="gray"
                         className="rounded-full"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
@@ -99,7 +102,7 @@ const ViewComments = ({ post }: any) => {
             <Card.Body>
               <div className=" max-h-[50vh] overflow-y-scroll">
                 {comments.length > 0 ? (
-                  [...comments].reverse().map((comment: any) => {
+                  [...comments].reverse().map((comment: CommentInterface) => {
                     return <Comment key={comment._id} comment={comment} />;
                   })
                 ) : (
@@ -118,8 +121,8 @@ const ViewComments = ({ post }: any) => {
   }
 };
 
-const Comment = ({ comment, user }: any) => {
-  const [commentUser, setCommentUser] = useState<any>(null);
+const Comment = ({ comment }: { comment: CommentInterface }) => {
+  const [commentUser, setCommentUser] = useState<UserInterface | null>(null);
   useEffect(() => {
     axios
       .get(`http://localhost:3001/users/${comment?.uid}`)

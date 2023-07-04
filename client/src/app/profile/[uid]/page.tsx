@@ -7,8 +7,10 @@ import { AuthContext } from "@/app/contexts/AuthContext";
 import useUser from "@/app/hooks/useUser";
 import LoadingComponent from "@/app/components/LoadingComponent";
 import fetcher from "@/app/helpers/fetcher";
+import { UserInterface } from "@/app/interfaces/User";
+import { PostInterface } from "@/app/interfaces/Post";
 
-const Profile = ({ params }: any) => {
+const Profile = ({ params }: { params: { uid: string } }) => {
   const { uid } = params;
   const {
     data: queriedUserData,
@@ -33,7 +35,11 @@ const Profile = ({ params }: any) => {
   }
 };
 
-const ProfileInfoSection = ({ queriedUser }: any) => {
+const ProfileInfoSection = ({
+  queriedUser,
+}: {
+  queriedUser: UserInterface;
+}) => {
   const { refetchUser } = useContext(AuthContext);
   const { user, isLoading: userLoading } = useUser();
   const [followed, setFollowed] = useState(false);
@@ -120,7 +126,7 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
   }
 };
 
-const BasicInfo = ({ num, text }: any) => {
+const BasicInfo = ({ num, text }: { num: number; text: string }) => {
   return (
     <div className="flex flex-col align-middle justify-center">
       <div className="text-center">{num}</div>
@@ -129,10 +135,10 @@ const BasicInfo = ({ num, text }: any) => {
   );
 };
 
-const PostsSection = ({ posts }: any) => {
+const PostsSection = ({ posts }: { posts: [PostInterface] }) => {
   return (
     <div className="grid grid-cols-3">
-      {posts.map((post: any) => {
+      {posts.map((post: PostInterface) => {
         return (
           <div key={post._id} className="w-full aspect-square">
             <Link href={`/posts/${post._id}`}>

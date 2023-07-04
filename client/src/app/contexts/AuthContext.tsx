@@ -1,20 +1,41 @@
 "use client";
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
+import { UserInterface } from "../interfaces/User";
 
-export const AuthContext = createContext<{ user: any; setUser: any } | null>(
-  null
-);
+export interface AuthContextInterface {
+  user: UserInterface | null;
+  refetchUser: () => Promise<void>;
+  loading: Boolean;
+  error: Error | null;
+  logout: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    username: string
+  ) => Promise<void>;
+}
 
-const AuthProvider = ({ children }: any) => {
+export const AuthContext = createContext<AuthContextInterface>({
+  user: null,
+  refetchUser: async () => {},
+  loading: false,
+  error: null,
+  logout: async () => {},
+  login: async (email: string, password: string) => {},
+  register: async (email: string, password: string, username: string) => {},
+});
+
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { user, isLoading, setLocalUser } = useUser();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<Boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     setLoading(true);
     setError(null);
     axios
@@ -31,7 +52,7 @@ const AuthProvider = ({ children }: any) => {
       .finally(() => setLoading(false));
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<void> => {
     setLoading(true);
     setError(null);
     axios
@@ -55,7 +76,7 @@ const AuthProvider = ({ children }: any) => {
     email: string,
     password: string,
     username: string
-  ) => {
+  ): Promise<void> => {
     setLoading(true);
     setError(null);
     axios
@@ -76,7 +97,7 @@ const AuthProvider = ({ children }: any) => {
       .finally(() => setLoading(false));
   };
 
-  const refetchUser = () => {
+  const refetchUser = async (): Promise<void> => {
     setLoading(true);
     setError(null);
     console.log("refetching user");

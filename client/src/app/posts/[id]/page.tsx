@@ -5,7 +5,7 @@ import fetcher from "@/app/helpers/fetcher";
 import useUser from "@/app/hooks/useUser";
 import LoadingComponent from "@/app/components/LoadingComponent";
 
-const PostPage = ({ params }: any) => {
+const PostPage = ({ params }: { params: { id: string } }) => {
   const { user: localUser, isLoading: userLoading } = useUser();
   const { id } = params;
   const {
