@@ -4,17 +4,14 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "./LoadingComponent";
+import GenericHeader from "./GenericHeader";
 
 const PostsHeader = () => {
   const { user, isLoading } = useUser();
   const pathname = usePathname();
   if (!isLoading) {
     if (pathname === "/posts/create") {
-      return (
-        <ul className="sticky-header">
-          <li className="text-center text-3xl font-bold p-2">Create post</li>
-        </ul>
-      );
+      return <GenericHeader title="New Post" backLink="/posts" />;
     } else if (pathname.startsWith("/posts")) {
       return (
         <ul className="sticky-header">
