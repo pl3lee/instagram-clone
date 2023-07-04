@@ -64,14 +64,14 @@ const ProfileInfoSection = ({ queriedUser }: any) => {
   };
 
   useEffect(() => {
-    if (!userLoading) {
+    if (!userLoading && user) {
       setFollowed(user.follows.includes(queriedUser._id));
     }
   }, [user]);
 
   if (userLoading) {
     return <LoadingComponent />;
-  } else {
+  } else if (user) {
     return (
       <div className="flex flex-col gap-2">
         <div className="flex justify-center p-6 gap-8 w-full">

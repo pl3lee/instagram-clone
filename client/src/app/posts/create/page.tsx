@@ -13,6 +13,7 @@ const Create = () => {
   }, []);
   const [image, setImage] = useState("");
   const [caption, setCaption] = useState("");
+  const [dataAcceptable, setDataAcceptable] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -25,6 +26,7 @@ const Create = () => {
       })
       .catch((err) => console.log(err));
   };
+  useEffect(() => {}, [image, caption]);
   return (
     <div className="flex flex-col p-2">
       <form className="flex flex-col gap-5" onSubmit={handleSubmit}>

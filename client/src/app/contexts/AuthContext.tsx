@@ -3,6 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useLocalStorage from "use-local-storage";
+import useUser from "../hooks/useUser";
 
 export const AuthContext = createContext<{ user: any; setUser: any } | null>(
   null
@@ -10,7 +11,7 @@ export const AuthContext = createContext<{ user: any; setUser: any } | null>(
 
 const AuthProvider = ({ children }: any) => {
   const router = useRouter();
-  const [user, setUser] = useLocalStorage("user", null);
+  const { user, isLoading, setLocalUser } = useUser();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,7 +21,7 @@ const AuthProvider = ({ children }: any) => {
     axios
       .post("http://localhost:3001/users/logout")
       .then(() => {
-        setUser(null);
+        setLocalUser(null);
         setError(null);
         router.push("/auth/login");
       })
@@ -40,7 +41,7 @@ const AuthProvider = ({ children }: any) => {
         password,
       })
       .then((loggedInUser) => {
-        setUser(loggedInUser.data);
+        setLocalUser(loggedInUser.data);
         setError(null);
         router.push("/");
       })
@@ -60,7 +61,7 @@ const AuthProvider = ({ children }: any) => {
         password,
       })
       .then((loggedInUser) => {
-        setUser(loggedInUser.data);
+        setLocalUser(loggedInUser.data);
         setError(null);
         router.push("/");
       })
@@ -80,7 +81,7 @@ const AuthProvider = ({ children }: any) => {
       .then((response) => {
         console.log("refetch user success", response.data);
         setError(null);
-        setUser(response.data);
+        setLocalUser(response.data);
       })
       .catch((err) => {
         setError(err);
@@ -93,7 +94,6 @@ const AuthProvider = ({ children }: any) => {
     <AuthContext.Provider
       value={{
         user,
-        setUser,
         refetchUser,
         loading,
         error,

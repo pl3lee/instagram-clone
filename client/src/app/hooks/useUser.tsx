@@ -8,7 +8,15 @@ export default function useUser() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const setLocalUser = (newUser) => {
+    setIsLoading(true);
+    Promise.all([setLocaluser(newUser), setUser(newUser)]).then(() => {
+      setIsLoading(false);
+    });
+  };
+
   useEffect(() => {
+    setIsLoading(true);
     if (!localuser) {
       setUser(null);
       router.push("/auth/login");
@@ -18,5 +26,5 @@ export default function useUser() {
     setIsLoading(false);
   }, [localuser]);
 
-  return { user, isLoading };
+  return { user, isLoading, setLocalUser };
 }
