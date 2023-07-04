@@ -4,20 +4,29 @@ import ViewComments from "./ViewComments";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
-import { AuthContext } from "../contexts/AuthContext";
-import fetcher from "../fetcher/fetcher";
+import { AuthContext, AuthContextInterface } from "../contexts/AuthContext";
+import fetcher from "../helpers/fetcher";
 import LoadingComponent from "./LoadingComponent";
+import { PostInterface } from "../interfaces/Post";
+import { UserInterface } from "../interfaces/User";
 
-const Post = ({ post, localUser }: any) => {
-  const { refetchUser } = useContext(AuthContext);
-  const [likeAmount, setLikeAmount] = useState(post.likes.length);
+const Post = ({
+  post,
+  localUser,
+}: {
+  post: PostInterface;
+  localUser: UserInterface;
+}) => {
+  const authContext: AuthContextInterface = useContext(AuthContext);
+  const refetchUser = authContext.refetchUser;
+  const [likeAmount, setLikeAmount] = useState<number>(post.likes.length);
   const {
     data: postUser,
     error: postUserError,
     isLoading: postUserLoading,
   } = useSWR(`http://localhost:3001/users/${post.uid}`, fetcher);
 
-  const handleToggleLike = () => {
+  const handleToggleLike = (): void => {
     axios
       .patch(`http://localhost:3001/posts/toggle/${localUser._id}/${post._id}`)
       .then((res) => {
@@ -51,13 +60,14 @@ const Post = ({ post, localUser }: any) => {
   }
 };
 
-const PostHeader = ({ postUser }: any) => {
+const PostHeader = ({ postUser }: { postUser: UserInterface }) => {
   return (
     <div className="flex gap-1 px-2 py-3">
       <div className="flex-shrink-0 mr-3">
         <img
           src={postUser.profilePicture}
           className="w-[40px] h-[40px] rounded-full object-cover"
+          alt="profile picture"
         />
       </div>
       <div className="flex-grow-[9] text-lg font-bold flex items-center">
@@ -67,7 +77,13 @@ const PostHeader = ({ postUser }: any) => {
   );
 };
 
-const PostImage = ({ post, toggleLike }: any) => {
+const PostImage = ({
+  post,
+  toggleLike,
+}: {
+  post: PostInterface;
+  toggleLike: () => void;
+}) => {
   return (
     <div
       onDoubleClick={(e) => {
@@ -75,12 +91,22 @@ const PostImage = ({ post, toggleLike }: any) => {
         console.log("double clicked");
       }}
     >
-      <img src={post.img} className="w-full h-auto" />
+      <img src={post.img} className="w-full h-auto" alt="post image" />
     </div>
   );
 };
 
-const PostIconBar = ({ post, localUser, toggleLike, setLikeAmount }: any) => {
+const PostIconBar = ({
+  post,
+  localUser,
+  toggleLike,
+  setLikeAmount,
+}: {
+  post: PostInterface;
+  localUser: UserInterface;
+  toggleLike: () => void;
+  setLikeAmount: (callback: (likeAmount: number) => number) => void;
+}) => {
   const [liked, setLiked] = useState(post.likes.includes(localUser._id));
   return (
     <div className="flex">
@@ -90,7 +116,7 @@ const PostIconBar = ({ post, localUser, toggleLike, setLikeAmount }: any) => {
             onClick={(e) => {
               toggleLike();
               setLiked(!liked);
-              setLikeAmount((prevState: any) => {
+              setLikeAmount((prevState: number) => {
                 if (liked) {
                   return prevState - 1;
                 } else {
@@ -130,7 +156,15 @@ const PostIconBar = ({ post, localUser, toggleLike, setLikeAmount }: any) => {
   );
 };
 
-const PostInformation = ({ post, postUser, likeAmount }: any) => {
+const PostInformation = ({
+  post,
+  postUser,
+  likeAmount,
+}: {
+  post: PostInterface;
+  postUser: UserInterface;
+  likeAmount: number;
+}) => {
   const postDate = new Date(post.postDateTime);
   const days = [
     "Sunday",

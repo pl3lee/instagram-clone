@@ -27,10 +27,10 @@ const Edit = () => {
 
   const [dataAcceptable, setDataAcceptable] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .patch(`http://localhost:3001/users/update/${user._id}`, {
+      .patch(`http://localhost:3001/users/update/${user?._id}`, {
         username,
         bio,
         profilePicture,
@@ -38,7 +38,7 @@ const Edit = () => {
       .then((response) => {
         console.log("response from update", response);
         refetchUser();
-        router.push(`/profile/${user._id}`);
+        router.push(`/profile/${user?._id}`);
       })
       .catch((err) => console.log(err));
   };
@@ -72,7 +72,7 @@ const Edit = () => {
     } else {
       const img = new Image();
       img.src = profilePicture;
-      new Promise((resolve) => {
+      new Promise<boolean>((resolve) => {
         img.onload = () => resolve(true);
         img.onerror = () => resolve(false);
       }).then((result) => {
@@ -103,6 +103,7 @@ const Edit = () => {
             <img
               src={user?.profilePicture}
               className="w-[50px] h-[50px] rounded-full object-cover"
+              alt="profile picture"
             />
           </div>
           <div className="flex flex-grow-[8] items-center text-xl">
@@ -168,7 +169,7 @@ const Edit = () => {
           </button>
         </form>
         <button className="bg-accentBlue rounded-lg py-1 text-white">
-          <Link href="/profile">Go Back</Link>
+          <Link href={`/profile/${user._id}`}>Go Back</Link>
         </button>
       </div>
     );

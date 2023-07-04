@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { PostInterface } from "../interfaces/Post";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -58,7 +59,7 @@ const Search = () => {
           })
         ) : (
           <div className="grid grid-cols-3">
-            {allPosts.map((post: any) => {
+            {allPosts.map((post: PostInterface) => {
               return (
                 <div key={post._id} className="w-full aspect-square">
                   <Link href={`/posts/${post._id}`}>
