@@ -363,6 +363,7 @@ router.get("/comments/:postId", async (req, res) => {
 
 // gets all notifications of a user
 router.get("/notifications/:uid", async (req, res) => {
+  const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "Missing user id" });
   }
