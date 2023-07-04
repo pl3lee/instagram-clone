@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
+import ProfilePictureIcon from "../components/ProfilePictureIcon";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -82,13 +83,8 @@ const Search = () => {
 const User = ({ user }: { user: UserInterface }) => {
   return (
     <div className="flex gap-1 px-2 py-3">
-      <div className="flex-shrink-0 mr-3">
-        <img
-          src={user.profilePicture}
-          className="w-[60px] h-[60px] rounded-full object-cover"
-        />
-      </div>
-      <div className="flex-grow-[9] text-lg font-bold flex items-center">
+      <ProfilePictureIcon image={user.profilePicture} size="lg" />
+      <div className="flex-grow-[9] text-lg font-bold flex items-center ml-3">
         <Link href={`/profile/${user._id}`}>{user.username}</Link>
       </div>
     </div>

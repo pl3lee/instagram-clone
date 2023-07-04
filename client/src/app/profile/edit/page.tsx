@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import FormRequirement from "@/app/components/FormRequirement";
 import useUser from "@/app/hooks/useUser";
 import CircularProgress from "@mui/material/CircularProgress";
+import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
 
 const Edit = () => {
   const router = useRouter();
@@ -99,13 +100,13 @@ const Edit = () => {
     return (
       <div className="flex flex-col p-3 gap-3">
         <div className="flex">
-          <div className="flex-shrink-0 flex-grow-[2]">
-            <img
-              src={user?.profilePicture}
-              className="w-[50px] h-[50px] rounded-full object-cover"
-              alt="profile picture"
+          <div className="flex-grow-[2]">
+            <ProfilePictureIcon
+              image={user ? user.profilePicture : ""}
+              size="xl"
             />
           </div>
+
           <div className="flex flex-grow-[8] items-center text-xl">
             {user?.username}
           </div>

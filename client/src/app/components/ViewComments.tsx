@@ -9,6 +9,7 @@ import Navbar from "./Navbar";
 import { PostInterface } from "../interfaces/Post";
 import { CommentInterface } from "../interfaces/Comment";
 import { UserInterface } from "../interfaces/User";
+import ProfilePictureIcon from "./ProfilePictureIcon";
 
 const ViewComments = ({ post }: { post: PostInterface }) => {
   const [open, setOpen] = useState(false);
@@ -52,17 +53,14 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
         >
           <Card className="w-full bg-white dark:bg-black border-none">
             <Card.Header>
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-3">
                 <div className="text-3xl text-center font-bold">Comments</div>
                 <div className="flex gap-3">
-                  <div className="flex-grow-1 flex p-2 flex-shrink-0">
-                    <div className="flex-shrink-0">
-                      <img
-                        src={user?.profilePicture}
-                        className="w-[50px] h-[50px] rounded-full object-cover"
-                        alt="profile picture"
-                      />
-                    </div>
+                  <div className="flex-grow-1">
+                    <ProfilePictureIcon
+                      image={user ? user.profilePicture : ""}
+                      size="lg"
+                    />
                   </div>
                   <div className="flex-grow-7 justify-start items-center flex">
                     <form onSubmit={handleSubmit} className="w-full">
@@ -132,14 +130,11 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
   }, [comment]);
   return (
     <div className="flex gap-3">
-      <div className="flex-grow-1 flex p-2 flex-shrink-0">
-        <div className="flex-shrink-0">
-          <img
-            src={commentUser?.profilePicture}
-            className="w-[40px] h-[40px] rounded-full object-cover"
-            alt="profile picture"
-          />
-        </div>
+      <div className="flex-grow-1 flex p-2 justify-center items-center">
+        <ProfilePictureIcon
+          image={commentUser ? commentUser.profilePicture : ""}
+          size="lg"
+        />
       </div>
       <div className="flex-grow-8">
         <div className="flex flex-col gap-1 p-2">

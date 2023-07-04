@@ -9,6 +9,7 @@ import fetcher from "../helpers/fetcher";
 import LoadingComponent from "./LoadingComponent";
 import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
+import ProfilePictureIcon from "./ProfilePictureIcon";
 
 const Post = ({
   post,
@@ -63,14 +64,8 @@ const Post = ({
 const PostHeader = ({ postUser }: { postUser: UserInterface }) => {
   return (
     <div className="flex gap-1 px-2 py-3">
-      <div className="flex-shrink-0 mr-3">
-        <img
-          src={postUser.profilePicture}
-          className="w-[40px] h-[40px] rounded-full object-cover"
-          alt="profile picture"
-        />
-      </div>
-      <div className="flex-grow-[9] text-lg font-bold flex items-center">
+      <ProfilePictureIcon image={postUser.profilePicture} size="lg" />
+      <div className="flex-grow-[9] text-lg font-bold flex items-center ml-3">
         <Link href={`/profile/${postUser._id}`}>{postUser.username}</Link>
       </div>
     </div>

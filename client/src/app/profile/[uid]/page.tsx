@@ -9,6 +9,7 @@ import LoadingComponent from "@/app/components/LoadingComponent";
 import fetcher from "@/app/helpers/fetcher";
 import { UserInterface } from "@/app/interfaces/User";
 import { PostInterface } from "@/app/interfaces/Post";
+import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
 
 const Profile = ({ params }: { params: { uid: string } }) => {
   const { uid } = params;
@@ -24,7 +25,7 @@ const Profile = ({ params }: { params: { uid: string } }) => {
     isLoading: postsLoading,
   } = useSWR(`http://localhost:3001/posts/user/${uid}`, fetcher);
 
-  if (queryUserLoading || postsLoading) {
+  if (queryUserLoading || postsLoading || userLoading) {
     return <LoadingComponent />;
   } else {
     return (
@@ -81,12 +82,7 @@ const ProfileInfoSection = ({
     return (
       <div className="flex flex-col gap-2">
         <div className="flex justify-center p-6 gap-8 w-full">
-          <div className="flex-shrink-0 flex justify-start">
-            <img
-              src={queriedUser.profilePicture}
-              className="w-[100px] h-[100px] rounded-full object-cover"
-            />
-          </div>
+          <ProfilePictureIcon image={queriedUser.profilePicture} size="xl" />
           <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
             <div className="text-3xl overflow-x-auto overflow-y-hidden no-scrollbar">
               {queriedUser.username}
