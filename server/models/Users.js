@@ -17,7 +17,10 @@ const UserSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     default: [],
   },
-  notifications: { type: [{ type: String }], default: [] },
+  notifications: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "notifications" }],
+    default: [],
+  },
   likes: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "posts" }],
     default: [],

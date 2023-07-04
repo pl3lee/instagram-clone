@@ -3,6 +3,7 @@ import { PostModel } from "../models/Posts.js";
 import { UserModel } from "../models/Users.js";
 import { CommentModel } from "../models/Posts.js";
 import mongoose from "mongoose";
+import { NotificationModel } from "../models/Notifications.js";
 
 const router = express.Router();
 
@@ -101,81 +102,81 @@ router.get("/following/:uid", async (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
-// likes a post
-router.patch("/like/:uid/:postId", async (req, res) => {
-  const { uid, postId } = req.params;
-  if (uid === undefined || postId === undefined) {
-    res.status(400).json({ message: "Missing user id or post id" });
-  }
-  if (uid === "" || postId === "") {
-    res.status(400).json({ message: "Missing user id or post id" });
-  }
-  if (mongoose.Types.ObjectId.isValid(uid) === false) {
-    res.status(400).json({ message: "Invalid user id" });
-  }
-  if (mongoose.Types.ObjectId.isValid(postId) === false) {
-    res.status(400).json({ message: "Invalid post id" });
-  }
+// // likes a post
+// router.patch("/like/:uid/:postId", async (req, res) => {
+//   const { uid, postId } = req.params;
+//   if (uid === undefined || postId === undefined) {
+//     res.status(400).json({ message: "Missing user id or post id" });
+//   }
+//   if (uid === "" || postId === "") {
+//     res.status(400).json({ message: "Missing user id or post id" });
+//   }
+//   if (mongoose.Types.ObjectId.isValid(uid) === false) {
+//     res.status(400).json({ message: "Invalid user id" });
+//   }
+//   if (mongoose.Types.ObjectId.isValid(postId) === false) {
+//     res.status(400).json({ message: "Invalid post id" });
+//   }
 
-  await UserModel.findById(uid).catch((err) =>
-    res.status(404).json({ message: "User not found" })
-  );
-  await PostModel.findById(postId).catch((err) =>
-    res.status(404).json({ message: "Post not found" })
-  );
+//   await UserModel.findById(uid).catch((err) =>
+//     res.status(404).json({ message: "User not found" })
+//   );
+//   await PostModel.findById(postId).catch((err) =>
+//     res.status(404).json({ message: "Post not found" })
+//   );
 
-  UserModel.updateOne({ _id: uid }, { $addToSet: { likes: postId } }).catch(
-    (err) => {
-      console.log(err);
-      res.status(500).json({ message: "Post like failed" });
-    }
-  );
-  PostModel.updateOne({ _id: postId }, { $addToSet: { likes: uid } })
-    .then(() => {
-      res.json({ message: "Post liked" });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: "Post like failed" });
-    });
-});
+//   UserModel.updateOne({ _id: uid }, { $addToSet: { likes: postId } }).catch(
+//     (err) => {
+//       console.log(err);
+//       res.status(500).json({ message: "Post like failed" });
+//     }
+//   );
+//   PostModel.updateOne({ _id: postId }, { $addToSet: { likes: uid } })
+//     .then(() => {
+//       res.json({ message: "Post liked" });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(500).json({ message: "Post like failed" });
+//     });
+// });
 
-// unlikes a post
-router.patch("/unlike/:uid/:postId", async (req, res) => {
-  const { uid, postId } = req.params;
-  if (uid === undefined || postId === undefined) {
-    res.status(400).json({ message: "Missing user id or post id" });
-  }
-  if (uid === "" || postId === "") {
-    res.status(400).json({ message: "Missing user id or post id" });
-  }
-  if (mongoose.Types.ObjectId.isValid(uid) === false) {
-    res.status(400).json({ message: "Invalid user id" });
-  }
-  if (mongoose.Types.ObjectId.isValid(postId) === false) {
-    res.status(400).json({ message: "Invalid post id" });
-  }
+// // unlikes a post
+// router.patch("/unlike/:uid/:postId", async (req, res) => {
+//   const { uid, postId } = req.params;
+//   if (uid === undefined || postId === undefined) {
+//     res.status(400).json({ message: "Missing user id or post id" });
+//   }
+//   if (uid === "" || postId === "") {
+//     res.status(400).json({ message: "Missing user id or post id" });
+//   }
+//   if (mongoose.Types.ObjectId.isValid(uid) === false) {
+//     res.status(400).json({ message: "Invalid user id" });
+//   }
+//   if (mongoose.Types.ObjectId.isValid(postId) === false) {
+//     res.status(400).json({ message: "Invalid post id" });
+//   }
 
-  await UserModel.findById(uid).catch((err) =>
-    res.status(404).json({ message: "User not found" })
-  );
-  await PostModel.findById(postId).catch((err) =>
-    res.status(404).json({ message: "Post not found" })
-  );
+//   await UserModel.findById(uid).catch((err) =>
+//     res.status(404).json({ message: "User not found" })
+//   );
+//   await PostModel.findById(postId).catch((err) =>
+//     res.status(404).json({ message: "Post not found" })
+//   );
 
-  UserModel.updateOne({ _id: uid }, { $pull: { likes: postId } }).catch(
-    (err) => {
-      res.status(500).json({ message: "Post unlike failed" });
-    }
-  );
-  PostModel.updateOne({ _id: postId }, { $pull: { likes: uid } })
-    .then(() => {
-      res.json({ message: "Post unliked" });
-    })
-    .catch((err) => {
-      res.status(500).json({ message: "Post unlike failed" });
-    });
-});
+//   UserModel.updateOne({ _id: uid }, { $pull: { likes: postId } }).catch(
+//     (err) => {
+//       res.status(500).json({ message: "Post unlike failed" });
+//     }
+//   );
+//   PostModel.updateOne({ _id: postId }, { $pull: { likes: uid } })
+//     .then(() => {
+//       res.json({ message: "Post unliked" });
+//     })
+//     .catch((err) => {
+//       res.status(500).json({ message: "Post unlike failed" });
+//     });
+// });
 
 // toggles a like on a post
 router.patch("/toggle/:uid/:postId", async (req, res) => {
@@ -197,10 +198,10 @@ router.patch("/toggle/:uid/:postId", async (req, res) => {
     return;
   }
 
-  await UserModel.findById(uid).catch((err) =>
+  const likedUser = await UserModel.findById(uid).catch((err) =>
     res.status(404).json({ message: "User not found" })
   );
-  await PostModel.findById(postId).catch((err) =>
+  const post = await PostModel.findById(postId).catch((err) =>
     res.status(404).json({ message: "Post not found" })
   );
 
@@ -220,12 +221,29 @@ router.patch("/toggle/:uid/:postId", async (req, res) => {
           res.status(500).json({ message: "Post unlike failed" });
         });
     } else {
+      const newNotification = new NotificationModel({
+        senderId: uid,
+        receiverId: post.uid,
+        notification: `${likedUser.username} liked your post!`,
+      });
+
       UserModel.updateOne({ _id: uid }, { $addToSet: { likes: postId } }).catch(
         (err) => {
           console.log(err);
           res.status(500).json({ message: "Post like failed" });
         }
       );
+      UserModel.updateOne(
+        { _id: post.uid },
+        { $addToSet: { notifications: newNotification._id } }
+      )
+        .then(() => {
+          newNotification.save();
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ message: "Post like failed" });
+        });
       PostModel.updateOne({ _id: postId }, { $addToSet: { likes: uid } })
         .then(() => {
           res.json({ message: "Post liked" });
@@ -290,10 +308,10 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
     res.status(400).json({ message: "Comment cannot be empty" });
   }
 
-  await UserModel.findById(uid).catch((err) =>
+  const commentedUser = await UserModel.findById(uid).catch((err) =>
     res.status(404).json({ message: "User not found" })
   );
-  await PostModel.findById(postId).catch((err) =>
+  const post = await PostModel.findById(postId).catch((err) =>
     res.status(404).json({ message: "Post not found" })
   );
 
@@ -301,8 +319,23 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
     uid: uid,
     comment: comment,
   });
+  const newNotification = new NotificationModel({
+    senderId: uid,
+    receiverId: post.uid,
+    notification: `${commentedUser.username} commented on your post!`,
+  });
   PostModel.updateOne({ _id: postId }, { $addToSet: { comments: newComment } })
-    .then(() => res.json({ message: "Comment added" }))
+    .then(() => {
+      UserModel.updateOne(
+        { _id: post.uid },
+        { $addToSet: { notifications: newNotification._id } }
+      ).catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: "Failed to add comment" });
+      });
+      newNotification.save();
+      res.json({ message: "Comment added" });
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).json({ message: "Failed to add comment" });
@@ -325,6 +358,26 @@ router.get("/comments/:postId", async (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json({ message: "Failed to get comments" });
+    });
+});
+
+// gets all notifications of a user
+router.get("/notifications/:uid", async (req, res) => {
+  if (uid === undefined) {
+    res.status(400).json({ message: "Missing user id" });
+  }
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+  }
+
+  NotificationModel.find({ receiverId: req.params.uid })
+    .sort({ notificationDateTime: -1 })
+    .then((notifications) => {
+      res.json(notifications);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Failed to get notifications" });
     });
 });
 
