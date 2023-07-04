@@ -26,6 +26,9 @@ const Post = ({
     error: postUserError,
     isLoading: postUserLoading,
   } = useSWR(`http://localhost:3001/users/${post.uid}`, fetcher);
+  const [liked, setLiked] = useState(
+    localUser && post.likes.includes(localUser._id)
+  );
 
   const handleToggleLike = (): void => {
     axios
@@ -42,12 +45,21 @@ const Post = ({
     return (
       <div className="flex flex-col">
         <PostHeader postUser={postUser} />
-        <PostImage post={post} toggleLike={handleToggleLike} />
+        <PostImage
+          post={post}
+          toggleLike={handleToggleLike}
+          setLikeAmount={setLikeAmount}
+          localUser={localUser}
+          liked={liked}
+          setLiked={setLiked}
+        />
         <PostIconBar
           toggleLike={handleToggleLike}
           post={post}
           localUser={localUser}
           setLikeAmount={setLikeAmount}
+          liked={liked}
+          setLiked={setLiked}
         />
         <PostInformation
           post={post}
@@ -75,14 +87,30 @@ const PostHeader = ({ postUser }: { postUser: UserInterface }) => {
 const PostImage = ({
   post,
   toggleLike,
+  setLikeAmount,
+  localUser,
+  liked,
+  setLiked,
 }: {
   post: PostInterface;
   toggleLike: () => void;
+  setLikeAmount: (callback: (likeAmount: number) => number) => void;
+  localUser: UserInterface | null;
+  liked: boolean | null;
+  setLiked: (liked: boolean) => void;
 }) => {
   return (
     <div
       onDoubleClick={(e) => {
         toggleLike();
+        setLikeAmount((prevState: number) => {
+          if (liked) {
+            return prevState - 1;
+          } else {
+            return prevState + 1;
+          }
+        });
+        setLiked(!liked);
         console.log("double clicked");
       }}
     >
@@ -96,15 +124,16 @@ const PostIconBar = ({
   localUser,
   toggleLike,
   setLikeAmount,
+  liked,
+  setLiked,
 }: {
   post: PostInterface;
   localUser: UserInterface | null;
   toggleLike: () => void;
   setLikeAmount: (callback: (likeAmount: number) => number) => void;
+  liked: boolean | null;
+  setLiked: (liked: boolean) => void;
 }) => {
-  const [liked, setLiked] = useState(
-    localUser && post.likes.includes(localUser._id)
-  );
   return (
     <div className="flex">
       <ul className="px-2 py-2 flex gap-3 justify-start w-full bg-white dark:bg-black">
