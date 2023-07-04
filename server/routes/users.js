@@ -14,12 +14,12 @@ const router = express.Router();
 
 // registers a new user
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
   createUserWithEmailAndPassword(auth, email, password)
     .then((createdUser) => {
       const newUser = new UserModel({
         firebaseId: createdUser.user.uid,
-        username: createdUser.user.uid,
+        username: username,
       });
       // add to mongoDB
       newUser

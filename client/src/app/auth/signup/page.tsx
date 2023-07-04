@@ -36,7 +36,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await register(email, password).catch((err) => console.log(err));
+    await register(email, password, username).catch((err) => console.log(err));
   };
 
   useEffect(() => {

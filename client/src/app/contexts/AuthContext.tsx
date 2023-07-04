@@ -52,13 +52,18 @@ const AuthProvider = ({ children }: any) => {
       .finally(() => setLoading(false));
   };
 
-  const register = async (email: string, password: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    username: string
+  ) => {
     setLoading(true);
     setError(null);
     axios
       .post("http://localhost:3001/users/register", {
         email,
         password,
+        username,
       })
       .then((loggedInUser) => {
         setLocalUser(loggedInUser.data);
