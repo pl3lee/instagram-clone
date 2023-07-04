@@ -11,10 +11,10 @@ const Create = () => {
   const [caption, setCaption] = useState("");
   const [dataAcceptable, setDataAcceptable] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3001/posts/create/${user._id}`, {
+      .post(`http://localhost:3001/posts/create/${user?._id}`, {
         img: image,
         caption,
       })
@@ -28,7 +28,7 @@ const Create = () => {
     if (image != "") {
       const img = new Image();
       img.src = image;
-      new Promise((resolve) => {
+      new Promise<boolean>((resolve) => {
         img.onload = () => resolve(true);
         img.onerror = () => resolve(false);
       }).then((result) => {

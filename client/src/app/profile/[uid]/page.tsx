@@ -17,6 +17,7 @@ const Profile = ({ params }: { params: { uid: string } }) => {
     error: queryUserError,
     isLoading: queryUserLoading,
   } = useSWR(`http://localhost:3001/users/${uid}`, fetcher);
+  const { user, isLoading: userLoading } = useUser();
   const {
     data: posts,
     error: postsError,
@@ -28,8 +29,8 @@ const Profile = ({ params }: { params: { uid: string } }) => {
   } else {
     return (
       <div className="flex flex-col">
-        <ProfileInfoSection queriedUser={queriedUserData} />
-        <PostsSection posts={posts} />
+        <ProfileInfoSection queriedUser={queriedUserData} user={user} />
+        <PostsSection posts={posts} user={user} />
       </div>
     );
   }
@@ -37,17 +38,18 @@ const Profile = ({ params }: { params: { uid: string } }) => {
 
 const ProfileInfoSection = ({
   queriedUser,
+  user,
 }: {
   queriedUser: UserInterface;
+  user: UserInterface | null;
 }) => {
   const { refetchUser } = useContext(AuthContext);
-  const { user, isLoading: userLoading } = useUser();
   const [followed, setFollowed] = useState(false);
 
   const handleFollow = () => {
     axios
       .patch("http://localhost:3001/users/follow", {
-        uid: user._id,
+        uid: user?._id,
         followId: queriedUser._id,
       })
       .then((res) => {
@@ -59,7 +61,7 @@ const ProfileInfoSection = ({
   const handleUnfollow = () => {
     axios
       .patch("http://localhost:3001/users/unfollow", {
-        uid: user._id,
+        uid: user?._id,
         followId: queriedUser._id,
       })
       .then((res) => {
@@ -70,14 +72,12 @@ const ProfileInfoSection = ({
   };
 
   useEffect(() => {
-    if (!userLoading && user) {
+    if (user) {
       setFollowed(user.follows.includes(queriedUser._id));
     }
   }, [user]);
 
-  if (userLoading) {
-    return <LoadingComponent />;
-  } else if (user) {
+  if (user) {
     return (
       <div className="flex flex-col gap-2">
         <div className="flex justify-center p-6 gap-8 w-full">
@@ -135,19 +135,27 @@ const BasicInfo = ({ num, text }: { num: number; text: string }) => {
   );
 };
 
-const PostsSection = ({ posts }: { posts: [PostInterface] }) => {
-  return (
-    <div className="grid grid-cols-3">
-      {posts.map((post: PostInterface) => {
-        return (
-          <div key={post._id} className="w-full aspect-square">
-            <Link href={`/posts/${post._id}`}>
-              <img src={post.img} className="w-full h-full object-cover" />
-            </Link>
-          </div>
-        );
-      })}
-    </div>
-  );
+const PostsSection = ({
+  posts,
+  user,
+}: {
+  posts: [PostInterface];
+  user: UserInterface | null;
+}) => {
+  if (user) {
+    return (
+      <div className="grid grid-cols-3">
+        {posts.map((post: PostInterface) => {
+          return (
+            <div key={post._id} className="w-full aspect-square">
+              <Link href={`/posts/${post._id}`}>
+                <img src={post.img} className="w-full h-full object-cover" />
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 };
 export default Profile;

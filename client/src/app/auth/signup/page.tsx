@@ -34,7 +34,7 @@ const SignUp = () => {
 
   const [dataAcceptable, setDataAcceptable] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await register(email, password, username).catch((err) => console.log(err));
   };

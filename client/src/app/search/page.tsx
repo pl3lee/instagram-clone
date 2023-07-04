@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PostInterface } from "../interfaces/Post";
+import { UserInterface } from "../interfaces/User";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -50,7 +51,7 @@ const Search = () => {
       </div>
       <div>
         {search != "" ? (
-          searchedUsers.map((user) => {
+          searchedUsers.map((user: UserInterface) => {
             return (
               <div key={user.username}>
                 <User user={user} />
@@ -78,7 +79,7 @@ const Search = () => {
   );
 };
 
-const User = ({ user }) => {
+const User = ({ user }: { user: UserInterface }) => {
   return (
     <div className="flex gap-1 px-2 py-3">
       <div className="flex-shrink-0 mr-3">

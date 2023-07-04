@@ -15,7 +15,7 @@ const Post = ({
   localUser,
 }: {
   post: PostInterface;
-  localUser: UserInterface;
+  localUser: UserInterface | null;
 }) => {
   const authContext: AuthContextInterface = useContext(AuthContext);
   const refetchUser = authContext.refetchUser;
@@ -28,7 +28,7 @@ const Post = ({
 
   const handleToggleLike = (): void => {
     axios
-      .patch(`http://localhost:3001/posts/toggle/${localUser._id}/${post._id}`)
+      .patch(`http://localhost:3001/posts/toggle/${localUser?._id}/${post._id}`)
       .then((res) => {
         refetchUser();
       })
@@ -103,11 +103,13 @@ const PostIconBar = ({
   setLikeAmount,
 }: {
   post: PostInterface;
-  localUser: UserInterface;
+  localUser: UserInterface | null;
   toggleLike: () => void;
   setLikeAmount: (callback: (likeAmount: number) => number) => void;
 }) => {
-  const [liked, setLiked] = useState(post.likes.includes(localUser._id));
+  const [liked, setLiked] = useState(
+    localUser && post.likes.includes(localUser._id)
+  );
   return (
     <div className="flex">
       <ul className="px-2 py-2 flex gap-3 justify-start w-full bg-white dark:bg-black">

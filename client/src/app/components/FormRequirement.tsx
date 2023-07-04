@@ -1,4 +1,4 @@
-const FormRequirement = ({ text, state }) => {
+const FormRequirement = ({ text, state }: { text: string; state: boolean }) => {
   return (
     <div className="inline-flex gap-2">
       <span>{state ? <CheckMark /> : <XMark />}</span>
