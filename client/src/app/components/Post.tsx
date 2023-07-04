@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import { AuthContext } from "../contexts/AuthContext";
-import fetcher from "../fetcher/fetcher";
+import fetcher from "../helpers/fetcher";
 import LoadingComponent from "./LoadingComponent";
 
 const Post = ({ post, localUser }: any) => {

@@ -2,7 +2,7 @@
 import axios from "axios";
 import Post from "./Post";
 import useSWR from "swr";
-import fetcher from "../fetcher/fetcher";
+import fetcher from "../helpers/fetcher";
 
 const FollowingPostsContainer = ({ user }: any) => {
   const {

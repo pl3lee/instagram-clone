@@ -6,7 +6,7 @@ import axios from "axios";
 import { AuthContext } from "@/app/contexts/AuthContext";
 import useUser from "@/app/hooks/useUser";
 import LoadingComponent from "@/app/components/LoadingComponent";
-import fetcher from "@/app/fetcher/fetcher";
+import fetcher from "@/app/helpers/fetcher";
 
 const Profile = ({ params }: any) => {
   const { uid } = params;

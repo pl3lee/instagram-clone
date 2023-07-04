@@ -1,7 +1,7 @@
 "use client";
 import useSWR from "swr";
 import Post from "@/app/components/Post";
-import fetcher from "@/app/fetcher/fetcher";
+import fetcher from "@/app/helpers/fetcher";
 import useUser from "@/app/hooks/useUser";
 import LoadingComponent from "@/app/components/LoadingComponent";
 
