@@ -67,6 +67,7 @@ const PostHeader = ({ postUser }: { postUser: UserInterface }) => {
         <img
           src={postUser.profilePicture}
           className="w-[40px] h-[40px] rounded-full object-cover"
+          alt="profile picture"
         />
       </div>
       <div className="flex-grow-[9] text-lg font-bold flex items-center">
@@ -90,7 +91,7 @@ const PostImage = ({
         console.log("double clicked");
       }}
     >
-      <img src={post.img} className="w-full h-auto" />
+      <img src={post.img} className="w-full h-auto" alt="post image" />
     </div>
   );
 };

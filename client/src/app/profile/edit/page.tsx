@@ -169,7 +169,7 @@ const Edit = () => {
           </button>
         </form>
         <button className="bg-accentBlue rounded-lg py-1 text-white">
-          <Link href="/profile">Go Back</Link>
+          <Link href={`/profile/${user._id}`}>Go Back</Link>
         </button>
       </div>
     );

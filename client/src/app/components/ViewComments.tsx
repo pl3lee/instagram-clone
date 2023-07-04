@@ -60,6 +60,7 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
                       <img
                         src={user?.profilePicture}
                         className="w-[50px] h-[50px] rounded-full object-cover"
+                        alt="profile picture"
                       />
                     </div>
                   </div>
@@ -128,7 +129,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
       .get(`http://localhost:3001/users/${comment?.uid}`)
       .then((response) => setCommentUser(response.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [comment]);
   return (
     <div className="flex gap-3">
       <div className="flex-grow-1 flex p-2 flex-shrink-0">
@@ -136,6 +137,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
           <img
             src={commentUser?.profilePicture}
             className="w-[40px] h-[40px] rounded-full object-cover"
+            alt="profile picture"
           />
         </div>
       </div>
