@@ -28,6 +28,7 @@ module.exports = {
       yellow: colors.yellow,
       blue: colors.blue,
       slate: colors.slate,
+      red: colors.red,
       button1: "#2563eb",
       button2: "#e2e8f0",
       accentBlue: "#2563eb",

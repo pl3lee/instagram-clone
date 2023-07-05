@@ -5,11 +5,25 @@ import { useState, useEffect } from "react";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "./LoadingComponent";
 import GenericHeader from "./GenericHeader";
+import useSWR from "swr";
+import fetcher from "../helpers/fetcher";
+import { NotificationInterface } from "../interfaces/Notification";
 
 const PostsHeader = () => {
-  const { user, isLoading } = useUser();
+  const { user, isLoading: userLoading } = useUser();
+  const {
+    data: notifications,
+    error: notificationsError,
+    isLoading: notificationsLoading,
+  } = useSWR(
+    !userLoading && user
+      ? `http://localhost:3001/users/notifications/notification/${user._id}`
+      : null,
+    fetcher
+  );
+
   const pathname = usePathname();
-  if (!isLoading) {
+  if (!userLoading && !notificationsLoading) {
     if (pathname === "/posts/create") {
       return <GenericHeader title="New Post" backLink="/posts" />;
     } else if (pathname.startsWith("/posts")) {
@@ -39,10 +53,23 @@ const PostsHeader = () => {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="currentColor"
-                className="svg-icons"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`svg-icons ${
+                  notifications.filter(
+                    (notification: NotificationInterface) => {
+                      return !notification.read;
+                    }
+                  ).length > 0
+                    ? "fill-red-600"
+                    : "fill-none"
+                }`}
               >
-                <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+                />
               </svg>
             </Link>
           </li>
