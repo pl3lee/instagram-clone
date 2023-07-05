@@ -373,6 +373,7 @@ router.get("/comments/:postId", async (req, res) => {
     return;
   }
   CommentModel.find({ postId: postId })
+    .sort({ commentDateTime: -1 })
     .then((comments) => {
       res.json(comments);
     })

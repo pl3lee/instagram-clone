@@ -116,7 +116,7 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
             <Card.Body>
               <div className=" max-h-[50vh] overflow-y-scroll">
                 {comments.length > 0 ? (
-                  [...comments].reverse().map((comment: CommentInterface) => {
+                  comments.map((comment: CommentInterface) => {
                     return <Comment key={comment._id} comment={comment} />;
                   })
                 ) : (
