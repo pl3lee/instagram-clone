@@ -14,6 +14,9 @@
   body {
     @apply w-screen p-0 box-border bg-white text-black dark:bg-black dark:text-white
   }
+  html {
+    @apply bg-white dark:bg-black
+  }
 }
 
 @layer components {

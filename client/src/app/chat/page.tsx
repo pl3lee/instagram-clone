@@ -9,6 +9,8 @@ import useSWR from "swr";
 import fetcher from "../helpers/fetcher";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "../components/LoadingComponent";
+import GenericHeader from "../components/GenericHeader";
+
 const Chat = () => {
   const [search, setSearch] = useState("");
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -44,28 +46,31 @@ const Chat = () => {
   }, [search]);
   if (!localUserLoading && !dmsUsersLoading) {
     return (
-      <div className="flex flex-col gap-2">
-        <SearchBar
-          search={search}
-          setSearch={setSearch}
-          placeholder="Search for other users..."
-        />
-        <div>
-          {search != ""
-            ? searchedUsers.map((user: UserInterface) => {
-                return (
-                  <div key={user.username}>
-                    <DmsUser dmsUser={user} localUser={localUser} />
-                  </div>
-                );
-              })
-            : dmsUsers.map((dmsUser: UserInterface) => {
-                return (
-                  <div key={dmsUser._id}>
-                    <DmsUser dmsUser={dmsUser} localUser={localUser} />
-                  </div>
-                );
-              })}
+      <div>
+        <GenericHeader title="Chat" />
+        <div className="flex flex-col gap-2">
+          <SearchBar
+            search={search}
+            setSearch={setSearch}
+            placeholder="Search for other users..."
+          />
+          <div>
+            {search != ""
+              ? searchedUsers.map((user: UserInterface) => {
+                  return (
+                    <div key={user.username}>
+                      <DmsUser dmsUser={user} localUser={localUser} />
+                    </div>
+                  );
+                })
+              : dmsUsers.map((dmsUser: UserInterface) => {
+                  return (
+                    <div key={dmsUser._id}>
+                      <DmsUser dmsUser={dmsUser} localUser={localUser} />
+                    </div>
+                  );
+                })}
+          </div>
         </div>
       </div>
     );

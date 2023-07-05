@@ -121,5 +121,26 @@ router.get("/dm/:uid1/:uid2", async (req, res) => {
     );
 });
 
+// gets the users in a room
+router.get("/dm/room/users/:rid", async (req, res) => {
+  const { rid } = req.params;
+  if (
+    rid === undefined ||
+    rid === "" ||
+    !mongoose.Types.ObjectId.isValid(rid)
+  ) {
+    return res.status(400).json({ error: "rid is invalid" });
+  }
+  ChatroomModel.findById(rid)
+    .then((chatroom) => {
+      UserModel.find({ _id: { $in: chatroom.users } })
+        .then((users) => res.json(users))
+        .catch((err) =>
+          res.status(400).json({ error: "failed to get users in room" })
+        );
+    })
+    .catch((err) => res.status(400).json({ error: "room does not exist" }));
+});
+
 // remember to export the router
 export { router as chatRouter };

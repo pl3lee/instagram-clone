@@ -1,9 +1,9 @@
 "use client";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress } from "@chakra-ui/react";
 const LoadingComponent = () => {
   return (
     <div className="flex justify-center items-center h-screen w-full">
-      <CircularProgress />
+      <CircularProgress isIndeterminate />
     </div>
   );
 };
