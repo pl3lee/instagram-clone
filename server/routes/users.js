@@ -1,6 +1,7 @@
 // users route encompass everything relating to logging in and registering
 import express from "express";
 import { UserModel } from "../models/Users.js";
+import { NotificationModel } from "../models/Notifications.js";
 import mongoose from "mongoose";
 import { auth } from "../firebase/firebase-config.js";
 import {
@@ -83,6 +84,11 @@ router.patch("/follow", async (req, res) => {
     res.status(500).json({ message: "User cannot follow themselves" });
     return;
   }
+  const newNotification = new NotificationModel({
+    senderId: uid,
+    receiverId: followId,
+    notification: `follow`,
+  });
   UserModel.updateOne({ _id: uid }, { $addToSet: { follows: followId } }).catch(
     (err) => {
       res.status(500).json({ message: "User follow failed" });
@@ -90,6 +96,7 @@ router.patch("/follow", async (req, res) => {
   );
   UserModel.updateOne({ _id: followId }, { $addToSet: { followers: uid } })
     .then(() => {
+      newNotification.save();
       res.json({ message: "User followed" });
     })
     .catch((err) => {

@@ -224,7 +224,8 @@ router.patch("/toggle/:uid/:postId", async (req, res) => {
       const newNotification = new NotificationModel({
         senderId: uid,
         receiverId: post.uid,
-        notification: `${likedUser.username} liked your post!`,
+        notification: `like`,
+        postRef: postId,
       });
 
       UserModel.updateOne({ _id: uid }, { $addToSet: { likes: postId } }).catch(
@@ -322,7 +323,8 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
   const newNotification = new NotificationModel({
     senderId: uid,
     receiverId: post.uid,
-    notification: `${commentedUser.username} commented on your post!`,
+    notification: `comment`,
+    postRef: post._id,
   });
   PostModel.updateOne({ _id: postId }, { $addToSet: { comments: newComment } })
     .then(() => {
