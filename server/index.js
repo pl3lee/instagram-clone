@@ -8,10 +8,13 @@ import { userRouter } from "./routes/users.js";
 import { postsRouter } from "./routes/posts.js";
 import { auth } from "./firebase/firebase-config.js";
 import { onAuthStateChanged } from "firebase/auth";
+import { Server } from "http";
+import { Server as SocketIOServer } from "socket.io";
 
 dotenv.config();
 // generate version of our API
 const app = express();
+const server = new Server(app);
 
 // whenever we get data from frontend, it will convert it to json
 // these are called middlewares
@@ -32,6 +35,8 @@ mongoose.connect(
 );
 
 // for heroku
-app.listen(process.env.PORT || 3001, () =>
+server.listen(process.env.PORT || 3001, () =>
   console.log("Server is running on port 3001")
 );
+
+export const io = new SocketIOServer(server);
