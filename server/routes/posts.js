@@ -383,26 +383,5 @@ router.get("/comments/:postId", async (req, res) => {
     });
 });
 
-// gets all notifications of a user
-router.get("/notifications/:uid", async (req, res) => {
-  const { uid } = req.params;
-  if (uid === undefined) {
-    res.status(400).json({ message: "Missing user id" });
-  }
-  if (mongoose.Types.ObjectId.isValid(uid) === false) {
-    res.status(400).json({ message: "Invalid user id" });
-  }
-
-  NotificationModel.find({ receiverId: req.params.uid })
-    .sort({ notificationDateTime: -1 })
-    .then((notifications) => {
-      res.json(notifications);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: "Failed to get notifications" });
-    });
-});
-
 // remember to export the router
 export { router as postsRouter };
