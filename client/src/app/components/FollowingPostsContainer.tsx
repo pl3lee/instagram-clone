@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import Post from "./Post";
 import useSWR from "swr";
 import fetcher from "../helpers/fetcher";
