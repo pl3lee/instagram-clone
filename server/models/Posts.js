@@ -4,6 +4,11 @@ const CommentSchema = new mongoose.Schema({
   uid: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
   comment: { type: String, required: true },
   commentDateTime: { type: Date, default: Date.now },
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "posts",
+    required: true,
+  },
 });
 
 const PostSchema = new mongoose.Schema({
@@ -14,7 +19,10 @@ const PostSchema = new mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     default: [],
   },
-  comments: { type: [CommentSchema], default: [] },
+  likes: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
+    default: [],
+  },
   postDateTime: { type: Date, default: Date.now },
 });
 

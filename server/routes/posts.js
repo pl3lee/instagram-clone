@@ -297,16 +297,24 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
   const { comment } = req.body;
   if (uid === undefined || postId === undefined) {
     res.status(400).json({ message: "Missing user id or post id" });
+    return;
   }
 
+  if (uid === "" || postId === "") {
+    res.status(400).json({ message: "Missing user id or post id" });
+    return;
+  }
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
   if (mongoose.Types.ObjectId.isValid(postId) === false) {
     res.status(400).json({ message: "Invalid post id" });
+    return;
   }
   if (comment === "") {
     res.status(400).json({ message: "Comment cannot be empty" });
+    return;
   }
 
   const commentedUser = await UserModel.findById(uid).catch((err) =>
@@ -318,6 +326,7 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
 
   const newComment = new CommentModel({
     uid: uid,
+    postId: postId,
     comment: comment,
   });
   const newNotification = new NotificationModel({
@@ -326,7 +335,10 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
     notification: `comment`,
     postRef: post._id,
   });
-  PostModel.updateOne({ _id: postId }, { $addToSet: { comments: newComment } })
+  PostModel.updateOne(
+    { _id: postId },
+    { $addToSet: { comments: newComment._id } }
+  )
     .then(() => {
       UserModel.updateOne(
         { _id: post.uid },
@@ -335,6 +347,7 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
         console.log(err);
         res.status(500).json({ message: "Failed to add comment" });
       });
+      newComment.save();
       newNotification.save();
       res.json({ message: "Comment added" });
     })
@@ -348,14 +361,20 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
 router.get("/comments/:postId", async (req, res) => {
   const { postId } = req.params;
   if (postId === undefined) {
-    res.status(400).json({ message: "Missing user id or post id" });
+    res.status(400).json({ message: "Missing post id" });
+    return;
+  }
+  if (postId === "") {
+    res.status(400).json({ message: "Missing post id" });
+    return;
   }
   if (mongoose.Types.ObjectId.isValid(postId) === false) {
     res.status(400).json({ message: "Invalid post id" });
+    return;
   }
-  PostModel.findById(postId)
-    .then((post) => {
-      res.json(post.comments);
+  CommentModel.find({ postId: postId })
+    .then((comments) => {
+      res.json(comments);
     })
     .catch((err) => {
       console.log(err);

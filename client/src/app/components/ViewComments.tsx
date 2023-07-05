@@ -10,14 +10,28 @@ import { PostInterface } from "../interfaces/Post";
 import { CommentInterface } from "../interfaces/Comment";
 import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "./ProfilePictureIcon";
+import fetcher from "../helpers/fetcher";
+import useSWR from "swr";
 
 const ViewComments = ({ post }: { post: PostInterface }) => {
   const [open, setOpen] = useState(false);
-  const [comments, setComments] = useState(post.comments);
   const [comment, setComment] = useState("");
   const [commentPlaceHolder, setCommentPlaceHolder] = useState("Add a comment");
 
-  const { user, isLoading } = useUser();
+  const { user, isLoading: userLoading } = useUser();
+
+  const {
+    data: commentsData,
+    error: commentsError,
+    isLoading: commentsLoading,
+  } = useSWR(`http://localhost:3001/posts/comments/${post._id}`, fetcher);
+  const [comments, setComments] = useState<CommentInterface[]>([]);
+
+  useEffect(() => {
+    if (!commentsLoading) {
+      setComments(commentsData);
+    }
+  }, [commentsLoading, commentsData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +54,8 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
         setCommentPlaceHolder("Add a comment");
       });
   };
-  if (isLoading) {
+
+  if (userLoading || commentsLoading) {
     return <LoadingComponent />;
   } else {
     return (
