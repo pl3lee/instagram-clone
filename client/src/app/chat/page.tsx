@@ -45,7 +45,11 @@ const Chat = () => {
   if (!localUserLoading && !dmsUsersLoading) {
     return (
       <div className="flex flex-col gap-2">
-        <SearchBar search={search} setSearch={setSearch} />
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          placeholder="Search for other users..."
+        />
         <div>
           {search != ""
             ? searchedUsers.map((user: UserInterface) => {
@@ -86,13 +90,14 @@ const DmsUser = ({
       : null,
     fetcher
   );
+
   if (!chatroomLoading && !chatroomError && localUser && dmsUser) {
     return (
-      <Link href={`/chat/${chatroom._id}`}>
+      <Link href={`/chat/${chatroom ? `dm/${chatroom._id}` : "create"}`}>
         <div className="flex gap-1 px-2 py-3">
-          <ProfilePictureIcon image={localUser.profilePicture} size="lg" />
+          <ProfilePictureIcon image={dmsUser.profilePicture} size="lg" />
           <div className="flex-grow-[9] text-lg font-bold flex items-center ml-3">
-            {localUser.username}
+            {dmsUser.username}
           </div>
         </div>
       </Link>
