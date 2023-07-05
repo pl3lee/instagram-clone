@@ -25,7 +25,9 @@ const PostsHeader = () => {
   const pathname = usePathname();
   if (!userLoading && !notificationsLoading) {
     if (pathname === "/posts/create") {
-      return <GenericHeader title="New Post" backLink="/posts" />;
+      return <GenericHeader title="New Post" />;
+    } else if (pathname.startsWith("/posts/")) {
+      return <GenericHeader title="Post" />;
     } else if (pathname.startsWith("/posts")) {
       return (
         <ul className="sticky-header">

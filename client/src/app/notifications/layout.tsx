@@ -10,7 +10,7 @@ export default function PostsLayout({
 }) {
   return (
     <div>
-      <GenericHeader title="Notifications" backLink="/posts" />
+      <GenericHeader title="Notifications" />
       {children}
     </div>
   );
