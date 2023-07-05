@@ -4,5 +4,6 @@ export interface NotificationInterface {
   receiverId: string;
   notification: string;
   read: boolean;
+  postRef: string;
   notificationDateTime: string;
 }

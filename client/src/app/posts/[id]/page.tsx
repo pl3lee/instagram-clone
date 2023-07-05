@@ -9,14 +9,14 @@ const PostPage = ({ params }: { params: { id: string } }) => {
   const { user: localUser, isLoading: userLoading } = useUser();
   const { id } = params;
   const {
-    data,
-    error,
+    data: postData,
+    error: postError,
     isLoading: postLoading,
   } = useSWR(`http://localhost:3001/posts/post/${id}`, fetcher);
   if (postLoading || userLoading) {
     return <LoadingComponent />;
   } else {
-    return <Post post={data} localUser={localUser} />;
+    return <Post post={postData} localUser={localUser} />;
   }
 };
 export default PostPage;

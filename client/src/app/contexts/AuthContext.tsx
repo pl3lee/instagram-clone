@@ -102,7 +102,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setError(null);
     console.log("refetching user");
     axios
-      .get(`http://localhost:3001/users/${user?._id}`)
+      .get(`http://localhost:3001/users/user/${user?._id}`)
       .then((response) => {
         console.log("refetch user success", response.data);
         setError(null);

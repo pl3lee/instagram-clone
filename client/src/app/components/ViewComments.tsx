@@ -139,7 +139,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
   const [commentUser, setCommentUser] = useState<UserInterface | null>(null);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/users/${comment?.uid}`)
+      .get(`http://localhost:3001/users/user/${comment?.uid}`)
       .then((response) => setCommentUser(response.data))
       .catch((err) => console.log(err));
   }, [comment]);

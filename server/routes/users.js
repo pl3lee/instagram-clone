@@ -176,7 +176,7 @@ router.get("/followers/:uid/id", async (req, res) => {
 });
 
 // get the user's information by mongodb id
-router.get("/:uid", async (req, res) => {
+router.get("/user/:uid", async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.json({ message: "User id not provided" });
@@ -261,14 +261,24 @@ router.get("/search/:query", async (req, res) => {
 });
 
 // gets all notifications of a user
-router.get("/notifications/:uid", async (req, res) => {
+router.get("/notifications/notification/:uid", async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "Missing user id" });
+    return;
+  }
+  if (uid === "") {
+    res.status(400).json({ message: "Missing user id" });
+    return;
   }
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
+    return;
   }
+  UserModel.findById(uid).catch((err) => {
+    console.log(err);
+    res.status(500).json({ message: "User does not exist" });
+  });
 
   NotificationModel.find({ receiverId: req.params.uid })
     .sort({ notificationDateTime: -1 })
@@ -278,6 +288,36 @@ router.get("/notifications/:uid", async (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json({ message: "Failed to get notifications" });
+    });
+});
+
+// sets all notifications of a user read true
+router.patch("/notifications/read/:uid", async (req, res) => {
+  const { uid } = req.params;
+  if (uid === undefined) {
+    res.status(400).json({ message: "Missing user id" });
+    return;
+  }
+  if (uid === "") {
+    res.status(400).json({ message: "Missing user id" });
+    return;
+  }
+  if (mongoose.Types.ObjectId.isValid(uid) === false) {
+    res.status(400).json({ message: "Invalid user id" });
+    return;
+  }
+  UserModel.findById(uid).catch((err) => {
+    console.log(err);
+    res.status(500).json({ message: "User does not exist" });
+  });
+
+  NotificationModel.updateMany({ receiverId: uid }, { read: true })
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Failed to update notifications" });
     });
 });
 

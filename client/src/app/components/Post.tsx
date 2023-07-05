@@ -25,7 +25,7 @@ const Post = ({
     data: postUser,
     error: postUserError,
     isLoading: postUserLoading,
-  } = useSWR(`http://localhost:3001/users/${post.uid}`, fetcher);
+  } = useSWR(`http://localhost:3001/users/user/${post.uid}`, fetcher);
   const [liked, setLiked] = useState(
     localUser && post.likes.includes(localUser._id)
   );

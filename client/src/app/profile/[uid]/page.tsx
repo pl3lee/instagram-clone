@@ -17,7 +17,7 @@ const Profile = ({ params }: { params: { uid: string } }) => {
     data: queriedUserData,
     error: queryUserError,
     isLoading: queryUserLoading,
-  } = useSWR(`http://localhost:3001/users/${uid}`, fetcher);
+  } = useSWR(`http://localhost:3001/users/user/${uid}`, fetcher);
   const { user, isLoading: userLoading } = useUser();
   const {
     data: posts,
