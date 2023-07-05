@@ -16,12 +16,18 @@ const MessageSchema = new mongoose.Schema({
 });
 
 const ChatroomSchema = new mongoose.Schema({
-  roomId: { type: String, required: true, unique: true },
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      default: [],
+    },
+  ],
   messages: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "messages",
-      required: true,
+      default: [],
     },
   ],
 });

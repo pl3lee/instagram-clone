@@ -6,6 +6,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { userRouter } from "./routes/users.js";
 import { postsRouter } from "./routes/posts.js";
+import { chatRouter } from "./routes/chat.js";
 import { auth } from "./firebase/firebase-config.js";
 import { onAuthStateChanged } from "firebase/auth";
 import { Server } from "http";
@@ -27,6 +28,7 @@ app.use(
 
 app.use("/users", userRouter);
 app.use("/posts", postsRouter);
+app.use("/chat", chatRouter);
 
 // put this after middlewares are applied and before listen
 // process.env is a available globally
