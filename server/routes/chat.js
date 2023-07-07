@@ -5,6 +5,7 @@ import { CommentModel } from "../models/Posts.js";
 import mongoose from "mongoose";
 import { NotificationModel } from "../models/Notifications.js";
 import { ChatroomModel } from "../models/Chatroom.js";
+import { checkIdValid } from "../utils/checkIdValid.js";
 
 const router = express.Router();
 
@@ -55,19 +56,9 @@ router.get("/dms/:uid", async (req, res) => {
 router.post("/create/:uid1/:uid2", async (req, res) => {
   try {
     const { uid1, uid2 } = req.params;
-    if (
-      uid1 === undefined ||
-      uid1 === "" ||
-      !mongoose.Types.ObjectId.isValid(uid1)
-    ) {
-      return res.status(400).json({ error: "uid1 is invalid" });
-    }
-    if (
-      uid2 === undefined ||
-      uid2 === "" ||
-      !mongoose.Types.ObjectId.isValid(uid2)
-    ) {
-      return res.status(400).json({ error: "uid2 is invalid" });
+    const idsValid = await checkIdValid(uid1, uid2);
+    if (!idsValid) {
+      return res.status(400).json({ error: "uid1 or uid2 is invalid" });
     }
 
     const user1 = await UserModel.findById(uid1);
@@ -149,5 +140,9 @@ router.get("/dm/room/users/:rid", async (req, res) => {
     .catch((err) => res.status(400).json({ error: "room does not exist" }));
 });
 
+router.get("/send/:receiverId/:senderId", async (req, res) => {
+  try {
+  } catch (e) {}
+});
 // remember to export the router
 export { router as chatRouter };
