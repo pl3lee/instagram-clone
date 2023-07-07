@@ -20,7 +20,7 @@ const CreateChat = ({ params }: { params: { uid: string } }) => {
   const handleCreateChat = () => {
     axios
       .post(
-        `http://localhost:3001/chat/create/${localUser._id}/${chatUser._id}`
+        `http://localhost:3001/chat/create/${localUser?._id}/${chatUser._id}`
       )
       .then((chatroom) => {
         router.push(`/chat/dm/${chatroom.data._id}`);
