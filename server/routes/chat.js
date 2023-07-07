@@ -4,7 +4,7 @@ import { UserModel } from "../models/Users.js";
 import { CommentModel } from "../models/Posts.js";
 import mongoose from "mongoose";
 import { NotificationModel } from "../models/Notifications.js";
-import { ChatroomModel } from "../models/Chatroom.js";
+import { ChatroomModel, MessageModel } from "../models/Chatroom.js";
 import { checkIdValid } from "../utils/checkIdValid.js";
 
 const router = express.Router();
@@ -140,9 +140,48 @@ router.get("/dm/room/users/:rid", async (req, res) => {
     .catch((err) => res.status(400).json({ error: "room does not exist" }));
 });
 
-router.get("/send/:receiverId/:senderId", async (req, res) => {
+// sends a message to a chatroom
+router.post("/send/:roomId/:senderId", async (req, res) => {
   try {
-  } catch (e) {}
+    const { roomId, senderId } = req.params;
+    const idsValid = await checkIdValid(roomId, senderId);
+    if (!idsValid) {
+      return res.status(400).json({ error: "roomId or senderId is invalid" });
+    }
+    const { message } = req.body;
+    const newMessage = new MessageModel({
+      senderId,
+      roomId,
+      message,
+    });
+    await newMessage.save();
+    await ChatroomModel.updateOne(
+      { _id: roomId },
+      { $addToSet: { messages: newMessage._id } }
+    );
+    res.json(newMessage);
+  } catch (e) {
+    res.status(400).json({ error: "Cannot send message" });
+  }
 });
+
+// gets all message from chatroom
+router.get("/messages/:roomId", async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    const idsValid = await checkIdValid(roomId);
+    if (!idsValid) {
+      return res.status(400).json({ error: "roomId is invalid" });
+    }
+
+    const messages = await MessageModel.find({ roomId: roomId }).sort({
+      messageDateTime: 1,
+    });
+    res.json(messages);
+  } catch (e) {
+    res.status(400).json(e);
+  }
+});
+
 // remember to export the router
 export { router as chatRouter };
