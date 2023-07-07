@@ -69,30 +69,37 @@ router.post("/create/:uid1/:uid2", async (req, res) => {
     return res.status(400).json({ error: "uid2 is invalid" });
   }
 
-  const user1 = await UserModel.findById(uid1).catch((err) =>
-    res.status(400).json({ error: "uid1 does not exist" })
-  );
-  const user2 = await UserModel.findById(uid2).catch((err) =>
-    res.status(400).json({ error: "uid2 does not exist" })
-  );
+  const user1 = await UserModel.findById(uid1).catch((err) => {
+    res.status(400).json({ error: "uid1 does not exist" });
+    return;
+  });
+  const user2 = await UserModel.findById(uid2).catch((err) => {
+    res.status(400).json({ error: "uid2 does not exist" });
+    return;
+  });
+
   // compares uid1 and uid2 in lexicographical order, the bigger one goes in front
   const newChatroom = new ChatroomModel({
     users: [uid1, uid2].sort(),
   });
+
+  await newChatroom.save();
+
   UserModel.updateOne(
     { _id: uid1 },
     { $addToSet: { rooms: newChatroom._id } }
-  ).catch((err) =>
-    res.status(500).json({ error: "failed to add chatroom to user1" })
-  );
+  ).catch((err) => {
+    res.status(500).json({ error: "failed to add chatroom to user1" });
+    return;
+  });
   UserModel.updateOne({ _id: uid2 }, { $addToSet: { rooms: newChatroom._id } })
     .then((response) => {
-      newChatroom.save();
       res.json(newChatroom);
     })
-    .catch((err) =>
-      res.status(500).json({ error: "failed to add chatroom to user2" })
-    );
+    .catch((err) => {
+      res.status(500).json({ error: "failed to add chatroom to user2" });
+      return;
+    });
 });
 
 // gets the room id of a dm between two users

@@ -98,7 +98,11 @@ const DmsUser = ({
 
   if (!chatroomLoading && !chatroomError && localUser && dmsUser) {
     return (
-      <Link href={`/chat/${chatroom ? `dm/${chatroom._id}` : "create"}`}>
+      <Link
+        href={`/chat/${
+          chatroom ? `dm/${chatroom._id}` : `create/${dmsUser._id}`
+        }`}
+      >
         <div className="flex gap-1 px-2 py-3">
           <ProfilePictureIcon image={dmsUser.profilePicture} size="lg" />
           <div className="flex-grow-[9] text-lg font-bold flex items-center ml-3">
