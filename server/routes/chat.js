@@ -53,53 +53,53 @@ router.get("/dms/:uid", async (req, res) => {
 
 // creates a new chatroom
 router.post("/create/:uid1/:uid2", async (req, res) => {
-  const { uid1, uid2 } = req.params;
-  if (
-    uid1 === undefined ||
-    uid1 === "" ||
-    !mongoose.Types.ObjectId.isValid(uid1)
-  ) {
-    return res.status(400).json({ error: "uid1 is invalid" });
-  }
-  if (
-    uid2 === undefined ||
-    uid2 === "" ||
-    !mongoose.Types.ObjectId.isValid(uid2)
-  ) {
-    return res.status(400).json({ error: "uid2 is invalid" });
-  }
+  try {
+    const { uid1, uid2 } = req.params;
+    if (
+      uid1 === undefined ||
+      uid1 === "" ||
+      !mongoose.Types.ObjectId.isValid(uid1)
+    ) {
+      return res.status(400).json({ error: "uid1 is invalid" });
+    }
+    if (
+      uid2 === undefined ||
+      uid2 === "" ||
+      !mongoose.Types.ObjectId.isValid(uid2)
+    ) {
+      return res.status(400).json({ error: "uid2 is invalid" });
+    }
 
-  const user1 = await UserModel.findById(uid1).catch((err) => {
-    res.status(400).json({ error: "uid1 does not exist" });
-    return;
-  });
-  const user2 = await UserModel.findById(uid2).catch((err) => {
-    res.status(400).json({ error: "uid2 does not exist" });
-    return;
-  });
+    const user1 = await UserModel.findById(uid1);
+    const user2 = await UserModel.findById(uid2);
 
-  // compares uid1 and uid2 in lexicographical order, the bigger one goes in front
-  const newChatroom = new ChatroomModel({
-    users: [uid1, uid2].sort(),
-  });
-
-  await newChatroom.save();
-
-  UserModel.updateOne(
-    { _id: uid1 },
-    { $addToSet: { rooms: newChatroom._id } }
-  ).catch((err) => {
-    res.status(500).json({ error: "failed to add chatroom to user1" });
-    return;
-  });
-  UserModel.updateOne({ _id: uid2 }, { $addToSet: { rooms: newChatroom._id } })
-    .then((response) => {
-      res.json(newChatroom);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: "failed to add chatroom to user2" });
-      return;
+    // compares uid1 and uid2 in lexicographical order, the bigger one goes in front
+    const newChatroom = new ChatroomModel({
+      users: [uid1, uid2].sort(),
     });
+
+    const chatroom = await ChatroomModel.findOne({
+      users: { $all: [uid1, uid2], $size: 2 },
+    });
+    if (chatroom) {
+      return res.status(400).json({ error: "Chatroom already exists" });
+    }
+
+    await newChatroom.save();
+
+    await UserModel.updateOne(
+      { _id: uid1 },
+      { $addToSet: { rooms: newChatroom._id } }
+    );
+    await UserModel.updateOne(
+      { _id: uid2 },
+      { $addToSet: { rooms: newChatroom._id } }
+    );
+
+    res.json(newChatroom);
+  } catch (err) {
+    res.json({ error: "Cannot create new chat" });
+  }
 });
 
 // gets the room id of a dm between two users
