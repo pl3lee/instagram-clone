@@ -10,6 +10,7 @@ import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
 import { Input, InputRightElement, InputGroup } from "@chakra-ui/react";
 import MessageInput from "@/app/components/MessageInput";
 import { MessageInterface } from "@/app/interfaces/Message";
+import axios from "axios";
 
 const DMChat = ({ params }: { params: { _id: string } }) => {
   const { _id } = params;
@@ -56,7 +57,28 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("submit");
+    if (
+      !localUserLoading &&
+      !chatroomUsersLoading &&
+      !chatroomLoading &&
+      localUser &&
+      chatInput != ""
+    ) {
+      axios
+        .post(
+          `http://localhost:3001/chat/send/${chatroom._id}/${localUser._id}`,
+          {
+            message: chatInput,
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setChatInput("");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   if (
