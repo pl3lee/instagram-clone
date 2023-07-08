@@ -68,9 +68,9 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     localUser
   ) {
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col pb-20">
         <ChatHeader user={chatUser} />
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 justify-center p-4">
           {chatMessages.map((message: MessageInterface) => {
             return (
               <div key={message._id}>
@@ -84,7 +84,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
           })}
         </div>
 
-        <div className="flex justify-center items-center bottom-0 left-0 fixed p-4 w-full">
+        <div className="flex justify-center items-center bottom-0 left-0 fixed p-4 w-full dark:bg-black bg-white">
           <div className="flex-grow-7 justify-start items-center flex">
             <form onSubmit={handleSubmit} className="w-full">
               <MessageInput
@@ -114,19 +114,26 @@ const ChatMessage = ({
   const [isSelf, setIsSelf] = useState(message.senderId == localUser._id);
 
   return (
-    <div className={`flex ${isSelf ? "justify-end" : "justify-start"}`}>
-      {isSelf ? (
-        <div className="p-2 text-center bg-purple-500 rounded-full">
-          {message.message}
-        </div>
-      ) : (
-        <div className="flex">
-          <ProfilePictureIcon image={chatUser.profilePicture} size="sm" />
-          <div className="p-2 text-center bg-gray-500 rounded-full">
-            {message.message}
-          </div>
-        </div>
-      )}
+    <div className={`flex w-full ${isSelf ? "justify-end" : "justify-start"}`}>
+      <MessageContent content={message.message} isLocal={isSelf} />
+    </div>
+  );
+};
+
+const MessageContent = ({
+  content,
+  isLocal,
+}: {
+  content: string;
+  isLocal: boolean;
+}) => {
+  return (
+    <div
+      className={`py-2 px-4 text-left ${
+        isLocal ? "bg-accentBlue" : "bg-backgroundGray"
+      } rounded-xl max-w-[90%] break-words whitespace-pre-line`}
+    >
+      {content}
     </div>
   );
 };
