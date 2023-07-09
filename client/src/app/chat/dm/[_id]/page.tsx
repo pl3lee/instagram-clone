@@ -2,8 +2,9 @@
 import ChatHeader from "@/app/components/ChatHeader";
 import useUser from "@/app/hooks/useUser";
 import fetcher from "@/app/helpers/fetcher";
+import useSWRImmutable from "swr/immutable";
 import useSWR from "swr";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { UserInterface } from "@/app/interfaces/User";
 import LoadingComponent from "@/app/components/LoadingComponent";
 import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
@@ -11,6 +12,9 @@ import { Input, InputRightElement, InputGroup } from "@chakra-ui/react";
 import MessageInput from "@/app/components/MessageInput";
 import { MessageInterface } from "@/app/interfaces/Message";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("localhost:3001");
 
 const DMChat = ({ params }: { params: { _id: string } }) => {
   const { _id } = params;
@@ -24,6 +28,19 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
 
   const [chatInput, setChatInput] = useState("");
 
+  const [chatMessages, setChatMessages] = useState<MessageInterface[]>([]);
+
+  useEffect(() => {
+    socket.emit("join_room", { chatroom: _id });
+  }, [_id]);
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      console.log("received a message", data);
+      setChatMessages((prevState: any) => [...prevState, data]);
+    });
+  }, [socket]);
+
   const {
     data: chatroom,
     isLoading: chatroomLoading,
@@ -36,10 +53,10 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
   );
 
   const {
-    data: chatMessages,
-    isLoading: chatMessagesLoading,
-    error: chatMessagesError,
-  } = useSWR(
+    data: initialChatMessages,
+    isLoading: initialChatMessagesLoading,
+    error: initialChatMessagesError,
+  } = useSWRImmutable(
     !chatroomLoading && chatroom
       ? `http://localhost:3001/chat/messages/${chatroom._id}`
       : null,
@@ -55,6 +72,12 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     }
   });
 
+  useEffect(() => {
+    if (!initialChatMessagesLoading && initialChatMessages) {
+      setChatMessages(initialChatMessages);
+    }
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -64,20 +87,12 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
       localUser &&
       chatInput != ""
     ) {
-      axios
-        .post(
-          `http://localhost:3001/chat/send/${chatroom._id}/${localUser._id}`,
-          {
-            message: chatInput,
-          }
-        )
-        .then((res) => {
-          console.log(res);
-          setChatInput("");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      socket.emit("send_message", {
+        message: chatInput,
+        chatroom: _id,
+        senderId: localUser._id,
+      });
+      setChatInput("");
     }
   };
 
@@ -85,7 +100,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     !localUserLoading &&
     !chatroomUsersLoading &&
     !chatroomLoading &&
-    !chatMessagesLoading &&
+    !initialChatMessagesLoading &&
     chatUser &&
     localUser
   ) {
