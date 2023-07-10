@@ -33,7 +33,11 @@ const Post = ({
 
   const handleToggleLike = (): void => {
     axios
-      .patch(`${backendURL}/posts/toggle/${localUser?._id}/${post._id}`)
+      .patch(`${backendURL}/posts/toggle/${localUser?._id}/${post._id}`, {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+        },
+      })
       .then((res) => {
         refetchUser();
       })

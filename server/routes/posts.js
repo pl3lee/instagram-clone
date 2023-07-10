@@ -9,7 +9,7 @@ import { verifyJWT } from "../middleware/verifyJWT.js";
 const router = express.Router();
 
 // gets all posts, regardless of who posted it
-router.get("/all", async (req, res) => {
+router.get("/all", verifyJWT, async (req, res) => {
   PostModel.find()
     .sort({ postDateTime: -1 })
     .then((posts) => res.json(posts))
@@ -17,7 +17,7 @@ router.get("/all", async (req, res) => {
 });
 
 // gets all post from a user
-router.get("/user/:uid", async (req, res) => {
+router.get("/user/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "Missing user id" });
@@ -38,7 +38,7 @@ router.get("/user/:uid", async (req, res) => {
 });
 
 // gets information about a post
-router.get("/post/:postId", async (req, res) => {
+router.get("/post/:postId", verifyJWT, async (req, res) => {
   const { postId } = req.params;
   if (postId === undefined) {
     res.status(400).json({ message: "Missing post id" });
@@ -53,7 +53,7 @@ router.get("/post/:postId", async (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 // creates a post for a user
-router.post("/create/:uid", async (req, res) => {
+router.post("/create/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   const { img, caption } = req.body;
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
@@ -104,7 +104,7 @@ router.get("/following/:uid", verifyJWT, async (req, res) => {
 });
 
 // toggles a like on a post
-router.patch("/toggle/:uid/:postId", async (req, res) => {
+router.patch("/toggle/:uid/:postId", verifyJWT, async (req, res) => {
   const { uid, postId } = req.params;
   if (uid === undefined || postId === undefined) {
     res.status(400).json({ message: "Missing user id or post id" });
@@ -182,7 +182,7 @@ router.patch("/toggle/:uid/:postId", async (req, res) => {
 });
 
 // gets all the users that likes a post
-router.get("/likes/:postId", async (req, res) => {
+router.get("/likes/:postId", verifyJWT, async (req, res) => {
   const { postId } = req.params;
   if (postId === undefined) {
     res.status(400).json({ message: "Missing user id or post id" });
@@ -217,7 +217,7 @@ router.get("/likes/:postId", async (req, res) => {
 });
 
 // adds a comment to a post
-router.patch("/comment/:uid/:postId", async (req, res) => {
+router.patch("/comment/:uid/:postId", verifyJWT, async (req, res) => {
   const { uid, postId } = req.params;
   const { comment } = req.body;
   if (uid === undefined || postId === undefined) {
@@ -283,7 +283,7 @@ router.patch("/comment/:uid/:postId", async (req, res) => {
 });
 
 // gets all the comments of a post
-router.get("/comments/:postId", async (req, res) => {
+router.get("/comments/:postId", verifyJWT, async (req, res) => {
   const { postId } = req.params;
   if (postId === undefined) {
     res.status(400).json({ message: "Missing post id" });

@@ -20,7 +20,11 @@ const Notifications = () => {
   );
   useEffect(() => {
     if (!userLoading && user) {
-      axios.patch(`${backendURL}/users/notifications/read/${user?._id}`);
+      axios.patch(`${backendURL}/users/notifications/read/${user?._id}`, {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+        },
+      });
     }
   });
   if (userLoading || notificationsLoading) return <LoadingComponent />;

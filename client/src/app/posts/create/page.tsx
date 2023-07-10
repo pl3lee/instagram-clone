@@ -15,10 +15,18 @@ const Create = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .post(`${backendURL}/posts/create/${user?._id}`, {
-        img: image,
-        caption,
-      })
+      .post(
+        `${backendURL}/posts/create/${user?._id}`,
+        {
+          img: image,
+          caption,
+        },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+          },
+        }
+      )
       .then((response) => {
         router.push("/");
       })

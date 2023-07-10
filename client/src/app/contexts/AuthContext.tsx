@@ -36,7 +36,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading, setLocalUser } = useUser();
   const [loading, setLoading] = useState<Boolean>(true);
   const [error, setError] = useState<Error | null>(null);
-  const [token, setToken] = useLocalStorage("token", null);
+  const [token, setToken] = useLocalStorage<string | null>("token", null);
 
   const logout = async (): Promise<void> => {
     setLoading(true);
@@ -106,7 +106,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     setError(null);
     axios
-      .get(`${backendURL}/users/user/${user?._id}`)
+      .get(`${backendURL}/users/user/${user?._id}`, {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+        },
+      })
       .then((response) => {
         setError(null);
         setLocalUser(response.data);

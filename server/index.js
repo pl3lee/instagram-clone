@@ -44,6 +44,11 @@ io.on("connection", (socket) => {
         `http://localhost:3001/chat/send/${data.chatroom}/${data.senderId}`,
         {
           message: data.message,
+        },
+        {
+          headers: {
+            "x-access-token": data.token,
+          },
         }
       )
       .then((newMessage) => {

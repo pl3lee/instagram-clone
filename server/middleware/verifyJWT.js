@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 export const verifyJWT = (req, res, next) => {
+  console.log("++++++++++++++++", req.headers);
   const token = req.headers["x-access-token"];
   if (!token) {
     res.status(401).json({ message: "Missing token" });
