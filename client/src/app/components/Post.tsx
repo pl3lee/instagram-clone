@@ -10,6 +10,7 @@ import LoadingComponent from "./LoadingComponent";
 import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "./ProfilePictureIcon";
+import { backendURL } from "../backendURL";
 
 const Post = ({
   post,
@@ -25,14 +26,14 @@ const Post = ({
     data: postUser,
     error: postUserError,
     isLoading: postUserLoading,
-  } = useSWR(`http://localhost:3001/users/user/${post.uid}`, fetcher);
+  } = useSWR(`${backendURL}/users/user/${post.uid}`, fetcher);
   const [liked, setLiked] = useState(
     localUser && post.likes.includes(localUser._id)
   );
 
   const handleToggleLike = (): void => {
     axios
-      .patch(`http://localhost:3001/posts/toggle/${localUser?._id}/${post._id}`)
+      .patch(`${backendURL}/posts/toggle/${localUser?._id}/${post._id}`)
       .then((res) => {
         refetchUser();
       })

@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import FormRequirement from "@/app/components/FormRequirement";
+import { backendURL } from "@/app/backendURL";
 
 const SignUp = () => {
   const { register } = useContext(AuthContext);
@@ -53,11 +54,9 @@ const SignUp = () => {
   // checks username exists
   useEffect(() => {
     if (username != "") {
-      axios
-        .get(`http://localhost:3001/users/exists/${username}`)
-        .then((response) => {
-          setUsernameNotExists(!response.data.exists);
-        });
+      axios.get(`${backendURL}/users/exists/${username}`).then((response) => {
+        setUsernameNotExists(!response.data.exists);
+      });
       setUsernameGoodLength(username.length >= 5 && username.length <= 15);
       setUsernameNoSpaces(!username.includes(" "));
     } else {

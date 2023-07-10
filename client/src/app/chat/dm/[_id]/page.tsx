@@ -13,6 +13,7 @@ import MessageInput from "@/app/components/MessageInput";
 import { MessageInterface } from "@/app/interfaces/Message";
 import axios from "axios";
 import { io } from "socket.io-client";
+import { backendURL } from "@/app/backendURL";
 
 const socket = io("localhost:3001");
 
@@ -23,7 +24,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     data: chatroomUsers,
     isLoading: chatroomUsersLoading,
     error: chatroomUsersError,
-  } = useSWR(`http://localhost:3001/chat/dm/room/users/${_id}`, fetcher);
+  } = useSWR(`${backendURL}/chat/dm/room/users/${_id}`, fetcher);
   const [chatUser, setChatUser] = useState<UserInterface | null>(null);
 
   const [chatInput, setChatInput] = useState("");
@@ -53,7 +54,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     error: chatroomError,
   } = useSWR(
     !localUserLoading && chatUser && localUser
-      ? `http://localhost:3001/chat/dm/${localUser._id}/${chatUser._id}`
+      ? `${backendURL}/chat/dm/${localUser._id}/${chatUser._id}`
       : null,
     fetcher
   );
@@ -64,7 +65,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     error: initialChatMessagesError,
   } = useSWRImmutable(
     !chatroomLoading && chatroom
-      ? `http://localhost:3001/chat/messages/${chatroom._id}`
+      ? `${backendURL}/chat/messages/${chatroom._id}`
       : null,
     fetcher,
     {

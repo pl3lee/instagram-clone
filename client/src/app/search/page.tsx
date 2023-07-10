@@ -6,6 +6,7 @@ import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "../components/ProfilePictureIcon";
 import SearchBar from "../components/SearchBar";
+import { backendURL } from "../backendURL";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -13,7 +14,7 @@ const Search = () => {
   const [allPosts, setAllPosts] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/posts/all")
+      .get(`${backendURL}/posts/all`)
       .then((posts) => {
         setAllPosts(posts.data);
       })
@@ -26,7 +27,7 @@ const Search = () => {
     const delayDebounceFn = setTimeout(() => {
       if (search !== "") {
         axios
-          .get(`http://localhost:3001/users/search/${search}`)
+          .get(`${backendURL}/users/search/${search}`)
           .then((users) => {
             setSearchedUsers(users.data);
           })

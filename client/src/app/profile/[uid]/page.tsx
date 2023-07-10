@@ -10,6 +10,7 @@ import fetcher from "@/app/helpers/fetcher";
 import { UserInterface } from "@/app/interfaces/User";
 import { PostInterface } from "@/app/interfaces/Post";
 import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
+import { backendURL } from "@/app/backendURL";
 
 const Profile = ({ params }: { params: { uid: string } }) => {
   const { uid } = params;
@@ -17,13 +18,13 @@ const Profile = ({ params }: { params: { uid: string } }) => {
     data: queriedUserData,
     error: queryUserError,
     isLoading: queryUserLoading,
-  } = useSWR(`http://localhost:3001/users/user/${uid}`, fetcher);
+  } = useSWR(`${backendURL}/users/user/${uid}`, fetcher);
   const { user, isLoading: userLoading } = useUser();
   const {
     data: posts,
     error: postsError,
     isLoading: postsLoading,
-  } = useSWR(`http://localhost:3001/posts/user/${uid}`, fetcher);
+  } = useSWR(`${backendURL}/posts/user/${uid}`, fetcher);
 
   if (queryUserLoading || postsLoading || userLoading) {
     return <LoadingComponent />;
@@ -49,7 +50,7 @@ const ProfileInfoSection = ({
 
   const handleFollow = () => {
     axios
-      .patch("http://localhost:3001/users/follow", {
+      .patch(`${backendURL}/users/follow`, {
         uid: user?._id,
         followId: queriedUser._id,
       })
@@ -61,7 +62,7 @@ const ProfileInfoSection = ({
   };
   const handleUnfollow = () => {
     axios
-      .patch("http://localhost:3001/users/unfollow", {
+      .patch(`${backendURL}/users/unfollow`, {
         uid: user?._id,
         followId: queriedUser._id,
       })

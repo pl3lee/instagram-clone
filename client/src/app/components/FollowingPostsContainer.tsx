@@ -5,13 +5,14 @@ import fetcher from "../helpers/fetcher";
 import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
 import LoadingComponent from "./LoadingComponent";
+import { backendURL } from "../backendURL";
 
 const FollowingPostsContainer = ({ user }: { user: UserInterface | null }) => {
   const {
     data: posts,
     error,
     isLoading,
-  } = useSWR(`http://localhost:3001/posts/following/${user?._id}`, fetcher);
+  } = useSWR(`${backendURL}/posts/following/${user?._id}`, fetcher);
 
   if (isLoading) {
     return <LoadingComponent />;

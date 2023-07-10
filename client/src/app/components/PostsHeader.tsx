@@ -8,6 +8,7 @@ import GenericHeader from "./GenericHeader";
 import useSWR from "swr";
 import fetcher from "../helpers/fetcher";
 import { NotificationInterface } from "../interfaces/Notification";
+import { backendURL } from "../backendURL";
 
 const PostsHeader = () => {
   const { user, isLoading: userLoading } = useUser();
@@ -17,7 +18,7 @@ const PostsHeader = () => {
     isLoading: notificationsLoading,
   } = useSWR(
     !userLoading && user
-      ? `http://localhost:3001/users/notifications/notification/${user._id}`
+      ? `${backendURL}/users/notifications/notification/${user._id}`
       : null,
     fetcher
   );

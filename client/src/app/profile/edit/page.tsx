@@ -8,6 +8,7 @@ import FormRequirement from "@/app/components/FormRequirement";
 import useUser from "@/app/hooks/useUser";
 import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
 import LoadingComponent from "@/app/components/LoadingComponent";
+import { backendURL } from "@/app/backendURL";
 
 const Edit = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const Edit = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .patch(`http://localhost:3001/users/update/${user?._id}`, {
+      .patch(`${backendURL}/users/update/${user?._id}`, {
         username,
         bio,
         profilePicture,
@@ -46,11 +47,9 @@ const Edit = () => {
   // checks username exists
   useEffect(() => {
     if (username != "") {
-      axios
-        .get(`http://localhost:3001/users/exists/${username}`)
-        .then((response) => {
-          setUsernameNotExists(!response.data.exists);
-        });
+      axios.get(`${backendURL}/users/exists/${username}`).then((response) => {
+        setUsernameNotExists(!response.data.exists);
+      });
       setUsernameGoodLength(username.length >= 5 && username.length <= 15);
       setUsernameNoSpaces(!username.includes(" "));
     }

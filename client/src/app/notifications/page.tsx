@@ -9,19 +9,18 @@ import { PostInterface } from "../interfaces/Post";
 import Link from "next/link";
 import axios from "axios";
 import { useEffect } from "react";
+import { backendURL } from "../backendURL";
 const Notifications = () => {
   const { user, isLoading: userLoading } = useUser();
   const { data: notifications, isLoading: notificationsLoading } = useSWR(
     !userLoading && user
-      ? `http://localhost:3001/users/notifications/notification/${user._id}`
+      ? `${backendURL}/users/notifications/notification/${user._id}`
       : null,
     fetcher
   );
   useEffect(() => {
     if (!userLoading && user) {
-      axios.patch(
-        `http://localhost:3001/users/notifications/read/${user?._id}`
-      );
+      axios.patch(`${backendURL}/users/notifications/read/${user?._id}`);
     }
   });
   if (userLoading || notificationsLoading) return <LoadingComponent />;
@@ -45,17 +44,14 @@ const Notification = ({
     data: senderUser,
     error: senderUserError,
     isLoading: senderUserLoading,
-  } = useSWR(
-    `http://localhost:3001/users/user/${notification.senderId}`,
-    fetcher
-  );
+  } = useSWR(`${backendURL}/users/user/${notification.senderId}`, fetcher);
   const {
     data: post,
     error: postError,
     isLoading: postLoading,
   } = useSWR(
     notification.postRef
-      ? `http://localhost:3001/posts/post/${notification.postRef}`
+      ? `${backendURL}/posts/post/${notification.postRef}`
       : null,
     fetcher
   );

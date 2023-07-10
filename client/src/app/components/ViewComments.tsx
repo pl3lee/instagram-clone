@@ -13,6 +13,7 @@ import ProfilePictureIcon from "./ProfilePictureIcon";
 import fetcher from "../helpers/fetcher";
 import useSWR from "swr";
 import MessageInput from "./MessageInput";
+import { backendURL } from "../backendURL";
 
 const ViewComments = ({ post }: { post: PostInterface }) => {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
     data: commentsData,
     error: commentsError,
     isLoading: commentsLoading,
-  } = useSWR(`http://localhost:3001/posts/comments/${post._id}`, fetcher);
+  } = useSWR(`${backendURL}/posts/comments/${post._id}`, fetcher);
   const [comments, setComments] = useState<CommentInterface[]>([]);
 
   useEffect(() => {
@@ -39,12 +40,12 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
     setComment("");
     setCommentPlaceHolder("Posting comment...");
     axios
-      .patch(`http://localhost:3001/posts/comment/${user?._id}/${post._id}`, {
+      .patch(`${backendURL}/posts/comment/${user?._id}/${post._id}`, {
         comment,
       })
       .then((response) => {
         axios
-          .get(`http://localhost:3001/posts/comments/${post._id}`)
+          .get(`${backendURL}/posts/comments/${post._id}`)
           .then((response) => {
             setComments(response.data);
             setCommentPlaceHolder("Add a comment");
@@ -116,7 +117,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
   const [commentUser, setCommentUser] = useState<UserInterface | null>(null);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/users/user/${comment?.uid}`)
+      .get(`${backendURL}/users/user/${comment?.uid}`)
       .then((response) => setCommentUser(response.data))
       .catch((err) => console.log(err));
   }, [comment]);

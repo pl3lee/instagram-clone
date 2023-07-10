@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useUser from "@/app/hooks/useUser";
+import { backendURL } from "@/app/backendURL";
 
 const Create = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const Create = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3001/posts/create/${user?._id}`, {
+      .post(`${backendURL}/posts/create/${user?._id}`, {
         img: image,
         caption,
       })

@@ -10,6 +10,7 @@ import fetcher from "../helpers/fetcher";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "../components/LoadingComponent";
 import GenericHeader from "../components/GenericHeader";
+import { backendURL } from "../backendURL";
 
 const Chat = () => {
   const [search, setSearch] = useState("");
@@ -21,7 +22,7 @@ const Chat = () => {
     error: dmsUsersError,
   } = useSWR(
     !localUserLoading && localUser
-      ? `http://localhost:3001/chat/dms/${localUser._id}`
+      ? `${backendURL}/chat/dms/${localUser._id}`
       : null,
     fetcher
   );
@@ -30,7 +31,7 @@ const Chat = () => {
     const delayDebounceFn = setTimeout(() => {
       if (search !== "") {
         axios
-          .get(`http://localhost:3001/users/search/${search}`)
+          .get(`${backendURL}/users/search/${search}`)
           .then((users) => {
             setSearchedUsers(
               users.data.filter((user: UserInterface) => {
@@ -95,7 +96,7 @@ const DmsUser = ({
     error: chatroomError,
   } = useSWR(
     localUser && dmsUser
-      ? `http://localhost:3001/chat/dm/${localUser._id}/${dmsUser._id}`
+      ? `${backendURL}/chat/dm/${localUser._id}/${dmsUser._id}`
       : null,
     fetcher
   );

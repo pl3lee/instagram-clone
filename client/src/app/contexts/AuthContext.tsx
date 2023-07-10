@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
 import { UserInterface } from "../interfaces/User";
+import { backendURL } from "../backendURL";
 
 export interface AuthContextInterface {
   user: UserInterface | null;
@@ -39,7 +40,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     setError(null);
     axios
-      .post("http://localhost:3001/users/logout")
+      .post(`${backendURL}/users/logout`)
       .then(() => {
         setLocalUser(null);
         setError(null);
@@ -56,7 +57,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     setError(null);
     axios
-      .post("http://localhost:3001/users/login", {
+      .post(`${backendURL}/users/login`, {
         email,
         password,
       })
@@ -80,7 +81,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     setError(null);
     axios
-      .post("http://localhost:3001/users/register", {
+      .post(`${backendURL}/users/register`, {
         email,
         password,
         username,
@@ -101,7 +102,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     setError(null);
     axios
-      .get(`http://localhost:3001/users/user/${user?._id}`)
+      .get(`${backendURL}/users/user/${user?._id}`)
       .then((response) => {
         setError(null);
         setLocalUser(response.data);

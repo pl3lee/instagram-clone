@@ -6,6 +6,7 @@ import fetcher from "@/app/helpers/fetcher";
 import MessageInput from "@/app/components/MessageInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { backendURL } from "@/app/backendURL";
 
 const CreateChat = ({ params }: { params: { uid: string } }) => {
   const router = useRouter();
@@ -15,13 +16,11 @@ const CreateChat = ({ params }: { params: { uid: string } }) => {
     data: chatUser,
     isLoading: chatUserLoading,
     error: chatUserError,
-  } = useSWR(`http://localhost:3001/users/user/${uid}`, fetcher);
+  } = useSWR(`${backendURL}/users/user/${uid}`, fetcher);
 
   const handleCreateChat = () => {
     axios
-      .post(
-        `http://localhost:3001/chat/create/${localUser?._id}/${chatUser._id}`
-      )
+      .post(`${backendURL}/chat/create/${localUser?._id}/${chatUser._id}`)
       .then((chatroom) => {
         router.push(`/chat/dm/${chatroom.data._id}`);
       })
