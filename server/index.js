@@ -49,7 +49,7 @@ export const io = new SocketIOServer(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("send_message", (data) => {
+  socket.on("send_message", (data, cb) => {
     console.log("here is the data the user sent:", data);
     axios
       .post(
@@ -59,12 +59,16 @@ io.on("connection", (socket) => {
         }
       )
       .then((newMessage) => {
-        socket.emit("receive_message", newMessage.data);
+        console.log(data.chatroom);
+        console.log(newMessage.data);
+        socket.to(data.chatroom).emit("receive_message", newMessage.data);
+        cb(newMessage.data);
       })
       .catch((err) => console.log(err));
   });
-  socket.on("join_room", (data) => {
-    console.log(data);
-    socket.join(data.chatroom);
+
+  socket.on("join_room", (_id) => {
+    socket.join(_id);
+    // socket.to(_id).emit("user_joined", _id);
   });
 });

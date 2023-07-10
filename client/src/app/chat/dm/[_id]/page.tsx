@@ -4,7 +4,7 @@ import useUser from "@/app/hooks/useUser";
 import fetcher from "@/app/helpers/fetcher";
 import useSWRImmutable from "swr/immutable";
 import useSWR from "swr";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState, useRef } from "react";
 import { UserInterface } from "@/app/interfaces/User";
 import LoadingComponent from "@/app/components/LoadingComponent";
 import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
@@ -31,7 +31,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
   const [chatMessages, setChatMessages] = useState<MessageInterface[]>([]);
 
   useEffect(() => {
-    socket.emit("join_room", { chatroom: _id });
+    socket.emit("join_room", _id);
   }, [_id]);
 
   useEffect(() => {
@@ -39,7 +39,20 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
       console.log("received a message", data);
       setChatMessages((prevState: any) => [...prevState, data]);
     });
-  }, [socket]);
+    socket.on("user_joined", (msg) => {
+      console.log("user joined", msg);
+    });
+  }, []);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
   const {
     data: chatroom,
@@ -70,13 +83,13 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
       )[0];
       setChatUser(otherUser);
     }
-  });
+  }, [localUserLoading, chatroomUsersLoading, localUser, chatroomUsers]);
 
   useEffect(() => {
     if (!initialChatMessagesLoading && initialChatMessages) {
       setChatMessages(initialChatMessages);
     }
-  });
+  }, [initialChatMessagesLoading, initialChatMessages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,11 +100,17 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
       localUser &&
       chatInput != ""
     ) {
-      socket.emit("send_message", {
-        message: chatInput,
-        chatroom: _id,
-        senderId: localUser._id,
-      });
+      socket.emit(
+        "send_message",
+        {
+          message: chatInput,
+          chatroom: _id,
+          senderId: localUser._id,
+        },
+        (newMessage: MessageInterface) => {
+          setChatMessages((prevState: any) => [...prevState, newMessage]);
+        }
+      );
       setChatInput("");
     }
   };
@@ -119,6 +138,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
               </div>
             );
           })}
+          <div ref={messagesEndRef} />
         </div>
 
         <div className="flex justify-center items-center bottom-0 left-0 fixed p-4 w-full dark:bg-black bg-white">
