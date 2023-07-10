@@ -33,7 +33,7 @@ const PostsHeader = () => {
       return (
         <ul className="sticky-header">
           <li className="flex-grow-[7]">
-            <div className="text-3xl p-2 font-bold">Instagram</div>
+            <div className="text-3xl py-2 px-5 font-bold">Instagram</div>
           </li>
           <li className="icon-container">
             <Link href="/posts/create">
