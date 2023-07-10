@@ -103,6 +103,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
           message: chatInput,
           chatroom: _id,
           senderId: localUser._id,
+          token: JSON.parse(localStorage.getItem("token") || ""),
         },
         (newMessage: MessageInterface) => {
           setChatMessages((prevState: any) => [...prevState, newMessage]);

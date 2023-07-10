@@ -14,7 +14,11 @@ const Search = () => {
   const [allPosts, setAllPosts] = useState([]);
   useEffect(() => {
     axios
-      .get(`${backendURL}/posts/all`)
+      .get(`${backendURL}/posts/all`, {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+        },
+      })
       .then((posts) => {
         setAllPosts(posts.data);
       })
@@ -27,7 +31,11 @@ const Search = () => {
     const delayDebounceFn = setTimeout(() => {
       if (search !== "") {
         axios
-          .get(`${backendURL}/users/search/${search}`)
+          .get(`${backendURL}/users/search/${search}`, {
+            headers: {
+              "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+            },
+          })
           .then((users) => {
             setSearchedUsers(users.data);
           })

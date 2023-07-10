@@ -40,12 +40,24 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
     setComment("");
     setCommentPlaceHolder("Posting comment...");
     axios
-      .patch(`${backendURL}/posts/comment/${user?._id}/${post._id}`, {
-        comment,
-      })
+      .patch(
+        `${backendURL}/posts/comment/${user?._id}/${post._id}`,
+        {
+          comment,
+        },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+          },
+        }
+      )
       .then((response) => {
         axios
-          .get(`${backendURL}/posts/comments/${post._id}`)
+          .get(`${backendURL}/posts/comments/${post._id}`, {
+            headers: {
+              "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+            },
+          })
           .then((response) => {
             setComments(response.data);
             setCommentPlaceHolder("Add a comment");
@@ -117,7 +129,11 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
   const [commentUser, setCommentUser] = useState<UserInterface | null>(null);
   useEffect(() => {
     axios
-      .get(`${backendURL}/users/user/${comment?.uid}`)
+      .get(`${backendURL}/users/user/${comment?.uid}`, {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+        },
+      })
       .then((response) => setCommentUser(response.data))
       .catch((err) => console.log(err));
   }, [comment]);

@@ -6,11 +6,11 @@ import mongoose from "mongoose";
 import { NotificationModel } from "../models/Notifications.js";
 import { ChatroomModel, MessageModel } from "../models/Chatroom.js";
 import { checkIdValid } from "../utils/checkIdValid.js";
-
+import { verifyJWT } from "../middleware/verifyJWT.js";
 const router = express.Router();
 
 // gets all chatrooms the user is in
-router.get("/chatrooms/user/:uid", async (req, res) => {
+router.get("/chatrooms/user/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (
     uid === undefined ||
@@ -29,7 +29,7 @@ router.get("/chatrooms/user/:uid", async (req, res) => {
 });
 
 // gets a list of users that shares a room with user
-router.get("/dms/:uid", async (req, res) => {
+router.get("/dms/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (
     uid === undefined ||
@@ -53,7 +53,7 @@ router.get("/dms/:uid", async (req, res) => {
 });
 
 // creates a new chatroom
-router.post("/create/:uid1/:uid2", async (req, res) => {
+router.post("/create/:uid1/:uid2", verifyJWT, async (req, res) => {
   try {
     const { uid1, uid2 } = req.params;
     const idsValid = await checkIdValid(uid1, uid2);
@@ -94,7 +94,7 @@ router.post("/create/:uid1/:uid2", async (req, res) => {
 });
 
 // gets the room id of a dm between two users
-router.get("/dm/:uid1/:uid2", async (req, res) => {
+router.get("/dm/:uid1/:uid2", verifyJWT, async (req, res) => {
   const { uid1, uid2 } = req.params;
   if (
     uid1 === undefined ||
@@ -120,7 +120,7 @@ router.get("/dm/:uid1/:uid2", async (req, res) => {
 });
 
 // gets the users in a room
-router.get("/dm/room/users/:rid", async (req, res) => {
+router.get("/dm/room/users/:rid", verifyJWT, async (req, res) => {
   const { rid } = req.params;
   if (
     rid === undefined ||
@@ -141,7 +141,7 @@ router.get("/dm/room/users/:rid", async (req, res) => {
 });
 
 // sends a message to a chatroom
-router.post("/send/:roomId/:senderId", async (req, res) => {
+router.post("/send/:roomId/:senderId", verifyJWT, async (req, res) => {
   try {
     const { roomId, senderId } = req.params;
     const idsValid = await checkIdValid(roomId, senderId);
@@ -166,7 +166,7 @@ router.post("/send/:roomId/:senderId", async (req, res) => {
 });
 
 // gets all message from chatroom
-router.get("/messages/:roomId", async (req, res) => {
+router.get("/messages/:roomId", verifyJWT, async (req, res) => {
   try {
     const { roomId } = req.params;
     const idsValid = await checkIdValid(roomId);

@@ -50,10 +50,18 @@ const ProfileInfoSection = ({
 
   const handleFollow = () => {
     axios
-      .patch(`${backendURL}/users/follow`, {
-        uid: user?._id,
-        followId: queriedUser._id,
-      })
+      .patch(
+        `${backendURL}/users/follow`,
+        {
+          uid: user?._id,
+          followId: queriedUser._id,
+        },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+          },
+        }
+      )
       .then((res) => {
         refetchUser();
         console.log("User followed");
@@ -62,10 +70,18 @@ const ProfileInfoSection = ({
   };
   const handleUnfollow = () => {
     axios
-      .patch(`${backendURL}/users/unfollow`, {
-        uid: user?._id,
-        followId: queriedUser._id,
-      })
+      .patch(
+        `${backendURL}/users/unfollow`,
+        {
+          uid: user?._id,
+          followId: queriedUser._id,
+        },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+          },
+        }
+      )
       .then((res) => {
         refetchUser();
         console.log("User unfollowed");

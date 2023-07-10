@@ -32,11 +32,19 @@ const Edit = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .patch(`${backendURL}/users/update/${user?._id}`, {
-        username,
-        bio,
-        profilePicture,
-      })
+      .patch(
+        `${backendURL}/users/update/${user?._id}`,
+        {
+          username,
+          bio,
+          profilePicture,
+        },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+          },
+        }
+      )
       .then((response) => {
         refetchUser();
         router.push(`/profile/${user?._id}`);

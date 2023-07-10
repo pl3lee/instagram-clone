@@ -8,6 +8,7 @@ import { chatRouter } from "./routes/chat.js";
 import { Server } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import axios from "axios";
+import { auth } from "./firebase/firebase-config.js";
 
 dotenv.config();
 const app = express();
@@ -43,6 +44,11 @@ io.on("connection", (socket) => {
         `http://localhost:3001/chat/send/${data.chatroom}/${data.senderId}`,
         {
           message: data.message,
+        },
+        {
+          headers: {
+            "x-access-token": data.token,
+          },
         }
       )
       .then((newMessage) => {

@@ -31,7 +31,11 @@ const Chat = () => {
     const delayDebounceFn = setTimeout(() => {
       if (search !== "") {
         axios
-          .get(`${backendURL}/users/search/${search}`)
+          .get(`${backendURL}/users/search/${search}`, {
+            headers: {
+              "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+            },
+          })
           .then((users) => {
             setSearchedUsers(
               users.data.filter((user: UserInterface) => {

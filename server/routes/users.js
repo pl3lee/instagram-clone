@@ -10,6 +10,8 @@ import {
   signOut,
 } from "firebase/auth";
 import axios from "axios";
+import jwt from "jsonwebtoken";
+import { verifyJWT } from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 
@@ -26,7 +28,9 @@ router.post("/register", async (req, res) => {
       newUser
         .save()
         .then((user) => {
-          res.json(user);
+          const id = user._id;
+          const token = jwt.sign({ id }, process.env.JWTSECRET);
+          res.json({ user: user, token });
         })
         .catch((err) => {
           console.log(err);
@@ -46,7 +50,11 @@ router.post("/login", async (req, res) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((user) => {
       UserModel.findOne({ firebaseId: user.user.uid })
-        .then((mongoUser) => res.json(mongoUser))
+        .then((mongoUser) => {
+          const id = mongoUser._id;
+          const token = jwt.sign({ id }, process.env.JWTSECRET);
+          res.json({ user: mongoUser, token });
+        })
         .catch((err) => {
           console.log(err);
           res.status(500).json({ message: "User login failed" });
@@ -69,7 +77,7 @@ router.post("/logout", async (req, res) => {
     });
 });
 // follows another user
-router.patch("/follow", async (req, res) => {
+router.patch("/follow", verifyJWT, async (req, res) => {
   const { uid, followId } = req.body;
 
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
@@ -105,7 +113,7 @@ router.patch("/follow", async (req, res) => {
 });
 
 // unfollows another user
-router.patch("/unfollow", async (req, res) => {
+router.patch("/unfollow", verifyJWT, async (req, res) => {
   const { uid, followId } = req.body;
   if (mongoose.Types.ObjectId.isValid(uid) === false) {
     res.status(400).json({ message: "Invalid user id" });
@@ -134,7 +142,7 @@ router.patch("/unfollow", async (req, res) => {
 });
 
 // gets the ids of the accounts that the user follows
-router.get("/following/:uid/id", async (req, res) => {
+router.get("/following/:uid/id", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.json({ message: "User id not provided" });
@@ -155,7 +163,7 @@ router.get("/following/:uid/id", async (req, res) => {
 });
 
 // gets the ids of all the accounts that follow the user
-router.get("/followers/:uid/id", async (req, res) => {
+router.get("/followers/:uid/id", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.json({ message: "User id not provided" });
@@ -176,7 +184,7 @@ router.get("/followers/:uid/id", async (req, res) => {
 });
 
 // get the user's information by mongodb id
-router.get("/user/:uid", async (req, res) => {
+router.get("/user/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.json({ message: "User id not provided" });
@@ -195,7 +203,7 @@ router.get("/user/:uid", async (req, res) => {
 });
 
 // get the user's information by firebase id
-router.get("/fb/:firebaseId", async (req, res) => {
+router.get("/fb/:firebaseId", verifyJWT, async (req, res) => {
   const { firebaseId } = req.params;
   UserModel.findOne({ firebaseId: firebaseId })
     .then((user) => res.json(user))
@@ -205,7 +213,7 @@ router.get("/fb/:firebaseId", async (req, res) => {
     });
 });
 
-router.patch("/update/:uid", async (req, res) => {
+router.patch("/update/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "User id not provided" });
@@ -251,7 +259,7 @@ router.get("/exists/:username", async (req, res) => {
     .catch((err) => res.status(500).json({ message: "User fetch failed" }));
 });
 
-router.get("/search/:query", async (req, res) => {
+router.get("/search/:query", verifyJWT, async (req, res) => {
   const { query } = req.params;
   UserModel.find({ username: { $regex: query, $options: "i" } })
     .then((users) => {
@@ -261,7 +269,7 @@ router.get("/search/:query", async (req, res) => {
 });
 
 // gets all notifications of a user
-router.get("/notifications/notification/:uid", async (req, res) => {
+router.get("/notifications/notification/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "Missing user id" });
@@ -292,7 +300,7 @@ router.get("/notifications/notification/:uid", async (req, res) => {
 });
 
 // sets all notifications of a user read true
-router.patch("/notifications/read/:uid", async (req, res) => {
+router.patch("/notifications/read/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "Missing user id" });
