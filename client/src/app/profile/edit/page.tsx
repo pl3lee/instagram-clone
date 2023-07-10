@@ -6,8 +6,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import FormRequirement from "@/app/components/FormRequirement";
 import useUser from "@/app/hooks/useUser";
-import CircularProgress from "@mui/material/CircularProgress";
 import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
+import LoadingComponent from "@/app/components/LoadingComponent";
 
 const Edit = () => {
   const router = useRouter();
@@ -37,7 +37,6 @@ const Edit = () => {
         profilePicture,
       })
       .then((response) => {
-        console.log("response from update", response);
         refetchUser();
         router.push(`/profile/${user?._id}`);
       })
@@ -175,11 +174,7 @@ const Edit = () => {
       </div>
     );
   } else {
-    return (
-      <div className="flex justify-center items-center h-screen w-full">
-        <CircularProgress />
-      </div>
-    );
+    return <LoadingComponent />;
   }
 };
 

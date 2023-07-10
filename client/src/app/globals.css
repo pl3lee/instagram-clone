@@ -12,7 +12,10 @@
 } */
 @layer base {
   body {
-    @apply w-screen p-0 box-border bg-white text-black dark:bg-black dark:text-white
+    @apply w-screen p-0 box-border bg-white text-black dark:bg-black dark:text-white min-h-screen
+  }
+  html {
+    @apply bg-white dark:bg-black
   }
 }
 

@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     default: [],
   },
   rooms: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "rooms" }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "chatrooms" }],
     default: [],
   },
   posts: {

@@ -29,11 +29,13 @@ module.exports = {
       blue: colors.blue,
       slate: colors.slate,
       red: colors.red,
+      purple: colors.purple,
       button1: "#2563eb",
       button2: "#e2e8f0",
       accentBlue: "#2563eb",
       linkBlue: "#3b82f6",
       borderGray: "#e2e8f0",
+      backgroundGray: "#262626",
     },
   },
   plugins: [

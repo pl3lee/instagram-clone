@@ -8,7 +8,11 @@ import ProfilePictureIcon from "./ProfilePictureIcon";
 const Navbar = () => {
   const pathname = usePathname();
   const { user, isLoading } = useUser();
-  if (pathname === "/auth/login" || pathname === "/auth/signup") {
+  if (
+    pathname === "/auth/login" ||
+    pathname === "/auth/signup" ||
+    pathname.startsWith("/chat")
+  ) {
     return <div></div>;
   }
   if (!isLoading && user) {

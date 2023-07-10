@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "../components/ProfilePictureIcon";
+import SearchBar from "../components/SearchBar";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -42,14 +43,11 @@ const Search = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="stick-header px-3 py-2">
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search for accounts"
-          className="w-full rounded-lg p-2 border-borderGray border border-solid bg-white dark:bg-black focus:outline-none"
-        />
-      </div>
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+        placeholder="Search for users..."
+      />
       <div>
         {search != "" ? (
           searchedUsers.map((user: UserInterface) => {

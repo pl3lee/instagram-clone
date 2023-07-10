@@ -2,7 +2,7 @@
 import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
 import { useEffect, useState, useContext, FormEventHandler } from "react";
-import { Input } from "@rewind-ui/core";
+import { Input } from "@chakra-ui/react";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "./LoadingComponent";
 import Navbar from "./Navbar";
@@ -12,6 +12,7 @@ import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "./ProfilePictureIcon";
 import fetcher from "../helpers/fetcher";
 import useSWR from "swr";
+import MessageInput from "./MessageInput";
 
 const ViewComments = ({ post }: { post: PostInterface }) => {
   const [open, setOpen] = useState(false);
@@ -79,34 +80,10 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
                   </div>
                   <div className="flex-grow-7 justify-start items-center flex">
                     <form onSubmit={handleSubmit} className="w-full">
-                      <Input
-                        withRing={false}
-                        color="gray"
-                        className="rounded-full"
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
+                      <MessageInput
+                        inputValue={comment}
+                        setInputValue={setComment}
                         placeholder={commentPlaceHolder}
-                        rightIcon={
-                          <button
-                            type="submit"
-                            className="justify-center flex items-center"
-                            disabled={comment.length === 0}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              className="w-6 h-6 stroke-black"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                              />
-                            </svg>
-                          </button>
-                        }
                       />
                     </form>
                   </div>

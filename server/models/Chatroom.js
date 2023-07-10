@@ -6,9 +6,9 @@ const MessageSchema = new mongoose.Schema({
     ref: "users",
     required: true,
   },
-  receiverId: {
+  roomId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "chatrooms",
     required: true,
   },
   message: { type: String, required: true },
@@ -16,8 +16,21 @@ const MessageSchema = new mongoose.Schema({
 });
 
 const ChatroomSchema = new mongoose.Schema({
-  roomId: { type: String, required: true, unique: true },
-  messages: [{ type: MessageSchema }],
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      default: [],
+    },
+  ],
+  messages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "messages",
+      default: [],
+    },
+  ],
 });
 
 export const ChatroomModel = mongoose.model("chatrooms", ChatroomSchema);
+export const MessageModel = mongoose.model("messages", MessageSchema);
