@@ -33,7 +33,6 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
   useEffect(() => {
     socket.emit("join_room", _id);
     socket.on("receive_message", (data) => {
-      console.log("received a message", data);
       setChatMessages((prevState: any) => [...prevState, data]);
     });
   }, [_id]);

@@ -111,7 +111,6 @@ const PostImage = ({
           }
         });
         setLiked(!liked);
-        console.log("double clicked");
       }}
     >
       <img src={post.img} className="w-full h-auto" alt="post image" />

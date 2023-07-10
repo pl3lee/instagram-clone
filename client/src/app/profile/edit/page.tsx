@@ -37,7 +37,6 @@ const Edit = () => {
         profilePicture,
       })
       .then((response) => {
-        console.log("response from update", response);
         refetchUser();
         router.push(`/profile/${user?._id}`);
       })
