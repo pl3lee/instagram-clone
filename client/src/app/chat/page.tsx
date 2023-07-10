@@ -32,7 +32,11 @@ const Chat = () => {
         axios
           .get(`http://localhost:3001/users/search/${search}`)
           .then((users) => {
-            setSearchedUsers(users.data);
+            setSearchedUsers(
+              users.data.filter((user: UserInterface) => {
+                return user._id != localUser?._id;
+              })
+            );
           })
           .catch((err) => {
             console.log(err);
