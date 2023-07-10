@@ -90,7 +90,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         username,
       })
       .then((loggedInUser) => {
-        setLocalUser(loggedInUser.data);
+        setLocalUser(loggedInUser.data.user);
         setToken(loggedInUser.data.token);
         setError(null);
         router.push("/");

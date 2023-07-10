@@ -11,6 +11,7 @@ import { UserInterface } from "@/app/interfaces/User";
 import { PostInterface } from "@/app/interfaces/Post";
 import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
 import { backendURL } from "@/app/backendURL";
+import NoPostsYet from "@/app/components/NoPostsYet";
 
 const Profile = ({ params }: { params: { uid: string } }) => {
   const { uid } = params;
@@ -156,19 +157,27 @@ const PostsSection = ({
   user: UserInterface | null;
 }) => {
   if (user) {
-    return (
-      <div className="grid grid-cols-3">
-        {posts.map((post: PostInterface) => {
-          return (
-            <div key={post._id} className="w-full aspect-square">
-              <Link href={`/posts/${post._id}`}>
-                <img src={post.img} className="w-full h-full object-cover" />
-              </Link>
-            </div>
-          );
-        })}
-      </div>
-    );
+    if (posts.length > 0) {
+      return (
+        <div className="grid grid-cols-3">
+          {posts.map((post: PostInterface) => {
+            return (
+              <div key={post._id} className="w-full aspect-square">
+                <Link href={`/posts/${post._id}`}>
+                  <img src={post.img} className="w-full h-full object-cover" />
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex justify-center pt-16">
+          <NoPostsYet subtext="Start by creating a post!" />
+        </div>
+      );
+    }
   }
 };
 export default Profile;

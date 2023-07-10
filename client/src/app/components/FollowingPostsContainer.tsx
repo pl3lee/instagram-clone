@@ -6,6 +6,7 @@ import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
 import LoadingComponent from "./LoadingComponent";
 import { backendURL } from "../backendURL";
+import NoPostsYet from "./NoPostsYet";
 
 const FollowingPostsContainer = ({ user }: { user: UserInterface | null }) => {
   const {
@@ -18,15 +19,21 @@ const FollowingPostsContainer = ({ user }: { user: UserInterface | null }) => {
     return <LoadingComponent />;
   } else {
     return (
-      <div>
-        {posts &&
+      <div className="min-h-screen">
+        {posts && posts.length === 0 ? (
+          <div className="h-screen flex justify-center items-center ">
+            <NoPostsYet subtext="Find someone to follow in the search tab, or create a post yourself!" />
+          </div>
+        ) : (
+          posts &&
           posts.map((post: PostInterface) => {
             return (
               <div key={post._id}>
                 <Post post={post} localUser={user} />
               </div>
             );
-          })}
+          })
+        )}
       </div>
     );
   }
