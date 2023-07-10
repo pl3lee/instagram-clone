@@ -39,9 +39,6 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
       console.log("received a message", data);
       setChatMessages((prevState: any) => [...prevState, data]);
     });
-    socket.on("user_joined", (msg) => {
-      console.log("user joined", msg);
-    });
   }, []);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -73,7 +70,10 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     !chatroomLoading && chatroom
       ? `http://localhost:3001/chat/messages/${chatroom._id}`
       : null,
-    fetcher
+    fetcher,
+    {
+      revalidateOnMount: true,
+    }
   );
 
   useEffect(() => {

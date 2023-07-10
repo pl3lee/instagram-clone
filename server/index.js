@@ -50,7 +50,7 @@ export const io = new SocketIOServer(server, {
 
 io.on("connection", (socket) => {
   socket.on("send_message", (data, cb) => {
-    console.log("here is the data the user sent:", data);
+    // console.log("here is the data the user sent:", data);
     axios
       .post(
         `http://localhost:3001/chat/send/${data.chatroom}/${data.senderId}`,
@@ -59,8 +59,8 @@ io.on("connection", (socket) => {
         }
       )
       .then((newMessage) => {
-        console.log(data.chatroom);
-        console.log(newMessage.data);
+        // console.log(data.chatroom);
+        // console.log(newMessage.data);
         socket.to(data.chatroom).emit("receive_message", newMessage.data);
         cb(newMessage.data);
       })
