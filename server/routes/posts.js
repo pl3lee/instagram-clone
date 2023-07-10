@@ -4,6 +4,7 @@ import { UserModel } from "../models/Users.js";
 import { CommentModel } from "../models/Posts.js";
 import mongoose from "mongoose";
 import { NotificationModel } from "../models/Notifications.js";
+import { verifyJWT } from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 
@@ -81,7 +82,7 @@ router.post("/create/:uid", async (req, res) => {
 });
 
 // gets all posts from following users, including the user himself
-router.get("/following/:uid", async (req, res) => {
+router.get("/following/:uid", verifyJWT, async (req, res) => {
   const { uid } = req.params;
   if (uid === undefined) {
     res.status(400).json({ message: "Missing user id" });

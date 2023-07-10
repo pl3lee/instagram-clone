@@ -8,6 +8,7 @@ import { chatRouter } from "./routes/chat.js";
 import { Server } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import axios from "axios";
+import { auth } from "./firebase/firebase-config.js";
 
 dotenv.config();
 const app = express();

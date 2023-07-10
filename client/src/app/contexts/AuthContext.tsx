@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import useUser from "../hooks/useUser";
 import { UserInterface } from "../interfaces/User";
 import { backendURL } from "../backendURL";
+import useLocalStorage from "use-local-storage";
 
 export interface AuthContextInterface {
   user: UserInterface | null;
@@ -35,6 +36,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading, setLocalUser } = useUser();
   const [loading, setLoading] = useState<Boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const [token, setToken] = useLocalStorage("token", null);
 
   const logout = async (): Promise<void> => {
     setLoading(true);
@@ -62,7 +64,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       })
       .then((loggedInUser) => {
-        setLocalUser(loggedInUser.data);
+        setLocalUser(loggedInUser.data.user);
+        setToken(loggedInUser.data.token);
         setError(null);
         router.push("/");
       })
@@ -88,6 +91,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       })
       .then((loggedInUser) => {
         setLocalUser(loggedInUser.data);
+        setToken(loggedInUser.data.token);
         setError(null);
         router.push("/");
       })

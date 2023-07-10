@@ -10,6 +10,7 @@ import {
   signOut,
 } from "firebase/auth";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -26,7 +27,9 @@ router.post("/register", async (req, res) => {
       newUser
         .save()
         .then((user) => {
-          res.json(user);
+          const id = user._id;
+          const token = jwt.sign({ id }, process.env.JWTSECRET);
+          res.json({ user: user, token });
         })
         .catch((err) => {
           console.log(err);
@@ -46,7 +49,11 @@ router.post("/login", async (req, res) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((user) => {
       UserModel.findOne({ firebaseId: user.user.uid })
-        .then((mongoUser) => res.json(mongoUser))
+        .then((mongoUser) => {
+          const id = mongoUser._id;
+          const token = jwt.sign({ id }, process.env.JWTSECRET);
+          res.json({ user: mongoUser, token });
+        })
         .catch((err) => {
           console.log(err);
           res.status(500).json({ message: "User login failed" });
