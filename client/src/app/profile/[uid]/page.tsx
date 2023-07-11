@@ -159,7 +159,7 @@ const PostsSection = ({
   if (user) {
     if (posts.length > 0) {
       return (
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 pb-20">
           {posts.map((post: PostInterface) => {
             return (
               <div key={post._id} className="w-full aspect-square">
