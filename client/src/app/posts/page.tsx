@@ -12,7 +12,7 @@ export default function Posts() {
     return <LoadingComponent />;
   } else {
     return (
-      <div className="mb-[10vh]">
+      <div className="mb-[10vh] flex justify-center">
         <FollowingPostsContainer user={user} />
       </div>
     );

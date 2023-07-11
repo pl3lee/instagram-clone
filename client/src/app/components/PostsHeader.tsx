@@ -31,7 +31,7 @@ const PostsHeader = () => {
       return <GenericHeader title="Post" />;
     } else if (pathname.startsWith("/posts")) {
       return (
-        <ul className="sticky-header">
+        <ul className="sticky-header md:hidden">
           <li className="flex-grow-[7]">
             <div className="text-3xl py-2 px-5 font-bold">Instagram</div>
           </li>

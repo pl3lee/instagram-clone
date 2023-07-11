@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import useUser from "../hooks/useUser";
 import ProfilePictureIcon from "./ProfilePictureIcon";
+import { UserInterface } from "../interfaces/User";
+import useSWR from "swr";
+import fetcher from "../helpers/fetcher";
+import { backendURL } from "../backendURL";
+import LoadingComponent from "./LoadingComponent";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -17,7 +22,115 @@ const Navbar = () => {
   }
   if (!isLoading && user) {
     return (
-      <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full bg-white border-borderGray border-solid border-t-[0.5px] dark:bg-black">
+      <div>
+        <SmallNavbar user={user} />;
+        <MediumNavbar user={user} />
+      </div>
+    );
+  } else {
+    return <div></div>;
+  }
+};
+
+const SmallNavbar = ({ user }: { user: UserInterface }) => {
+  const pathname = usePathname();
+  return (
+    <ul className="px-8 py-2 flex gap-3 justify-between fixed bottom-0 left-0 w-full bg-white border-borderGray border-solid border-t-[0.5px] dark:bg-black md:hidden">
+      <li className="icon-container">
+        <Link href="/posts">
+          <svg
+            aria-label="Home"
+            color="rgb(245, 245, 245)"
+            role="img"
+            viewBox="0 0 24 24"
+            className={`${
+              pathname.startsWith("/posts") ? "fill-white" : ""
+            } svg-icons`}
+            strokeWidth={2}
+          >
+            <path d="M22 23h-6.001a1 1 0 0 1-1-1v-5.455a2.997 2.997 0 1 0-5.993 0V22a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V11.543a1.002 1.002 0 0 1 .31-.724l10-9.543a1.001 1.001 0 0 1 1.38 0l10 9.543a1.002 1.002 0 0 1 .31.724V22a1 1 0 0 1-1 1Z"></path>
+          </svg>
+        </Link>
+      </li>
+      <li className="icon-container">
+        <Link href="/search">
+          <svg
+            aria-label="Search"
+            color="rgb(245, 245, 245)"
+            fill="rgb(245, 245, 245)"
+            role="img"
+            viewBox="0 0 24 24"
+            className={`svg-icons`}
+            strokeWidth={2}
+          >
+            <path
+              d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z"
+              fill={`${pathname.startsWith("/search") ? "white" : "none"}`}
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            ></path>
+            <line
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              x1="16.511"
+              x2="22"
+              y1="16.511"
+              y2="22"
+            ></line>
+          </svg>
+        </Link>
+      </li>
+      <li className="icon-container">
+        <Link href="/chat">
+          <svg
+            aria-label="Messenger"
+            color="rgb(245, 245, 245)"
+            fill="hsl(0, 0%, 96.07843137254902%)"
+            role="img"
+            viewBox="0 0 24 24"
+            className={`svg-icons`}
+          >
+            <path
+              d="M12.003 2.001a9.705 9.705 0 1 1 0 19.4 10.876 10.876 0 0 1-2.895-.384.798.798 0 0 0-.533.04l-1.984.876a.801.801 0 0 1-1.123-.708l-.054-1.78a.806.806 0 0 0-.27-.569 9.49 9.49 0 0 1-3.14-7.175 9.65 9.65 0 0 1 10-9.7Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-miterlimit="10"
+              stroke-width="1.739"
+            />
+            <path
+              d="M17.79 10.132a.659.659 0 0 0-.962-.873l-2.556 2.05a.63.63 0 0 1-.758.002L11.06 9.47a1.576 1.576 0 0 0-2.277.42l-2.567 3.98a.659.659 0 0 0 .961.875l2.556-2.049a.63.63 0 0 1 .759-.002l2.452 1.84a1.576 1.576 0 0 0 2.278-.42Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+        </Link>
+      </li>
+      <li className="icon-container">
+        <Link href={`/profile/${user._id}`}>
+          <ProfilePictureIcon image={user.profilePicture} size="md" />
+        </Link>
+      </li>
+    </ul>
+  );
+};
+
+const MediumNavbar = ({ user }: { user: UserInterface }) => {
+  const {
+    data: notifications,
+    error: notificationsError,
+    isLoading: notificationsLoading,
+  } = useSWR(
+    `${backendURL}/users/notifications/notification/${user._id}`,
+    fetcher
+  );
+
+  if (!notificationsLoading && !notificationsError && notifications) {
+    return (
+      <ul className="flex-col gap-3 justify-start fixed top-0 left-0 h-screen bg-white p-4 dark:bg-black hidden md:flex lg:hidden">
         <li className="icon-container">
           <Link href="/posts">
             <svg
@@ -68,7 +181,8 @@ const Navbar = () => {
       </ul>
     );
   } else {
-    return <div></div>;
+    return <LoadingComponent />;
   }
 };
+
 export default Navbar;
