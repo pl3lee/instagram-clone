@@ -30,7 +30,7 @@ const MessageInput = ({
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            className={`w-6 h-6 stroke-white ${
+            className={`w-6 h-6 stroke-black dark:stroke-white ${
               inputValue.length === 0 ? "fill-none" : "fill-accentBlue"
             }`}
           >

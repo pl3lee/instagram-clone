@@ -102,7 +102,7 @@ const ProfileInfoSection = ({
         <div className="flex justify-center p-6 gap-8 w-full">
           <ProfilePictureIcon image={queriedUser.profilePicture} size="xl" />
           <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
-            <div className="text-3xl overflow-x-auto overflow-y-hidden no-scrollbar">
+            <div className="text-xl overflow-x-auto overflow-y-hidden no-scrollbar">
               {queriedUser.username}
             </div>
             <div>

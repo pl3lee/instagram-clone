@@ -12,6 +12,8 @@ import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "./ProfilePictureIcon";
 import { backendURL } from "../backendURL";
 
+import { useDisclosure } from "@chakra-ui/react";
+
 const Post = ({
   post,
   localUser,
@@ -22,7 +24,7 @@ const Post = ({
   const authContext: AuthContextInterface = useContext(AuthContext);
   const refetchUser = authContext.refetchUser;
   const [likeAmount, setLikeAmount] = useState<number>(post.likes.length);
-  const [openComments, setOpenComments] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     data: postUser,
     error: postUserError,
@@ -70,14 +72,15 @@ const Post = ({
           setLikeAmount={setLikeAmount}
           liked={liked}
           setLiked={setLiked}
-          setOpenComments={setOpenComments}
+          setOpenComments={onOpen}
         />
         <PostInformation
           post={post}
           postUser={postUser}
           likeAmount={likeAmount}
-          openComments={openComments}
-          setOpenComments={setOpenComments}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
         />
       </div>
     );
@@ -202,14 +205,16 @@ const PostInformation = ({
   post,
   postUser,
   likeAmount,
-  openComments,
-  setOpenComments,
+  isOpen,
+  onOpen,
+  onClose,
 }: {
   post: PostInterface;
   postUser: UserInterface;
   likeAmount: number;
-  openComments: boolean;
-  setOpenComments: (openComments: boolean) => void;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }) => {
   const postDate = new Date(post.postDateTime);
   const days = [
@@ -243,8 +248,9 @@ const PostInformation = ({
       </div>
       <ViewComments
         post={post}
-        openComments={openComments}
-        setOpenComments={setOpenComments}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
       />
       <div className="font-light opacity-50 text-sm">
         Posted on {days[postDate.getDay()]}, {postDate.getFullYear()}/

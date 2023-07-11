@@ -1,5 +1,5 @@
 "use client";
-import { Card, Drawer } from "@rewind-ui/core";
+// import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
 import { useEffect, useState, useContext, FormEventHandler } from "react";
 import { Input } from "@chakra-ui/react";
@@ -14,15 +14,24 @@ import fetcher from "../helpers/fetcher";
 import useSWR from "swr";
 import MessageInput from "./MessageInput";
 import { backendURL } from "../backendURL";
+import {
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+} from "@chakra-ui/react";
 
 const ViewComments = ({
   post,
-  openComments,
-  setOpenComments,
+  isOpen,
+  onOpen,
+  onClose,
 }: {
   post: PostInterface;
-  openComments: boolean;
-  setOpenComments: (openComments: boolean) => void;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }) => {
   const [comment, setComment] = useState("");
   const [commentPlaceHolder, setCommentPlaceHolder] = useState("Add a comment");
@@ -81,7 +90,46 @@ const ViewComments = ({
   } else {
     return (
       <div>
-        <Drawer
+        <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
+          <DrawerOverlay />
+          <DrawerContent className="bg-white dark:bg-gray-950 rounded-lg">
+            <DrawerHeader borderBottomWidth="1px">
+              <div className="flex flex-col gap-3">
+                <div className="text-3xl text-center font-bold">Comments</div>
+                <div className="flex gap-3">
+                  <div className="flex-grow-1 flex-shrink-0">
+                    <ProfilePictureIcon
+                      image={user ? user.profilePicture : ""}
+                      size="lg"
+                    />
+                  </div>
+                  <div className="flex-grow-7 justify-start items-center flex">
+                    <form onSubmit={handleSubmit} className="w-full">
+                      <MessageInput
+                        inputValue={comment}
+                        setInputValue={setComment}
+                        placeholder={commentPlaceHolder}
+                      />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </DrawerHeader>
+            <DrawerBody>
+              <div className=" max-h-[50vh] overflow-y-scroll">
+                {comments.length > 0 ? (
+                  comments.map((comment: CommentInterface) => {
+                    return <Comment key={comment._id} comment={comment} />;
+                  })
+                ) : (
+                  <div>No comments yet</div>
+                )}
+              </div>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+
+        {/* <Drawer
           position="bottom"
           open={openComments}
           onClose={() => setOpenComments(false)}
@@ -125,8 +173,8 @@ const ViewComments = ({
               <Navbar />
             </Card.Footer>
           </Card>
-        </Drawer>
-        <button onClick={() => setOpenComments(true)}>View comments</button>
+        </Drawer> */}
+        <button onClick={onOpen}>View comments</button>
       </div>
     );
   }

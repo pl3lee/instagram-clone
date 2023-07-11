@@ -20,11 +20,15 @@ const CreateChat = ({ params }: { params: { uid: string } }) => {
 
   const handleCreateChat = () => {
     axios
-      .post(`${backendURL}/chat/create/${localUser?._id}/${chatUser._id}`, {
-        headers: {
-          "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
-        },
-      })
+      .post(
+        `${backendURL}/chat/create/${localUser?._id}/${chatUser._id}`,
+        {},
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token") || ""),
+          },
+        }
+      )
       .then((chatroom) => {
         router.push(`/chat/dm/${chatroom.data._id}`);
       })

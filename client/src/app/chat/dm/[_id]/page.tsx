@@ -185,7 +185,9 @@ const MessageContent = ({
   return (
     <div
       className={`py-2 px-4 text-left ${
-        isLocal ? "bg-accentBlue" : "bg-backgroundGray"
+        isLocal
+          ? "bg-accentBlue text-white"
+          : "bg-[#efefef] dark:bg-backgroundGray text-black dark:text-white"
       } rounded-xl max-w-[90%] break-words whitespace-pre-line`}
     >
       {content}
