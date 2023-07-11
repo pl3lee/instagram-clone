@@ -31,7 +31,7 @@
   }
 
   .sticky-header {
-    @apply py-2 flex gap-3 justify-between sticky top-0 left-0 w-full px-1 list-none m-0 bg-white border-borderGray border-solid border-b-[0.5px] dark:bg-black
+    @apply py-2 flex gap-3 justify-between sticky top-0 left-0 w-full px-1 list-none m-0 bg-white border-borderGray border-solid border-b-[0.5px] dark:bg-black md:border-b-0
   }
 }
 

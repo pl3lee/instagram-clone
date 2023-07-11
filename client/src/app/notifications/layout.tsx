@@ -6,7 +6,7 @@ export default function NotificationsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="w-full md:max-w-screen-sm">
       <GenericHeader title="Notifications" />
       {children}
     </div>
