@@ -38,7 +38,8 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="bg-accentBlue text-white p-2 rounded"
+            className="bg-accentBlue text-white p-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={email == "" || password == ""}
           >
             Login
           </button>
@@ -47,6 +48,16 @@ const Login = () => {
               Your credentials are incorrect
             </div>
           )}
+          <button
+            onClick={async () => {
+              setEmail("demoaccount@gmail.com");
+              setPassword("demoaccount123");
+              await login("demoaccount@gmail.com", "demoaccount123");
+            }}
+            className="text-white p-2 rounded bg-green-500"
+          >
+            Login to demo account
+          </button>
         </form>
         <div>
           Don&apos;t have an account?{" "}
