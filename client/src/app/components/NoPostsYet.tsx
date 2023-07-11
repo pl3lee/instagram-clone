@@ -1,7 +1,7 @@
 const NoPostsYet = ({ subtext }: { subtext: string }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-4 w-1/2">
-      <div className="flex border-white border-[5px] rounded-full border-solid p-5 justify-center items-center">
+      <div className="flex border-black dark:border-white border-[5px] rounded-full border-solid p-5 justify-center items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -15,8 +15,15 @@ import useSWR from "swr";
 import MessageInput from "./MessageInput";
 import { backendURL } from "../backendURL";
 
-const ViewComments = ({ post }: { post: PostInterface }) => {
-  const [open, setOpen] = useState(false);
+const ViewComments = ({
+  post,
+  openComments,
+  setOpenComments,
+}: {
+  post: PostInterface;
+  openComments: boolean;
+  setOpenComments: (openComments: boolean) => void;
+}) => {
   const [comment, setComment] = useState("");
   const [commentPlaceHolder, setCommentPlaceHolder] = useState("Add a comment");
 
@@ -76,8 +83,8 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
       <div>
         <Drawer
           position="bottom"
-          open={open}
-          onClose={() => setOpen(false)}
+          open={openComments}
+          onClose={() => setOpenComments(false)}
           className="rounded-lg"
         >
           <Card className="w-full bg-white dark:bg-black border-none">
@@ -119,7 +126,7 @@ const ViewComments = ({ post }: { post: PostInterface }) => {
             </Card.Footer>
           </Card>
         </Drawer>
-        <button onClick={() => setOpen(true)}>View comments</button>
+        <button onClick={() => setOpenComments(true)}>View comments</button>
       </div>
     );
   }
