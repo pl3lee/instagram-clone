@@ -31,7 +31,7 @@ const Profile = ({ params }: { params: { uid: string } }) => {
     return <LoadingComponent />;
   } else {
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <ProfileInfoSection queriedUser={queriedUserData} user={user} />
         <PostsSection posts={posts} user={user} />
       </div>

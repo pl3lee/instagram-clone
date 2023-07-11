@@ -51,13 +51,13 @@ const Search = () => {
   }, [search]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col md:max-w-screen-sm md:items-center w-full">
       <SearchBar
         search={search}
         setSearch={setSearch}
         placeholder="Search for users..."
       />
-      <div>
+      <div className="w-full flex justify-start">
         {search != "" ? (
           searchedUsers.map((user: UserInterface) => {
             return (

@@ -24,7 +24,7 @@ const Navbar = () => {
   if (!isLoading && user) {
     return (
       <div>
-        <SmallNavbar user={user} />;
+        <SmallNavbar user={user} />
         <MediumNavbar user={user} />
       </div>
     );
