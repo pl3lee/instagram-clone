@@ -39,7 +39,12 @@ const Chat = () => {
           .then((users) => {
             setSearchedUsers(
               users.data.filter((user: UserInterface) => {
-                return user._id != localUser?._id;
+                return (
+                  user._id !== localUser?._id &&
+                  !dmsUsers?.some((dmsUser: UserInterface) => {
+                    return dmsUser._id === user._id;
+                  })
+                );
               })
             );
           })
@@ -55,7 +60,7 @@ const Chat = () => {
   }, [search]);
   if (!localUserLoading && !dmsUsersLoading) {
     return (
-      <div>
+      <div className="w-full md:max-w-screen-sm">
         <GenericHeader title="Chat" />
         <div className="flex flex-col gap-2">
           <SearchBar

@@ -17,7 +17,7 @@ const Navbar = () => {
   if (
     pathname === "/auth/login" ||
     pathname === "/auth/signup" ||
-    pathname.startsWith("/chat")
+    pathname.startsWith("/chat/")
   ) {
     return <div></div>;
   }

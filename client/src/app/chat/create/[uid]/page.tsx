@@ -39,7 +39,7 @@ const CreateChat = ({ params }: { params: { uid: string } }) => {
 
   if (!localUserLoading && !chatUserLoading && chatUser && localUser) {
     return (
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-screen w-full">
         <ChatHeader user={chatUser} />
         <div className="flex flex-col gap-2 items-center justify-center h-full">
           <button

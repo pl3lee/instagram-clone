@@ -10,7 +10,7 @@ const MessageInput = ({
   placeholder: string;
 }) => {
   return (
-    <InputGroup>
+    <InputGroup className="w-full">
       <Input
         variant="outline"
         size="lg"
