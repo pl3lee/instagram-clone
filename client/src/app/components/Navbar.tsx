@@ -44,7 +44,9 @@ const SmallNavbar = ({ user }: { user: UserInterface }) => {
             role="img"
             viewBox="0 0 24 24"
             className={`${
-              pathname.startsWith("/posts") ? "fill-white" : ""
+              pathname.startsWith("/posts")
+                ? "fill-black dark:fill-white"
+                : "fill-none"
             } svg-icons`}
             strokeWidth={2}
           >
@@ -57,7 +59,6 @@ const SmallNavbar = ({ user }: { user: UserInterface }) => {
           <svg
             aria-label="Search"
             color="rgb(245, 245, 245)"
-            fill="rgb(245, 245, 245)"
             role="img"
             viewBox="0 0 24 24"
             className={`svg-icons`}
@@ -65,15 +66,18 @@ const SmallNavbar = ({ user }: { user: UserInterface }) => {
           >
             <path
               d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z"
-              fill={`${pathname.startsWith("/search") ? "white" : "none"}`}
-              stroke="currentColor"
+              className={`stroke-black dark:stroke-white ${
+                pathname.startsWith("/search")
+                  ? "fill-black dark:fill-white"
+                  : "fill-none"
+              }`}
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
             ></path>
             <line
               fill="none"
-              stroke="currentColor"
+              className="stroke-black dark:stroke-white"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
@@ -98,13 +102,14 @@ const SmallNavbar = ({ user }: { user: UserInterface }) => {
             <path
               d="M12.003 2.001a9.705 9.705 0 1 1 0 19.4 10.876 10.876 0 0 1-2.895-.384.798.798 0 0 0-.533.04l-1.984.876a.801.801 0 0 1-1.123-.708l-.054-1.78a.806.806 0 0 0-.27-.569 9.49 9.49 0 0 1-3.14-7.175 9.65 9.65 0 0 1 10-9.7Z"
               fill="none"
-              stroke="currentColor"
+              className="stroke-black dark:stroke-white"
               stroke-miterlimit="10"
               stroke-width="1.739"
             />
             <path
               d="M17.79 10.132a.659.659 0 0 0-.962-.873l-2.556 2.05a.63.63 0 0 1-.758.002L11.06 9.47a1.576 1.576 0 0 0-2.277.42l-2.567 3.98a.659.659 0 0 0 .961.875l2.556-2.049a.63.63 0 0 1 .759-.002l2.452 1.84a1.576 1.576 0 0 0 2.278-.42Z"
               fill-rule="evenodd"
+              className="stroke-black dark:stroke-white fill-black dark:fill-white"
             ></path>
           </svg>
         </Link>
