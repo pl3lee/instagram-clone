@@ -67,7 +67,7 @@ const Search = () => {
             );
           })
         ) : (
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-3 pb-20">
             {allPosts.map((post: PostInterface) => {
               return (
                 <div key={post._id} className="w-full aspect-square">
