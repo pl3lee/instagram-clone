@@ -31,8 +31,11 @@ const Profile = ({ params }: { params: { uid: string } }) => {
     return <LoadingComponent />;
   } else {
     return (
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full md:p-4 md:gap-1">
         <ProfileInfoSection queriedUser={queriedUserData} user={user} />
+        <div className="hidden w-full md:flex justify-center items-center border-y border-borderGray text-2xl font-bold p-2">
+          Posts
+        </div>
         <PostsSection posts={posts} user={user} />
       </div>
     );
@@ -195,7 +198,7 @@ const InfoSectionMedium = ({
       <div className="flex justify-center p-6 gap-8 w-full">
         <ProfilePictureIcon image={queriedUser.profilePicture} size="2xl" />
         <div className="flex flex-shrink flex-col align-middle justify-start gap-3 p-1 w-[60%]">
-          <div className="text-xl md:text-3xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar flex justify-between">
+          <div className="text-xl md:text-3xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar flex justify-between gap-6">
             {queriedUser.username}
             {queriedUser._id === user._id ? (
               <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
@@ -217,15 +220,15 @@ const InfoSectionMedium = ({
               </button>
             )}
           </div>
-          <div></div>
+          <div className="flex justify-between">
+            <BasicInfo num={queriedUser.posts.length} text="posts" />
+            <BasicInfo num={queriedUser.followers.length} text="followers" />
+            <BasicInfo num={queriedUser.follows.length} text="following" />
+          </div>
+          <div>
+            <div className="">{queriedUser.bio}</div>
+          </div>
         </div>
-      </div>
-
-      <div className="p-6">{queriedUser.bio}</div>
-      <div className="w-full flex gap-3 justify-around border-y border-solid border-borderGray py-4">
-        <BasicInfo num={queriedUser.posts.length} text="posts" />
-        <BasicInfo num={queriedUser.followers.length} text="followers" />
-        <BasicInfo num={queriedUser.follows.length} text="following" />
       </div>
     </div>
   );
@@ -233,7 +236,7 @@ const InfoSectionMedium = ({
 
 const BasicInfo = ({ num, text }: { num: number; text: string }) => {
   return (
-    <div className="flex flex-col align-middle justify-center">
+    <div className="flex flex-col align-middle justify-center md:flex-row md:gap-1">
       <div className="text-center">{num}</div>
       <div className="text-slate-400">{text}</div>
     </div>
