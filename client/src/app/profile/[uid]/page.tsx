@@ -96,48 +96,139 @@ const ProfileInfoSection = ({
     }
   }, [user]);
 
-  if (user) {
+  if (user && queriedUser) {
     return (
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-center p-6 gap-8 w-full">
-          <ProfilePictureIcon image={queriedUser.profilePicture} size="xl" />
-          <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
-            <div className="text-xl overflow-x-auto overflow-y-hidden no-scrollbar">
-              {queriedUser.username}
-            </div>
-            <div>
-              {queriedUser._id === user._id ? (
-                <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
-                  <Link href="/profile/edit">Edit Profile</Link>
-                </button>
-              ) : followed ? (
-                <button
-                  onClick={handleUnfollow}
-                  className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black"
-                >
-                  Unfollow
-                </button>
-              ) : (
-                <button
-                  onClick={handleFollow}
-                  className="text-lg w-full text-center bg-button1 rounded-lg py-1 text-white"
-                >
-                  Follow
-                </button>
-              )}
-            </div>
-          </div>
+      <div>
+        <div className="md:hidden">
+          <InfoSectionSmall
+            queriedUser={queriedUser}
+            user={user}
+            followed={followed}
+            handleUnfollow={handleUnfollow}
+            handleFollow={handleFollow}
+          />
         </div>
-
-        <div className="p-6">{queriedUser.bio}</div>
-        <div className="w-full flex gap-3 justify-around border-y border-solid border-borderGray py-4">
-          <BasicInfo num={queriedUser.posts.length} text="posts" />
-          <BasicInfo num={queriedUser.followers.length} text="followers" />
-          <BasicInfo num={queriedUser.follows.length} text="following" />
+        <div className="hidden md:block">
+          <InfoSectionMedium
+            queriedUser={queriedUser}
+            user={user}
+            followed={followed}
+            handleUnfollow={handleUnfollow}
+            handleFollow={handleFollow}
+          />
         </div>
       </div>
     );
   }
+};
+
+const InfoSectionSmall = ({
+  queriedUser,
+  user,
+  followed,
+  handleUnfollow,
+  handleFollow,
+}: {
+  queriedUser: UserInterface;
+  user: UserInterface;
+  followed: boolean;
+  handleUnfollow: () => void;
+  handleFollow: () => void;
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-center p-6 gap-8 w-full">
+        <ProfilePictureIcon image={queriedUser.profilePicture} size="xl" />
+        <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
+          <div className="text-xl md:text-3xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar">
+            {queriedUser.username}
+          </div>
+          <div>
+            {queriedUser._id === user._id ? (
+              <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
+                <Link href="/profile/edit">Edit Profile</Link>
+              </button>
+            ) : followed ? (
+              <button
+                onClick={handleUnfollow}
+                className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black"
+              >
+                Unfollow
+              </button>
+            ) : (
+              <button
+                onClick={handleFollow}
+                className="text-lg w-full text-center bg-button1 rounded-lg py-1 text-white"
+              >
+                Follow
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="p-6">{queriedUser.bio}</div>
+      <div className="w-full flex gap-3 justify-around border-y border-solid border-borderGray py-4">
+        <BasicInfo num={queriedUser.posts.length} text="posts" />
+        <BasicInfo num={queriedUser.followers.length} text="followers" />
+        <BasicInfo num={queriedUser.follows.length} text="following" />
+      </div>
+    </div>
+  );
+};
+
+const InfoSectionMedium = ({
+  queriedUser,
+  user,
+  followed,
+  handleUnfollow,
+  handleFollow,
+}: {
+  queriedUser: UserInterface;
+  user: UserInterface;
+  followed: boolean;
+  handleUnfollow: () => void;
+  handleFollow: () => void;
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-center p-6 gap-8 w-full">
+        <ProfilePictureIcon image={queriedUser.profilePicture} size="2xl" />
+        <div className="flex flex-shrink flex-col align-middle justify-start gap-3 p-1 w-[60%]">
+          <div className="text-xl md:text-3xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar flex justify-between">
+            {queriedUser.username}
+            {queriedUser._id === user._id ? (
+              <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
+                <Link href="/profile/edit">Edit Profile</Link>
+              </button>
+            ) : followed ? (
+              <button
+                onClick={handleUnfollow}
+                className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black"
+              >
+                Unfollow
+              </button>
+            ) : (
+              <button
+                onClick={handleFollow}
+                className="text-lg w-full text-center bg-button1 rounded-lg py-1 text-white"
+              >
+                Follow
+              </button>
+            )}
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+      <div className="p-6">{queriedUser.bio}</div>
+      <div className="w-full flex gap-3 justify-around border-y border-solid border-borderGray py-4">
+        <BasicInfo num={queriedUser.posts.length} text="posts" />
+        <BasicInfo num={queriedUser.followers.length} text="followers" />
+        <BasicInfo num={queriedUser.follows.length} text="following" />
+      </div>
+    </div>
+  );
 };
 
 const BasicInfo = ({ num, text }: { num: number; text: string }) => {

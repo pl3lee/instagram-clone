@@ -8,7 +8,7 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-full md:max-w-sm">
+    <div className="w-full md:w-full md:pl-20">
       <ProfileHeader />
       {children}
     </div>
