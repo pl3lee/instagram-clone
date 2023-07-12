@@ -9,7 +9,7 @@ export default function PostsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="w-full flex-col items-center flex md:max-w-screen-sm">
       <PostsHeader />
       {children}
     </div>

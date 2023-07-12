@@ -6,7 +6,7 @@ const GenericHeader = ({ title }: { title: string }) => {
   const router = useRouter();
   return (
     <div className="sticky-header justify-start gap-0">
-      <div className="flex items-center">
+      <div className="flex items-center md:hidden">
         <button onClick={() => router.back()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

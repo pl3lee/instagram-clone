@@ -136,9 +136,27 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
 
   if (!notificationsLoading && !notificationsError && notifications) {
     return (
-      <ul className="flex-col gap-5 justify-start fixed top-0 left-0 h-screen bg-white p-4 dark:bg-black hidden md:flex lg:hidden">
-        <li className="icon-container">
+      <ul className="flex-col gap-5 justify-start fixed top-0 left-0 h-screen bg-white p-4 dark:bg-black hidden md:flex lg:w-[18vw]">
+        <li className="icon-container mb-8">
           <Link href="/posts">
+            <svg
+              aria-label="Instagram"
+              className="svg-icons lg:hidden"
+              color="rgb(245, 245, 245)"
+              fill="rgb(245, 245, 245)"
+              role="img"
+              viewBox="0 0 24 24"
+            >
+              <title>Instagram</title>
+              <path d="M12 2.982c2.937 0 3.285.011 4.445.064a6.087 6.087 0 0 1 2.042.379 3.408 3.408 0 0 1 1.265.823 3.408 3.408 0 0 1 .823 1.265 6.087 6.087 0 0 1 .379 2.042c.053 1.16.064 1.508.064 4.445s-.011 3.285-.064 4.445a6.087 6.087 0 0 1-.379 2.042 3.643 3.643 0 0 1-2.088 2.088 6.087 6.087 0 0 1-2.042.379c-1.16.053-1.508.064-4.445.064s-3.285-.011-4.445-.064a6.087 6.087 0 0 1-2.043-.379 3.408 3.408 0 0 1-1.264-.823 3.408 3.408 0 0 1-.823-1.265 6.087 6.087 0 0 1-.379-2.042c-.053-1.16-.064-1.508-.064-4.445s.011-3.285.064-4.445a6.087 6.087 0 0 1 .379-2.042 3.408 3.408 0 0 1 .823-1.265 3.408 3.408 0 0 1 1.265-.823 6.087 6.087 0 0 1 2.042-.379c1.16-.053 1.508-.064 4.445-.064M12 1c-2.987 0-3.362.013-4.535.066a8.074 8.074 0 0 0-2.67.511 5.392 5.392 0 0 0-1.949 1.27 5.392 5.392 0 0 0-1.269 1.948 8.074 8.074 0 0 0-.51 2.67C1.012 8.638 1 9.013 1 12s.013 3.362.066 4.535a8.074 8.074 0 0 0 .511 2.67 5.392 5.392 0 0 0 1.27 1.949 5.392 5.392 0 0 0 1.948 1.269 8.074 8.074 0 0 0 2.67.51C8.638 22.988 9.013 23 12 23s3.362-.013 4.535-.066a8.074 8.074 0 0 0 2.67-.511 5.625 5.625 0 0 0 3.218-3.218 8.074 8.074 0 0 0 .51-2.67C22.988 15.362 23 14.987 23 12s-.013-3.362-.066-4.535a8.074 8.074 0 0 0-.511-2.67 5.392 5.392 0 0 0-1.27-1.949 5.392 5.392 0 0 0-1.948-1.269 8.074 8.074 0 0 0-2.67-.51C15.362 1.012 14.987 1 12 1Zm0 5.351A5.649 5.649 0 1 0 17.649 12 5.649 5.649 0 0 0 12 6.351Zm0 9.316A3.667 3.667 0 1 1 15.667 12 3.667 3.667 0 0 1 12 15.667Zm5.872-10.859a1.32 1.32 0 1 0 1.32 1.32 1.32 1.32 0 0 0-1.32-1.32Z"></path>
+            </svg>
+            <div className="hidden lg:block flex justify-center items-center text-3xl">
+              Instagram
+            </div>
+          </Link>
+        </li>
+        <li className="icon-container hover-lg-icon">
+          <Link href="/posts" className="lg:flex lg:gap-3 w-full">
             <svg
               aria-label="Home"
               color="rgb(245, 245, 245)"
@@ -153,10 +171,13 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
             >
               <path d="M22 23h-6.001a1 1 0 0 1-1-1v-5.455a2.997 2.997 0 1 0-5.993 0V22a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V11.543a1.002 1.002 0 0 1 .31-.724l10-9.543a1.001 1.001 0 0 1 1.38 0l10 9.543a1.002 1.002 0 0 1 .31.724V22a1 1 0 0 1-1 1Z"></path>
             </svg>
+            <div className="hidden lg:block flex justify-center items-center">
+              Home
+            </div>
           </Link>
         </li>
-        <li className="icon-container">
-          <Link href="/search">
+        <li className="icon-container hover-lg-icon">
+          <Link href="/search" className="lg:flex lg:gap-3 w-full">
             <svg
               aria-label="Search"
               color="rgb(245, 245, 245)"
@@ -188,10 +209,13 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
                 y2="22"
               ></line>
             </svg>
+            <div className="hidden lg:block flex justify-center items-center">
+              Search
+            </div>
           </Link>
         </li>
-        <li className="icon-container">
-          <Link href="/chat">
+        <li className="icon-container hover-lg-icon">
+          <Link href="/chat" className="lg:flex lg:gap-3 w-full">
             <svg
               aria-label="Messenger"
               color="rgb(245, 245, 245)"
@@ -216,10 +240,13 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
                 className="stroke-black dark:stroke-white fill-black dark:fill-white"
               ></path>
             </svg>
+            <div className="hidden lg:block flex justify-center items-center">
+              Chat
+            </div>
           </Link>
         </li>
-        <li className="icon-container">
-          <Link href="/posts/create">
+        <li className="icon-container hover-lg-icon">
+          <Link href="/posts/create" className="lg:flex lg:gap-3 w-full">
             <svg
               aria-label="Home"
               color="rgb(245, 245, 245)"
@@ -261,10 +288,13 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
                 y2="17.455"
               ></line>
             </svg>
+            <div className="hidden lg:block flex justify-center items-center">
+              Create
+            </div>
           </Link>
         </li>
-        <li className="icon-container">
-          <Link href="/notifications">
+        <li className="icon-container hover-lg-icon">
+          <Link href="/notifications" className="lg:flex lg:gap-3 w-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -288,11 +318,20 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
                 d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
               />
             </svg>
+            <div className="hidden lg:block flex justify-center items-center">
+              Notifications
+            </div>
           </Link>
         </li>
-        <li className="icon-container">
-          <Link href={`/profile/${user._id}`}>
+        <li className="icon-container hover-lg-icon">
+          <Link
+            href={`/profile/${user._id}`}
+            className="lg:flex lg:gap-3 w-full items-center"
+          >
             <ProfilePictureIcon image={user.profilePicture} size="md" />
+            <div className="hidden lg:block flex justify-center items-center">
+              Profile
+            </div>
           </Link>
         </li>
       </ul>

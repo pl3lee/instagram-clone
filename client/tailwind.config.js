@@ -37,6 +37,7 @@ module.exports = {
       linkBlue: "#3b82f6",
       borderGray: "#e2e8f0",
       backgroundGray: "#262626",
+      hoverOverlay: "#1a1a1a",
     },
   },
   plugins: [

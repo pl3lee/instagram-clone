@@ -8,6 +8,7 @@ export default function NotificationsLayout({
   return (
     <div className="w-full md:max-w-screen-sm">
       <GenericHeader title="Notifications" />
+
       {children}
     </div>
   );
