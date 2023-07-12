@@ -198,7 +198,7 @@ const InfoSectionMedium = ({
       <div className="flex justify-center p-6 gap-8 w-full">
         <ProfilePictureIcon image={queriedUser.profilePicture} size="2xl" />
         <div className="flex flex-shrink flex-col align-middle justify-start gap-3 p-1 w-[60%]">
-          <div className="text-xl md:text-3xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar flex justify-between gap-6">
+          <div className="text-xl md:text-2xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar flex justify-between gap-6">
             {queriedUser.username}
             {queriedUser._id === user._id ? (
               <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
