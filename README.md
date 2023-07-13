@@ -18,7 +18,7 @@ This is an Instagram clone project built using various technologies and framewor
 
 ### Frontend
 
-- Next.js: A React framework for server-side rendering and building static websites.
+- Next.js (TypeScript): A React framework for server-side rendering and building static websites with type safety.
 - Socket.io: A library that enables real-time, bidirectional communication between the browser and the server.
 - Tailwind CSS: A utility-first CSS framework for rapidly building custom user interfaces.
 
