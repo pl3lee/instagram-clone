@@ -122,7 +122,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
     localUser
   ) {
     return (
-      <div className="flex flex-col pb-20">
+      <div className="flex flex-col pb-20 w-full">
         <ChatHeader user={chatUser} />
         <div className="flex flex-col gap-2 justify-center p-4">
           {chatMessages.map((message: MessageInterface) => {
@@ -140,7 +140,7 @@ const DMChat = ({ params }: { params: { _id: string } }) => {
         </div>
 
         <div className="flex justify-center items-center bottom-0 left-0 fixed p-4 w-full dark:bg-black bg-white">
-          <div className="flex-grow-7 justify-start items-center flex">
+          <div className="flex-grow-7 justify-start items-center flex w-full">
             <form onSubmit={handleSubmit} className="w-full">
               <MessageInput
                 inputValue={chatInput}
@@ -185,7 +185,9 @@ const MessageContent = ({
   return (
     <div
       className={`py-2 px-4 text-left ${
-        isLocal ? "bg-accentBlue" : "bg-backgroundGray"
+        isLocal
+          ? "bg-accentBlue text-white"
+          : "bg-[#efefef] dark:bg-backgroundGray text-black dark:text-white"
       } rounded-xl max-w-[90%] break-words whitespace-pre-line`}
     >
       {content}

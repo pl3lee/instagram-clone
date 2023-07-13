@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import PostsHeader from "../components/PostsHeader";
+import Navbar from "../components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function PostsLayout({
@@ -8,7 +9,7 @@ export default function PostsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="w-full flex-col items-center flex md:max-w-screen-sm">
       <PostsHeader />
       {children}
     </div>

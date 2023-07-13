@@ -12,6 +12,8 @@ import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "./ProfilePictureIcon";
 import { backendURL } from "../backendURL";
 
+import { useDisclosure } from "@chakra-ui/react";
+
 const Post = ({
   post,
   localUser,
@@ -22,6 +24,7 @@ const Post = ({
   const authContext: AuthContextInterface = useContext(AuthContext);
   const refetchUser = authContext.refetchUser;
   const [likeAmount, setLikeAmount] = useState<number>(post.likes.length);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     data: postUser,
     error: postUserError,
@@ -69,11 +72,15 @@ const Post = ({
           setLikeAmount={setLikeAmount}
           liked={liked}
           setLiked={setLiked}
+          setOpenComments={onOpen}
         />
         <PostInformation
           post={post}
           postUser={postUser}
           likeAmount={likeAmount}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
         />
       </div>
     );
@@ -134,6 +141,7 @@ const PostIconBar = ({
   setLikeAmount,
   liked,
   setLiked,
+  setOpenComments,
 }: {
   post: PostInterface;
   localUser: UserInterface | null;
@@ -141,6 +149,7 @@ const PostIconBar = ({
   setLikeAmount: (callback: (likeAmount: number) => number) => void;
   liked: boolean | null;
   setLiked: (liked: boolean) => void;
+  setOpenComments: (openComments: boolean) => void;
 }) => {
   return (
     <div className="flex">
@@ -170,20 +179,22 @@ const PostIconBar = ({
           </button>
         </li>
         <li className="icon-container p-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-7 h-7 dark:stroke-white stroke-black"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z"
-            />
-          </svg>
+          <button onClick={() => setOpenComments(true)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-7 h-7 dark:stroke-white stroke-black"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z"
+              />
+            </svg>
+          </button>
         </li>
       </ul>
     </div>
@@ -194,10 +205,16 @@ const PostInformation = ({
   post,
   postUser,
   likeAmount,
+  isOpen,
+  onOpen,
+  onClose,
 }: {
   post: PostInterface;
   postUser: UserInterface;
   likeAmount: number;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }) => {
   const postDate = new Date(post.postDateTime);
   const days = [
@@ -229,7 +246,12 @@ const PostInformation = ({
       <div>
         <span className="font-bold">{postUser.username}</span> {post.caption}
       </div>
-      <ViewComments post={post} />
+      <ViewComments
+        post={post}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
       <div className="font-light opacity-50 text-sm">
         Posted on {days[postDate.getDay()]}, {postDate.getFullYear()}/
         {postDate.getMonth()}/{postDate.getDate()}

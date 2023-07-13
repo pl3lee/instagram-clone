@@ -49,8 +49,8 @@ const Create = () => {
   }, [image, caption]);
   if (!isLoading) {
     return (
-      <div className="flex flex-col p-2">
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+      <div className="flex flex-col p-2 w-full">
+        <form className="flex flex-col gap-5 w-full" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
             <label className="text-xl font-bold">Image (Paste Link Here)</label>
             <input

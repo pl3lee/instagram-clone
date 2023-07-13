@@ -31,8 +31,11 @@ const Profile = ({ params }: { params: { uid: string } }) => {
     return <LoadingComponent />;
   } else {
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full md:p-4 md:gap-1">
         <ProfileInfoSection queriedUser={queriedUserData} user={user} />
+        <div className="hidden w-full md:flex justify-center items-center border-y border-borderGray text-2xl font-bold p-2">
+          Posts
+        </div>
         <PostsSection posts={posts} user={user} />
       </div>
     );
@@ -96,53 +99,144 @@ const ProfileInfoSection = ({
     }
   }, [user]);
 
-  if (user) {
+  if (user && queriedUser) {
     return (
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-center p-6 gap-8 w-full">
-          <ProfilePictureIcon image={queriedUser.profilePicture} size="xl" />
-          <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
-            <div className="text-3xl overflow-x-auto overflow-y-hidden no-scrollbar">
-              {queriedUser.username}
-            </div>
-            <div>
-              {queriedUser._id === user._id ? (
-                <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
-                  <Link href="/profile/edit">Edit Profile</Link>
-                </button>
-              ) : followed ? (
-                <button
-                  onClick={handleUnfollow}
-                  className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black"
-                >
-                  Unfollow
-                </button>
-              ) : (
-                <button
-                  onClick={handleFollow}
-                  className="text-lg w-full text-center bg-button1 rounded-lg py-1 text-white"
-                >
-                  Follow
-                </button>
-              )}
-            </div>
-          </div>
+      <div>
+        <div className="md:hidden">
+          <InfoSectionSmall
+            queriedUser={queriedUser}
+            user={user}
+            followed={followed}
+            handleUnfollow={handleUnfollow}
+            handleFollow={handleFollow}
+          />
         </div>
-
-        <div className="p-6">{queriedUser.bio}</div>
-        <div className="w-full flex gap-3 justify-around border-y border-solid border-borderGray py-4">
-          <BasicInfo num={queriedUser.posts.length} text="posts" />
-          <BasicInfo num={queriedUser.followers.length} text="followers" />
-          <BasicInfo num={queriedUser.follows.length} text="following" />
+        <div className="hidden md:block">
+          <InfoSectionMedium
+            queriedUser={queriedUser}
+            user={user}
+            followed={followed}
+            handleUnfollow={handleUnfollow}
+            handleFollow={handleFollow}
+          />
         </div>
       </div>
     );
   }
 };
 
+const InfoSectionSmall = ({
+  queriedUser,
+  user,
+  followed,
+  handleUnfollow,
+  handleFollow,
+}: {
+  queriedUser: UserInterface;
+  user: UserInterface;
+  followed: boolean;
+  handleUnfollow: () => void;
+  handleFollow: () => void;
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-center p-6 gap-8 w-full">
+        <ProfilePictureIcon image={queriedUser.profilePicture} size="xl" />
+        <div className="flex flex-shrink flex-col align-middle justify-center gap-3 p-1 w-[60%]">
+          <div className="text-xl md:text-3xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar">
+            {queriedUser.username}
+          </div>
+          <div>
+            {queriedUser._id === user._id ? (
+              <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
+                <Link href="/profile/edit">Edit Profile</Link>
+              </button>
+            ) : followed ? (
+              <button
+                onClick={handleUnfollow}
+                className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black"
+              >
+                Unfollow
+              </button>
+            ) : (
+              <button
+                onClick={handleFollow}
+                className="text-lg w-full text-center bg-button1 rounded-lg py-1 text-white"
+              >
+                Follow
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="p-6">{queriedUser.bio}</div>
+      <div className="w-full flex gap-3 justify-around border-y border-solid border-borderGray py-4">
+        <BasicInfo num={queriedUser.posts.length} text="posts" />
+        <BasicInfo num={queriedUser.followers.length} text="followers" />
+        <BasicInfo num={queriedUser.follows.length} text="following" />
+      </div>
+    </div>
+  );
+};
+
+const InfoSectionMedium = ({
+  queriedUser,
+  user,
+  followed,
+  handleUnfollow,
+  handleFollow,
+}: {
+  queriedUser: UserInterface;
+  user: UserInterface;
+  followed: boolean;
+  handleUnfollow: () => void;
+  handleFollow: () => void;
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-center p-6 gap-8 w-full">
+        <ProfilePictureIcon image={queriedUser.profilePicture} size="2xl" />
+        <div className="flex flex-shrink flex-col align-middle justify-start gap-3 p-1 w-[60%]">
+          <div className="text-xl md:text-2xl font-bold overflow-x-auto overflow-y-hidden no-scrollbar flex justify-between gap-6">
+            {queriedUser.username}
+            {queriedUser._id === user._id ? (
+              <button className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black">
+                <Link href="/profile/edit">Edit Profile</Link>
+              </button>
+            ) : followed ? (
+              <button
+                onClick={handleUnfollow}
+                className="text-lg w-full text-center bg-button2 rounded-lg py-1 text-black"
+              >
+                Unfollow
+              </button>
+            ) : (
+              <button
+                onClick={handleFollow}
+                className="text-lg w-full text-center bg-button1 rounded-lg py-1 text-white"
+              >
+                Follow
+              </button>
+            )}
+          </div>
+          <div className="flex justify-between">
+            <BasicInfo num={queriedUser.posts.length} text="posts" />
+            <BasicInfo num={queriedUser.followers.length} text="followers" />
+            <BasicInfo num={queriedUser.follows.length} text="following" />
+          </div>
+          <div>
+            <div className="">{queriedUser.bio}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const BasicInfo = ({ num, text }: { num: number; text: string }) => {
   return (
-    <div className="flex flex-col align-middle justify-center">
+    <div className="flex flex-col align-middle justify-center md:flex-row md:gap-1">
       <div className="text-center">{num}</div>
       <div className="text-slate-400">{text}</div>
     </div>
@@ -159,7 +253,7 @@ const PostsSection = ({
   if (user) {
     if (posts.length > 0) {
       return (
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 pb-20">
           {posts.map((post: PostInterface) => {
             return (
               <div key={post._id} className="w-full aspect-square">

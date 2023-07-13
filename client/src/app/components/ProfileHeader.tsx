@@ -9,9 +9,9 @@ const ProfileHeader = () => {
 
   if (!isLoading && user) {
     return (
-      <ul className="sticky-header px-4">
-        <li className="flex-2 list-none">
-          <div className="text-3xl p-2 font-bold text-left overflow-x-auto overflow-y-hidden no-scrollbar">
+      <ul className="sticky-header px-4 w-full">
+        <li className="flex-2 list-none w-full">
+          <div className="text-2xl md:text-4xl p-2 font-bold text-left overflow-x-auto overflow-y-hidden no-scrollbar">
             {user?.username}
           </div>
         </li>

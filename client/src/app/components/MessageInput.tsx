@@ -10,12 +10,12 @@ const MessageInput = ({
   placeholder: string;
 }) => {
   return (
-    <InputGroup>
+    <InputGroup className="w-full">
       <Input
         variant="outline"
         size="lg"
         focusBorderColor="#ffffff0"
-        className="rounded-full bg-black border border-borderGray focus:outline-none"
+        className="rounded-full bg-white dark:bg-black border border-borderGray focus:outline-none"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder={placeholder}
@@ -30,7 +30,7 @@ const MessageInput = ({
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            className={`w-6 h-6 stroke-white ${
+            className={`w-6 h-6 stroke-black dark:stroke-white ${
               inputValue.length === 0 ? "fill-none" : "fill-accentBlue"
             }`}
           >

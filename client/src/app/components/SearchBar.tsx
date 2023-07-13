@@ -10,7 +10,7 @@ const SearchBar = ({
   placeholder: string;
 }) => {
   return (
-    <div className="stick-header px-3 py-2">
+    <div className="stick-header px-3 py-2 w-full">
       <input
         value={search}
         onChange={(e) => setSearch(e.target.value)}

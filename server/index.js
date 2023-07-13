@@ -11,7 +11,7 @@ import axios from "axios";
 import { auth } from "./firebase/firebase-config.js";
 
 dotenv.config();
-const app = express();
+export const app = express();
 export const server = new Server(app);
 
 app.use(express.json());

@@ -12,7 +12,7 @@
 } */
 @layer base {
   body {
-    @apply w-screen p-0 box-border bg-white text-black dark:bg-black dark:text-white min-h-screen
+    @apply w-screen p-0 box-border bg-white text-black dark:bg-black dark:text-white min-h-screen flex justify-center
   }
   html {
     @apply bg-white dark:bg-black
@@ -21,17 +21,21 @@
 
 @layer components {
   .svg-icons {
-    @apply fill-black dark:fill-white w-8 h-8
+    @apply stroke-black dark:stroke-white w-[24px] h-[24px]
   }
   .auth-input {
     @apply border border-borderGray p-2 rounded focus:border-gray-600 focus:outline-none caret-accentBlue bg-slate-50 text-black
   }
-  .icon-container{
-    @apply flex justify-center items-center p-2
+  .icon-container {
+    @apply flex justify-center items-center p-2 lg:justify-start lg:p-4
+  }
+
+  .hover-lg-icon {
+    @apply lg:hover:bg-hoverOverlay lg:rounded-lg
   }
 
   .sticky-header {
-    @apply py-2 flex gap-3 justify-between sticky top-0 left-0 w-full px-1 list-none m-0 bg-white border-borderGray border-solid border-b-[0.5px] dark:bg-black
+    @apply py-2 flex gap-3 justify-between sticky top-0 left-0 w-full px-1 list-none m-0 bg-white border-borderGray border-solid border-b-[0.5px] dark:bg-black md:border-b-0
   }
 }
 

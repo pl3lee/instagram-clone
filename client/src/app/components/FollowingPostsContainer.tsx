@@ -19,7 +19,7 @@ const FollowingPostsContainer = ({ user }: { user: UserInterface | null }) => {
     return <LoadingComponent />;
   } else {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen md:max-w-screen-sm">
         {posts && posts.length === 0 ? (
           <div className="h-screen flex justify-center items-center ">
             <NoPostsYet subtext="Find someone to follow in the search tab, or create a post yourself!" />
