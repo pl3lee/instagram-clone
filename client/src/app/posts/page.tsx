@@ -10,11 +10,13 @@ export default function Posts() {
 
   if (isLoading) {
     return <LoadingComponent />;
-  } else {
+  } else if (user) {
     return (
       <div className="mb-[10vh] flex justify-center">
         <FollowingPostsContainer user={user} />
       </div>
     );
+  } else {
+    return <div></div>;
   }
 }

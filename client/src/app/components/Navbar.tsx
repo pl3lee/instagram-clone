@@ -45,9 +45,7 @@ const SmallNavbar = ({ user }: { user: UserInterface }) => {
             role="img"
             viewBox="0 0 24 24"
             className={`${
-              pathname.startsWith("/posts")
-                ? "fill-black dark:fill-white"
-                : "fill-none"
+              pathname == "/posts" ? "fill-black dark:fill-white" : "fill-none"
             } svg-icons`}
             strokeWidth={2}
           >
@@ -91,18 +89,22 @@ const SmallNavbar = ({ user }: { user: UserInterface }) => {
         </Link>
       </li>
       <li className="icon-container">
-        <Link href="/chat">
+        <Link href="/chat" className="lg:flex lg:gap-3 w-full">
           <svg
             aria-label="Messenger"
             color="rgb(245, 245, 245)"
+            fill="hsl(0, 0%, 96.07843137254902%)"
             role="img"
             viewBox="0 0 24 24"
             className={`svg-icons`}
           >
             <path
               d="M12.003 2.001a9.705 9.705 0 1 1 0 19.4 10.876 10.876 0 0 1-2.895-.384.798.798 0 0 0-.533.04l-1.984.876a.801.801 0 0 1-1.123-.708l-.054-1.78a.806.806 0 0 0-.27-.569 9.49 9.49 0 0 1-3.14-7.175 9.65 9.65 0 0 1 10-9.7Z"
-              fill="none"
-              className="stroke-black dark:stroke-white"
+              className={`stroke-black dark:stroke-white ${
+                pathname.startsWith("/chat")
+                  ? "fill-black dark:fill-white"
+                  : "fill-none"
+              }`}
               strokeMiterlimit="10"
               strokeWidth="1.739"
             />
@@ -112,6 +114,9 @@ const SmallNavbar = ({ user }: { user: UserInterface }) => {
               className="stroke-black dark:stroke-white fill-black dark:fill-white"
             ></path>
           </svg>
+          <div className="hidden lg:block flex justify-center items-center">
+            Chat
+          </div>
         </Link>
       </li>
       <li className="icon-container">
@@ -163,7 +168,7 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
               role="img"
               viewBox="0 0 24 24"
               className={`${
-                pathname.startsWith("/posts")
+                pathname == "/posts"
                   ? "fill-black dark:fill-white"
                   : "fill-none"
               } svg-icons`}
