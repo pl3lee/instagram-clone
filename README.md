@@ -12,7 +12,6 @@ A live demo of the Instagram clone project can be accessed [here](https://instag
 ![253187216-0d939324-5d19-4b6e-9dbc-950e8e6633f4](https://github.com/pl3lee/instagram-clone/assets/64212628/aa4f1576-e83f-4fe8-adbf-dacdd1bd54f6)
 ![253187085-d5360a26-6bb8-4c37-8dc8-8fa49a97150a](https://github.com/pl3lee/instagram-clone/assets/64212628/d1976ffe-78a4-4202-91fc-b235cd5e8187)
 
-
 This is an Instagram clone project built using various technologies and frameworks. It mimics the basic functionality of Instagram, allowing users to create accounts, post images, follow other users, like/comment on posts, and have real-time chat with other users.
 
 ## Technologies Used
@@ -31,6 +30,7 @@ This is an Instagram clone project built using various technologies and framewor
 - Mongoose: An Object Data Modeling (ODM) library for MongoDB and Node.js.
 - Socket.io: A library that enables real-time, bidirectional communication between the server and the client.
 - JSON Web Token (JWT): A standard for securely transmitting information between parties as a JSON object.
+- Node.js: A JavaScript runtime environment that allows executing JavaScript code on the server.
 
 ## Features
 
@@ -40,7 +40,7 @@ This is an Instagram clone project built using various technologies and framewor
 - Post Feed: Users can view a feed of posts from users they follow, with the latest posts appearing first.
 - Like and Comment: Users can like and comment on posts, interacting with other users' content.
 - Follow/Unfollow: Users can follow and unfollow other users to see their posts in their feed.
-- Real-time Updates: Real-time chat function is implemented using Socket.io.
+- Real-time Chat: Users can engage in real-time conversations with other users using the chat feature.
 - Responsive Design: The application is built with a responsive design to ensure optimal viewing on different devices.
 
 ## Acknowledgement
@@ -51,3 +51,4 @@ This Instagram clone project is inspired by the design and functionality of the 
 
 - Frontend: The frontend of the Instagram clone is hosted on [Vercel](https://vercel.com/).
 - Backend: The backend of the Instagram clone is hosted on [Fly.io](https://fly.io/).
+
