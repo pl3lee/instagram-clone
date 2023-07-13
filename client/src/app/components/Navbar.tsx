@@ -138,7 +138,7 @@ const MediumNavbar = ({ user }: { user: UserInterface }) => {
     return (
       <ul className="flex-col gap-5 justify-start fixed top-0 left-0 h-screen bg-white p-4 dark:bg-black hidden md:flex lg:w-[18vw]">
         <li className="icon-container mb-8">
-          <Link href="/posts">
+          <Link href="/posts" className="w-full">
             <svg
               aria-label="Instagram"
               className="svg-icons lg:hidden"
