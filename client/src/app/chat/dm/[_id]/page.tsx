@@ -15,7 +15,9 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import { backendURL } from "@/app/backendURL";
 
-const socket = io("https://instagram-clone-backend.billylee.me");
+const socket = io("https://instagram-clone-backend.billylee.me", {
+  transports: ["websocket"],
+});
 
 const DMChat = ({ params }: { params: { _id: string } }) => {
   const { _id } = params;
