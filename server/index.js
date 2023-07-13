@@ -23,8 +23,8 @@ app.use("/chat", chatRouter);
 
 mongoose.connect(process.env.MONGODB_URI);
 
-server.listen(process.env.PORT || 3001, () =>
-  console.log("Server is running on port 3001")
+server.listen(process.env.PORT || 8080, () =>
+  console.log("Server is running on port 8080")
 );
 
 export const io = new SocketIOServer(server, {
