@@ -15,7 +15,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import { backendURL } from "@/app/backendURL";
 
-const socket = io("https://instagram-clone-backend.billylee.me", {
+const socket = io(backendURL || "/", {
   path: "/socket.io",
   transports: ["websocket", "polling"],
   secure: true,
