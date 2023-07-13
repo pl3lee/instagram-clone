@@ -29,7 +29,7 @@ server.listen(process.env.PORT || 3001, () =>
 
 export const io = new SocketIOServer(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: "*",
   },
 });
 
