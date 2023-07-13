@@ -17,7 +17,7 @@ import { backendURL } from "@/app/backendURL";
 
 const socket = io("https://instagram-clone-backend.billylee.me", {
   path: "/socket.io",
-  transports: ["websocket"],
+  transports: ["websocket", "polling"],
   secure: true,
 });
 
