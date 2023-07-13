@@ -6,11 +6,12 @@ A live demo of the Instagram clone project can be accessed [here](https://instag
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/pl3lee/instagram-clone/assets/64212628/d5360a26-6bb8-4c37-8dc8-8fa49a97150a)
-![Screenshot 2](https://github.com/pl3lee/instagram-clone/assets/64212628/0d939324-5d19-4b6e-9dbc-950e8e6633f4)
-![Screenshot 3](https://github.com/pl3lee/instagram-clone/assets/64212628/99e25a24-abe0-4fc1-b51f-8306be4f0cf8)
-![Screenshot 4](https://github.com/pl3lee/instagram-clone/assets/64212628/8fbc0255-f306-49bd-a262-2221667dccbe)
-![Screenshot 5](https://github.com/pl3lee/instagram-clone/assets/64212628/f4c0a60f-2489-4be5-a367-883bd02ff9b1)
+![253187582-f4c0a60f-2489-4be5-a367-883bd02ff9b1](https://github.com/pl3lee/instagram-clone/assets/64212628/c842dbf2-ee1e-4476-85c7-4aef227630db)
+![253187511-8fbc0255-f306-49bd-a262-2221667dccbe](https://github.com/pl3lee/instagram-clone/assets/64212628/53d8ade3-234f-4627-ad01-d3c6827566e7)
+![253187307-99e25a24-abe0-4fc1-b51f-8306be4f0cf8](https://github.com/pl3lee/instagram-clone/assets/64212628/7a2e8e4d-5dcf-47f8-b0be-16a87d110329)
+![253187216-0d939324-5d19-4b6e-9dbc-950e8e6633f4](https://github.com/pl3lee/instagram-clone/assets/64212628/aa4f1576-e83f-4fe8-adbf-dacdd1bd54f6)
+![253187085-d5360a26-6bb8-4c37-8dc8-8fa49a97150a](https://github.com/pl3lee/instagram-clone/assets/64212628/d1976ffe-78a4-4202-91fc-b235cd5e8187)
+
 
 This is an Instagram clone project built using various technologies and frameworks. It mimics the basic functionality of Instagram, allowing users to create accounts, post images, follow other users, like/comment on posts, and have real-time chat with other users.
 
