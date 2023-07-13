@@ -16,7 +16,9 @@ import { io } from "socket.io-client";
 import { backendURL } from "@/app/backendURL";
 
 const socket = io("https://instagram-clone-backend.billylee.me", {
+  path: "/socket.io",
   transports: ["websocket"],
+  secure: true,
 });
 
 const DMChat = ({ params }: { params: { _id: string } }) => {
