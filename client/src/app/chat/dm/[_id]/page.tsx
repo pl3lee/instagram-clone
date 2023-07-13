@@ -17,8 +17,7 @@ import { backendURL } from "@/app/backendURL";
 
 const socket = io(backendURL || "/", {
   path: "/socket.io",
-  transports: ["websocket", "polling"],
-  secure: true,
+  transports: ["websocket"],
 });
 
 const DMChat = ({ params }: { params: { _id: string } }) => {
