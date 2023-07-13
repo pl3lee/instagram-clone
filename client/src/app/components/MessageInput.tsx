@@ -15,7 +15,7 @@ const MessageInput = ({
         variant="outline"
         size="lg"
         focusBorderColor="#ffffff0"
-        className="rounded-full bg-white dark:bg-black border border-borderGray focus:outline-none"
+        className="rounded-full bg-white dark:bg-black border border-borderGray focus:outline-none w-full"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder={placeholder}

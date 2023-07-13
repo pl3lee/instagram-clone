@@ -94,16 +94,16 @@ const ViewComments = ({
           <DrawerOverlay />
           <DrawerContent className="bg-white dark:bg-gray-950 rounded-lg">
             <DrawerHeader borderBottomWidth="1px">
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 items-center">
                 <div className="text-3xl text-center font-bold">Comments</div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 w-full justify-center">
                   <div className="flex-grow-1 flex-shrink-0">
                     <ProfilePictureIcon
                       image={user ? user.profilePicture : ""}
                       size="lg"
                     />
                   </div>
-                  <div className="flex-grow-7 justify-start items-center flex">
+                  <div className="flex-grow-7 justify-start items-center flex md:w-3/4 md:max-w-screen-sm">
                     <form onSubmit={handleSubmit} className="w-full">
                       <MessageInput
                         inputValue={comment}
@@ -116,7 +116,7 @@ const ViewComments = ({
               </div>
             </DrawerHeader>
             <DrawerBody>
-              <div className=" max-h-[50vh] overflow-y-scroll">
+              <div className=" max-h-[50vh] overflow-y-scroll md:flex-col md:items-center md:justify-start md:flex">
                 {comments.length > 0 ? (
                   comments.map((comment: CommentInterface) => {
                     return <Comment key={comment._id} comment={comment} />;
@@ -128,52 +128,6 @@ const ViewComments = ({
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-
-        {/* <Drawer
-          position="bottom"
-          open={openComments}
-          onClose={() => setOpenComments(false)}
-          className="rounded-lg"
-        >
-          <Card className="w-full bg-white dark:bg-black border-none">
-            <Card.Header>
-              <div className="flex flex-col gap-3">
-                <div className="text-3xl text-center font-bold">Comments</div>
-                <div className="flex gap-3">
-                  <div className="flex-grow-1">
-                    <ProfilePictureIcon
-                      image={user ? user.profilePicture : ""}
-                      size="lg"
-                    />
-                  </div>
-                  <div className="flex-grow-7 justify-start items-center flex">
-                    <form onSubmit={handleSubmit} className="w-full">
-                      <MessageInput
-                        inputValue={comment}
-                        setInputValue={setComment}
-                        placeholder={commentPlaceHolder}
-                      />
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </Card.Header>
-            <Card.Body>
-              <div className=" max-h-[50vh] overflow-y-scroll">
-                {comments.length > 0 ? (
-                  comments.map((comment: CommentInterface) => {
-                    return <Comment key={comment._id} comment={comment} />;
-                  })
-                ) : (
-                  <div>No comments yet</div>
-                )}
-              </div>
-            </Card.Body>
-            <Card.Footer>
-              <Navbar />
-            </Card.Footer>
-          </Card>
-        </Drawer> */}
         <button onClick={onOpen}>View comments</button>
       </div>
     );
@@ -193,7 +147,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
       .catch((err) => console.log(err));
   }, [comment]);
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 md:justify-start md:w-full md:max-w-screen-sm">
       <div className="flex-grow-1 flex p-2 justify-center items-center">
         <ProfilePictureIcon
           image={commentUser ? commentUser.profilePicture : ""}
