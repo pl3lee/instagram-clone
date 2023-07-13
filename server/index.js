@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data, cb) => {
     axios
       .post(
-        `http://localhost:3001/chat/send/${data.chatroom}/${data.senderId}`,
+        `${process.env.BACKENDURL}/chat/send/${data.chatroom}/${data.senderId}`,
         {
           message: data.message,
         },
