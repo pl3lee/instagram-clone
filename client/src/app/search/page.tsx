@@ -57,7 +57,7 @@ const Search = () => {
         setSearch={setSearch}
         placeholder="Search for users..."
       />
-      <div className="w-full flex justify-start">
+      <div className="w-full flex items-start flex-col">
         {search != "" ? (
           searchedUsers.map((user: UserInterface) => {
             return (
