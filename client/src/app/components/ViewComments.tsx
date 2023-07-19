@@ -105,8 +105,11 @@ const ViewComments = ({
           autoFocus={false}
           finalFocusRef={viewComments}
           onCloseComplete={() => {
-            if (viewComments && viewComments.current)
-              viewComments.current.scrollIntoView({ behavior: "smooth" });
+            if (viewComments && viewComments.current) {
+              setTimeout(() => {
+                viewComments.current!.scrollIntoView({ behavior: "smooth" });
+              }, 500); // add a delay of 500ms before scrolling
+            }
           }}
         >
           <DrawerOverlay />
