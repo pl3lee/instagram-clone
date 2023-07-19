@@ -103,6 +103,10 @@ const ViewComments = ({
           isOpen={isOpen}
           autoFocus={false}
           finalFocusRef={viewComments}
+          onCloseComplete={() => {
+            if (viewComments && viewComments.current)
+              viewComments.current.scrollIntoView({ behavior: "smooth" });
+          }}
         >
           <DrawerOverlay />
           <DrawerContent className="bg-white dark:bg-gray-950 rounded-lg">
