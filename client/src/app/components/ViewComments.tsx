@@ -90,7 +90,12 @@ const ViewComments = ({
   } else {
     return (
       <div>
-        <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
+        <Drawer
+          placement="bottom"
+          onClose={onClose}
+          isOpen={isOpen}
+          autoFocus={false}
+        >
           <DrawerOverlay />
           <DrawerContent className="bg-white dark:bg-gray-950 rounded-lg">
             <DrawerHeader borderBottomWidth="1px">
