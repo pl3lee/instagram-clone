@@ -8,9 +8,11 @@ const Login = () => {
   const { login, error } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [placeholder, setPlaceholder] = useState("Login");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setPlaceholder("Logging in...");
     await login(email, password);
   };
 
@@ -40,7 +42,7 @@ const Login = () => {
             className="bg-accentBlue text-white p-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
             disabled={email == "" || password == ""}
           >
-            Login
+            {placeholder}
           </button>
           {error && (
             <div className="text-red-600 opacity-80 font-extralight text-sm">
