@@ -82,7 +82,7 @@ const Post = ({
           isOpen={isOpen}
           onOpen={onOpen}
           onClose={onClose}
-          ref={postTop}
+          postTop={postTop}
         />
       </div>
     );
@@ -210,7 +210,7 @@ const PostInformation = ({
   isOpen,
   onOpen,
   onClose,
-  ref,
+  postTop,
 }: {
   post: PostInterface;
   postUser: UserInterface;
@@ -218,7 +218,7 @@ const PostInformation = ({
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  ref: React.RefObject<HTMLDivElement>;
+  postTop: React.RefObject<HTMLDivElement>;
 }) => {
   const postDate = new Date(post.postDateTime);
   const days = [
@@ -255,7 +255,7 @@ const PostInformation = ({
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}
-        postTop={ref}
+        postTop={postTop}
       />
       <div className="font-light opacity-50 text-sm">
         Posted on {days[postDate.getDay()]}, {postDate.getFullYear()}/
