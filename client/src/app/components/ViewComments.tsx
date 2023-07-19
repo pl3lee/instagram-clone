@@ -7,6 +7,7 @@ import {
   useContext,
   FormEventHandler,
   useRef,
+  MutableRefObject,
 } from "react";
 import { Input } from "@chakra-ui/react";
 import useUser from "../hooks/useUser";
@@ -39,7 +40,7 @@ const ViewComments = ({
   onOpen: () => void;
   onClose: () => void;
 }) => {
-  const viewComments = useRef();
+  const viewComments = useRef<HTMLButtonElement | null>(null);
   const [comment, setComment] = useState("");
   const [commentPlaceHolder, setCommentPlaceHolder] = useState("Add a comment");
 
