@@ -2,7 +2,7 @@
 import axios from "axios";
 import ViewComments from "./ViewComments";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { AuthContext, AuthContextInterface } from "../contexts/AuthContext";
 import fetcher from "../helpers/fetcher";
@@ -21,6 +21,7 @@ const Post = ({
   post: PostInterface;
   localUser: UserInterface | null;
 }) => {
+  const postTop = useRef<HTMLDivElement | null>(null);
   const authContext: AuthContextInterface = useContext(AuthContext);
   const refetchUser = authContext.refetchUser;
   const [likeAmount, setLikeAmount] = useState<number>(post.likes.length);
@@ -55,7 +56,7 @@ const Post = ({
 
   if (!postUserLoading) {
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col" ref={postTop}>
         <PostHeader postUser={postUser} />
         <PostImage
           post={post}
@@ -81,6 +82,7 @@ const Post = ({
           isOpen={isOpen}
           onOpen={onOpen}
           onClose={onClose}
+          ref={postTop}
         />
       </div>
     );
@@ -208,6 +210,7 @@ const PostInformation = ({
   isOpen,
   onOpen,
   onClose,
+  ref,
 }: {
   post: PostInterface;
   postUser: UserInterface;
@@ -215,6 +218,7 @@ const PostInformation = ({
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+  ref: React.RefObject<HTMLDivElement>;
 }) => {
   const postDate = new Date(post.postDateTime);
   const days = [
@@ -251,6 +255,7 @@ const PostInformation = ({
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}
+        postTop={ref}
       />
       <div className="font-light opacity-50 text-sm">
         Posted on {days[postDate.getDay()]}, {postDate.getFullYear()}/

@@ -34,13 +34,14 @@ const ViewComments = ({
   isOpen,
   onOpen,
   onClose,
+  postTop,
 }: {
   post: PostInterface;
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+  postTop: React.RefObject<HTMLDivElement>;
 }) => {
-  const viewComments = useRef<HTMLButtonElement | null>(null);
   const [comment, setComment] = useState("");
   const [commentPlaceHolder, setCommentPlaceHolder] = useState("Add a comment");
 
@@ -103,12 +104,11 @@ const ViewComments = ({
           onClose={onClose}
           isOpen={isOpen}
           autoFocus={false}
-          finalFocusRef={viewComments}
           onCloseComplete={() => {
-            if (viewComments && viewComments.current) {
+            if (postTop && postTop.current) {
               setTimeout(() => {
-                viewComments.current!.scrollIntoView({ behavior: "smooth" });
-              }, 500); // add a delay of 500ms before scrolling
+                postTop.current!.scrollIntoView({ behavior: "smooth" });
+              }, 250);
             }
           }}
         >
@@ -149,9 +149,7 @@ const ViewComments = ({
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-        <button onClick={onOpen} ref={viewComments}>
-          View comments
-        </button>
+        <button onClick={onOpen}>View comments</button>
       </div>
     );
   }
