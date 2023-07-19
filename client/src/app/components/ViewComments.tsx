@@ -1,7 +1,13 @@
 "use client";
 // import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
-import { useEffect, useState, useContext, FormEventHandler } from "react";
+import {
+  useEffect,
+  useState,
+  useContext,
+  FormEventHandler,
+  useRef,
+} from "react";
 import { Input } from "@chakra-ui/react";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "./LoadingComponent";
@@ -33,6 +39,7 @@ const ViewComments = ({
   onOpen: () => void;
   onClose: () => void;
 }) => {
+  const viewComments = useRef(null);
   const [comment, setComment] = useState("");
   const [commentPlaceHolder, setCommentPlaceHolder] = useState("Add a comment");
 
@@ -95,6 +102,7 @@ const ViewComments = ({
           onClose={onClose}
           isOpen={isOpen}
           autoFocus={false}
+          finalFocusRef={viewComments}
         >
           <DrawerOverlay />
           <DrawerContent className="bg-white dark:bg-gray-950 rounded-lg">
@@ -133,7 +141,9 @@ const ViewComments = ({
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-        <button onClick={onOpen}>View comments</button>
+        <button onClick={onOpen} ref={viewComments}>
+          View comments
+        </button>
       </div>
     );
   }
