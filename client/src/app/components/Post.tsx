@@ -130,7 +130,12 @@ const PostImage = ({
         setLiked(!liked);
       }}
     >
-      <img src={post.img} className="w-full h-auto" alt="post image" />
+      <img
+        src={post.img}
+        className="w-full h-auto"
+        alt="post image"
+        loading="lazy"
+      />
     </div>
   );
 };
