@@ -39,7 +39,7 @@ const ViewComments = ({
   onOpen: () => void;
   onClose: () => void;
 }) => {
-  const viewComments = useRef(null);
+  const viewComments = useRef();
   const [comment, setComment] = useState("");
   const [commentPlaceHolder, setCommentPlaceHolder] = useState("Add a comment");
 
