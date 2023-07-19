@@ -2,7 +2,7 @@
 import axios from "axios";
 import ViewComments from "./ViewComments";
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import useSWR from "swr";
 import { AuthContext, AuthContextInterface } from "../contexts/AuthContext";
 import fetcher from "../helpers/fetcher";
@@ -11,7 +11,6 @@ import { PostInterface } from "../interfaces/Post";
 import { UserInterface } from "../interfaces/User";
 import ProfilePictureIcon from "./ProfilePictureIcon";
 import { backendURL } from "../backendURL";
-
 import { useDisclosure } from "@chakra-ui/react";
 
 const Post = ({

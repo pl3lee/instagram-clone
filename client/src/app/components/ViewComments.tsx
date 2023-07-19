@@ -1,18 +1,9 @@
 "use client";
 // import { Card, Drawer } from "@rewind-ui/core";
 import axios from "axios";
-import {
-  useEffect,
-  useState,
-  useContext,
-  FormEventHandler,
-  useRef,
-  MutableRefObject,
-} from "react";
-import { Input } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "./LoadingComponent";
-import Navbar from "./Navbar";
 import { PostInterface } from "../interfaces/Post";
 import { CommentInterface } from "../interfaces/Comment";
 import { UserInterface } from "../interfaces/User";

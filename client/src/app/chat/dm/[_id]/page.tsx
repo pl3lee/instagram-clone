@@ -4,14 +4,11 @@ import useUser from "@/app/hooks/useUser";
 import fetcher from "@/app/helpers/fetcher";
 import useSWRImmutable from "swr/immutable";
 import useSWR from "swr";
-import { Dispatch, SetStateAction, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { UserInterface } from "@/app/interfaces/User";
 import LoadingComponent from "@/app/components/LoadingComponent";
-import ProfilePictureIcon from "@/app/components/ProfilePictureIcon";
-import { Input, InputRightElement, InputGroup } from "@chakra-ui/react";
 import MessageInput from "@/app/components/MessageInput";
 import { MessageInterface } from "@/app/interfaces/Message";
-import axios from "axios";
 import { io } from "socket.io-client";
 import { backendURL } from "@/app/backendURL";
 

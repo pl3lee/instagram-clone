@@ -3,7 +3,6 @@ import ChatHeader from "@/app/components/ChatHeader";
 import useUser from "@/app/hooks/useUser";
 import useSWR from "swr";
 import fetcher from "@/app/helpers/fetcher";
-import MessageInput from "@/app/components/MessageInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { backendURL } from "@/app/backendURL";

@@ -1,6 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import FollowingPostsContainer from "../components/FollowingPostsContainer";
 import useUser from "../hooks/useUser";
 import LoadingComponent from "../components/LoadingComponent";

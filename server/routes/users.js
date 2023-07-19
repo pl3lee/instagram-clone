@@ -9,7 +9,6 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import axios from "axios";
 import jwt from "jsonwebtoken";
 import { verifyJWT } from "../middleware/verifyJWT.js";
 
